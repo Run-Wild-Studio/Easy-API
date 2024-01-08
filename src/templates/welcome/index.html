@@ -1,0 +1,27 @@
+{% extends 'easyapi/_layouts' %}
+
+{% set noTabs = true %}
+
+{% set title = 'Welcome to {name}!'|t('easyapi', { name: craft.easyApi.getPluginName() }) %}
+
+{% block content %}
+    <div class="easyapi-welcome">
+        <div class="plugin-icon-welcome">
+            {{ svg(craft.app.plugins.getPluginIconSvg('easyapi'))|attr({
+                style: {
+                    display: 'inline-block',
+                },
+            }) }}
+        </div>
+
+        <h1>{{ "Thanks for using {name}!"|t('easyapi', { name: craft.easyApi.getPluginName() }) }}</h1>
+
+        <p>{{ "Thanks for installing {name}. Get started by creating your first api."|t('easyapi', { name: craft.easyApi.getPluginName() }) }}</p>
+
+        <a class="btn submit btn-start" href="{{ url('easyapi/apis') }}">{{ "Get Started"|t('easyapi') }}</a>
+        <span class="or">{{ "or"|t('easyapi') }}</span>
+        <a class="btn" href="https://docs.runwildstudio.co.nz/easyapi/v4/" target="_blank">{{ "Read our Online Documentation"|t('easyapi') }} <i class="fa fa-external-link"></i></a>
+    </div>
+
+    {{ parent() }}
+{% endblock %}

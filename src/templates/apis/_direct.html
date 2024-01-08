@@ -1,0 +1,36 @@
+{% do view.registerAssetBundle('runwildstudio\\easyapi\\web\\assets\\easyapi\\EasyApiAsset') %}
+{% set baseAssetsUrl = view.getAssetManager().getPublishedUrl('@runwildstudio/easyapi/web/assets/easyapi/dist', true) %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Responsive-ness -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ 'Easy API - {name} has started processing'|t('easyapi', { name: api.name }) }}</title>
+
+    <!-- CSS -->
+</head>
+<body class="message easyapi-message">
+
+<div class="message-container">
+    <div id="message" class="pane">
+        {% if task %}
+            <div class="easyapi-fullpage fullpage-running">
+                <img src="{{ baseAssetsUrl ~ '/img/icon-success.svg' }}">
+
+                <h2>{{ '{name} has started processing'|t('easyapi', { name: api.name }) }}</h2>
+                <p>{{ 'Data is now being imported from your api. You can navigate away from this page without disrupting your api processing.'|t('easyapi') }}</p>
+            </div>
+        {% else %}
+            <div class="easyapi-fullpage fullpage-error">
+                <img src="{{ baseAssetsUrl ~ '/img/icon-error.svg' }}">
+
+                <h2>{{ 'Unable to start api'|t('easyapi') }}</h2>
+                <p>{{ 'Please check your authorization, and verify the URL is correct.'|t('easyapi') }}</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

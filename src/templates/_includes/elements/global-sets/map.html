@@ -1,0 +1,38 @@
+{% import '_includes/forms' as forms %}
+{% import 'easyapi/_macros' as easyApiMacro %}
+
+{% if api.elementGroup %}
+    {% set globalSetId = api.elementGroup[api.elementType].globalSet %}
+    {% set globalSet = craft.app.globals.getSetById(globalSetId) %}
+{% endif %}
+
+{% set tabs = [] %}
+
+{% if globalSet.fieldLayoutId %}
+    {% set tabs = craft.app.fields.getLayoutById(globalSet.fieldLayoutId).getTabs() %}
+
+    {% for tab in tabs %}
+        <hr>
+
+        <h2>{{ tab.name }} Fields</h2>
+
+        <table class="easyapi-mapping data fullwidth collapsible">
+            <thead>
+                <th>{{ 'Field'|t('easyapi') }}</th>
+                <th>{{ 'Api Element'|t('easyapi') }}</th>
+                <th>{{ 'Default Value'|t('easyapi') }}</th>
+            </thead>
+            <tbody>
+                {% for layoutField in tab.getElements()|filter(e => e is instance of('craft\\fieldlayoutelements\\CustomField')) %}
+                    {% set field = layoutField.getField() %}
+                    {% set fieldClass = craft.easyApi.fields.getRegisteredField(className(field)) %}
+                    {% set template = fieldClass.getMappingTemplate() %}
+
+                    {% set variables = { name: field.name, handle: field.handle, api: api, apiData: apiData, field: field, fieldClass: fieldClass } %}
+
+                    {% include template ignore missing with variables only %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,321 @@
+{% import '_includes/forms' as forms %}
+
+{% extends 'easyapi/_layouts' %}
+
+{% do view.registerTranslations('easyapi', [
+    'Suspend missing users',
+    'Suspends any users that are missing from the api.',
+    'None',
+]) %}
+
+{% set crumbs = [
+    { label: craft.easyApi.getPluginName|t('easyapi'), url: url('easyapi') },
+] %}
+
+{% if api.id %}
+    {% set crumbs = crumbs|merge([
+        { label: api.name|t('easyapi'), url: url('easyapi/apis/' ~ api.id) },
+    ]) %}
+{% endif %}
+
+{% set title = (api.id) ? api.name : 'Create a new api'|t('easyapi') %}
+{% set noTabs = true %}
+{% set fullPageForm = true %}
+
+{% set buttons %}
+    <div class="buttons">
+        <input type="button" data-action="easyapi/apis/save-api" class="btn submit" value="{{ 'Save'|t('easyapi') }}">
+        <input type="button" data-action="easyapi/apis/save-and-element-api" class="btn submit useBackground" {% if api.useLive %} style="display:none"{% endif %} value="{{ 'Save & Continue'|t('easyapi') }}">
+    </div>
+{% endset %}
+
+{% block actionButton %}
+    {{ buttons }}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content %}
+    <input type="hidden" name="action" value="easyapi/apis/save-api">
+
+    {% if api.id %}<input type="hidden" name="apiId" value="{{ api.id }}">{% endif %}
+
+    {% set elementsList = [] %}
+    {% for elementClass, element in elements %}
+        {% set elementsList = elementsList|merge({ (elementClass): element.name }) %}
+    {% endfor %}
+
+    {{ forms.textField({
+        first: true,
+        label: "Name"|t('easyapi'),
+        instructions: "What this api will be called in the CP."|t('easyapi'),
+        id: 'name',
+        name: 'name',
+        value: api.name,
+        errors: api.getErrors('name'),
+        autofocus: true,
+        required: true,
+    }) }}
+
+    {% if craft.app.isMultiSite() %}
+        {% set sites = [{ label: 'Primary Site ({name})'|t('easyapi', {name: craft.app.sites.primarySite.name}), value: craft.app.sites.primarySite.id }] %}
+
+        {% for site in craft.app.sites.getAllSites() %}
+            {% set sites = sites|merge([{ label: site.name, value: site.id }]) %}
+        {% endfor %}
+
+        {{ forms.selectField({
+            label: "Target Site"|t('easyapi'),
+            instructions: 'Choose which site you want to save your elements to initially.'|t('easyapi'),
+            id: 'siteId',
+            name: 'siteId',
+            options: sites,
+            value: api.siteId,
+        }) }}
+    {% endif %}
+
+    {{ forms.textField({
+        label: "Api URL"|t('easyapi'),
+        instructions: "Can be a file on the local file system or from a website url (http://...)."|t('easyapi'),
+        id: 'apiUrl',
+        name: 'apiUrl',
+        value: api.apiUrl,
+        errors: api.getErrors('apiUrl'),
+        required: true,
+    }) }}
+
+    {{ forms.selectField({
+        label: "Parent Element Type"|t('easyapi'),
+        instructions: 'Choose what parent element you want use to link to when calling your api.'|t('easyapi'),
+        id: 'parentElementType',
+        name: 'parentElementType',
+        options: [{ label: 'Select', value: '' }]|merge(elementsList),
+        value: api.parentElementType,
+        errors: api.getErrors('parentElementType'),
+    }) }}
+
+    {% for elementClass, element in elements %}
+        <div class="parent-element-select" data-type="parent-{{ elementClass|replace('\\', '-') }}">
+            {% set parentElementType = elementClass %}
+
+            {% include element.groupsTemplate ignore missing %}
+        </div>
+    {% endfor %}
+
+    {{ forms.textField({
+        label: "Parent Element Id Field"|t('easyapi'),
+        instructions: "Used to identify the Id field to replace {{ Id }} in the Url."|t('easyapi'),
+        id: 'parentElementIdField',
+        name: 'parentElementIdField',
+        value: api.parentElementIdField,
+        errors: api.getErrors('parentElementIdField'),
+    }) }}
+
+    {{ forms.selectField({
+        label: "Content Type"|t('easyapi'),
+        instructions: 'Choose what type of api you’re retrieving.'|t('easyapi'),
+        id: 'contentType',
+        name: 'contentType',
+        options: dataTypes,
+        value: api.contentType,
+        errors: api.getErrors('contentType'),
+        required: true,
+    }) }}
+
+    {{ forms.textField({
+        label: "Authorization"|t('easyapi'),
+        instructions: "The value of the 'authorization' header field for the HTTP request."|t('easyapi'),
+        id: 'authorization',
+        name: 'authorization',
+        value: (api.authorization) ? api.authorization : '',
+        errors: api.getErrors('authorization'),
+        required: true,
+    }) }}
+
+    {# TODO: The below commented out fields will be used in future release so not removing them entirely #}
+
+    {# {{ forms.selectField({
+        label: "HTTP Action"|t('easyapi'),
+        instructions: 'Choose what HTTP Action to use when calling the remote API.'|t('easyapi'),
+        id: 'httpAction',
+        name: 'httpAction',
+        options: {
+            "GET": "GET"|t("easyapi"),
+            "POST": "POST"|t("easyapi"),
+            "PATCH": "PATCH"|t("easyapi"),
+        },
+        value: api.httpAction,
+        errors: api.getErrors('httpAction'),
+        required: true,
+    }) }} #}
+
+    {# {{ forms.textField({
+        label: "Update Element Id Field"|t('easyapi'),
+        instructions: "Used to identify the Id field to replace {{ Id }} in the Url when perfoming an update."|t('easyapi'),
+        id: 'updateElementIdField',
+        name: 'updateElementIdField',
+        value: api.updateElementIdField,
+        errors: api.getErrors('updateElementIdField'),
+    }) }} #}
+
+    {# {{ forms.textareaField({
+        label: "Request Header"|t('easyapi'),
+        instructions: "Use this field when a custom HTTP request header is required."|t('easyapi'),
+        id: 'requestHeader',
+        name: 'requestHeader',
+        value: api.requestHeader,
+        errors: api.getErrors('requestHeader'),
+        required: false,
+        rows: 5,
+    }) }} #}
+
+    {# {{ forms.textareaField({
+        label: "Request Body"|t('easyapi'),
+        instructions: "Use this field to determine the request body when using the HTTP actions of PATCH or POST."|t('easyapi'),
+        id: 'requestBody',
+        name: 'requestBody',
+        value: api.requestBody,
+        errors: api.getErrors('requestBody'),
+        required: false,
+        rows: 5,
+    }) }} #}
+
+    <hr>
+
+    {{ forms.selectField({
+        label: "Element Type"|t('easyapi'),
+        instructions: 'Choose what element you want to save your api data to.'|t('easyapi'),
+        id: 'elementType',
+        name: 'elementType',
+        options: [{ label: 'Select', value: '' }]|merge(elementsList),
+        value: api.elementType,
+        errors: api.getErrors('elementType'),
+        required: true,
+    }) }}
+
+    {% for elementClass, element in elements %}
+        <div class="element-select" data-type="{{ elementClass|replace('\\', '-') }}">
+            {% set elementType = elementClass %}
+
+            {% include element.groupsTemplate ignore missing %}
+        </div>
+    {% endfor %}
+
+    <hr>
+
+    {{ forms.checkboxField({
+        id: 'useLive',
+        name: 'useLive',
+        label: 'Use this API from the front end of the website for live data feeds.'|t('easyapi'),
+        instructions: 'To use this API from the front end of your website tick this checkbox.'|t('easyapi'),
+        checked: api.useLive,
+    }) }}
+
+    <div class="useBackground" {% if api.useLive %} style="display:none"{% endif %}>
+    {{ forms.checkboxField({
+        id: 'queueRequest',
+        name: 'queueRequest',
+        label: 'Use Job Queue to process this API.'|t('easyapi'),
+        instructions: 'API process is ran using the job queue.'|t('easyapi'),
+        checked: api.queueRequest,
+    }) }}
+
+    {{ forms.textField({
+        id: 'queueOrder',
+        name: 'queueOrder',
+        label: 'Job Queue Process Order'|t('easyapi'),
+        value: api.queueOrder,
+        instructions: 'Job queue order for API imports.'|t('easyapi'),
+    }) }}
+
+    <hr>
+    </div>
+    <div class="useBackground" {% if api.useLive %} style="display:none"{% endif %}>
+
+    {{ hiddenInput('singleton', api.singleton ? '1' : '', {
+        id: 'singleton',
+    }) }}
+
+    <h2>{{ 'Import strategy'|t('easyapi') }}</h2>
+    <p>{{ 'Choose what happens when this api is run again.'|t('easyapi') }}</p>
+
+    {{ forms.checkboxField({
+        id: 'is-create',
+        name: 'duplicateHandle[]',
+        label: 'Create new elements'|t('easyapi'),
+        instructions: 'Adds new elements if they do not already exist.'|t('easyapi'),
+        value: 'add',
+        checked: not api.singleton and 'add' in (api.duplicateHandle ?? ['add']),
+        disabled: api.singleton,
+    }) }}
+
+    {{ forms.checkboxField({
+        id: 'is-update',
+        name: 'duplicateHandle[]',
+        label: 'Update existing elements'|t('easyapi'),
+        instructions: 'Updates elements that match the Unique Identifier (next step).'|t('easyapi'),
+        value: 'update',
+        checked: api.singleton or 'update' in (api.duplicateHandle ?? []),
+        disabled: api.singleton,
+    }) }}
+
+    {{ forms.checkboxField({
+        id: 'is-disable-globally',
+        name: 'duplicateHandle[]',
+        label: craft.app.isMultiSite
+        ? 'Disable missing elements globally'|t('easyapi')
+        : 'Disable missing elements'|t('easyapi'),
+        instructions: craft.app.isMultiSite
+        ? 'Disables any elements that are missing from the api, across all sites.'|t('easyapi')
+        : 'Disables any elements that are missing from the api.'|t('easyapi'),
+        value: 'disable',
+        checked: not api.singleton and 'disable' in (api.duplicateHandle ?? []),
+        disabled: api.singleton,
+    }) }}
+
+    {% if craft.app.isMultiSite %}
+        {{ forms.checkboxField({
+            id: 'is-disable-site',
+            name: 'duplicateHandle[]',
+            label: 'Disable missing elements in the target site'|t('easyapi'),
+            instructions: 'Disables any elements that are missing from the api, in the api’s target site only.'|t('easyapi'),
+            value: 'disableForSite',
+            checked: not api.singleton and 'disableForSite' in (api.duplicateHandle ?? []),
+            disabled: api.singleton,
+        }) }}
+    {% endif %}
+
+    {{ forms.checkboxField({
+        id: 'is-delete',
+        name: 'duplicateHandle[]',
+        label: 'Delete missing elements'|t('easyapi'),
+        instructions: 'Deletes any elements that are missing from the api. Be careful.'|t('easyapi'),
+        value: 'delete',
+        checked: not api.singleton and 'delete' in (api.duplicateHandle ?? []),
+        disabled: api.singleton,
+    }) }}
+
+    {{ forms.checkboxField({
+        id: 'is-update-search-indexes',
+        name: 'updateSearchIndexes',
+        label: 'Update search indexes'|t('easyapi'),
+        instructions: 'Whether search indexes should be updated.'|t('easyapi'),
+        checked: not api.singleton and api.updateSearchIndexes,
+        disabled: api.singleton,
+    }) }}
+    </div>
+
+    {{ parent() }}
+{% endblock %}
+
+{% block footerButton %}
+    {{ buttons }}
+{% endblock %}
+
+{% js %}
+    $('#useLive').change(function() {
+        // Toggle visibility of the target divs based on checkbox state
+        $('.useBackground').toggle(!this.checked);
+    });
+{% endjs %}

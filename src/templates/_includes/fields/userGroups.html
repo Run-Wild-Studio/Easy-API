@@ -1,0 +1,29 @@
+{# ------------------------ #}
+{# Available Variables #}
+{# ------------------------ #}
+{# Attributes: #}
+{# type, name, handle, instructions, attribute, default, api, apiData #}
+{# ------------------------ #}
+{# Fields: #}
+{# name, handle, instructions, api, apiData, field, fieldClass #}
+{# ------------------------ #}
+
+{% import 'easyapi/_macros' as easyApiMacro %}
+{% import '_includes/forms' as forms %}
+
+{% set default = default ?? {
+    type: 'text',
+} %}
+
+{% extends 'easyapi/_includes/fields/_base' %}
+
+{% block extraSettings %}
+    <div class="element-create">
+        {{ easyApiMacro.checkbox({
+            label: 'Assign user to only these groups (remove from any existing).'|t('easyapi'),
+            name: 'options[removeFromExisting]',
+            value: 1,
+            checked: hash_get(api.fieldMapping, optionsPath ~ '.removeFromExisting') ?: '',
+        }) }}
+    </div>
+{% endblock %}

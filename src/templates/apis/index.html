@@ -1,0 +1,157 @@
+{% extends 'easyapi/_layouts' %}
+
+{% import '_includes/forms' as forms %}
+
+{% set crumbs = [
+    { label: craft.easyApi.getPluginName|t('easyapi'), url: url('easyapi') },
+    { label: "Apis"|t('easyapi'), url: url('easyapi/apis') },
+] %}
+
+{% set selectedTab = 'apis' %}
+
+{% block actionButton %}
+    <a class="btn submit add icon" href="{{ url('easyapi/apis/new') }}">{{ 'New api'|t('easyapi') }}</a>
+{% endblock %}
+
+{% block content %}
+    <div id="noapis" class="zilch{% if apis %} hidden{% endif %}">
+        <p>{{ "No apis exist yet."|t('easyapi') }}</p>
+    </div>
+
+    {% if apis|length %}
+        <table id="apis" class="data fullwidth collapsible table-easyapi">
+            <thead>
+                <th scope="col">{{ "Name"|t('easyapi') }}</th>
+                <th scope="col">{{ "Type"|t('easyapi') }}</th>
+                <th scope="col">{{ "Element Type"|t('easyapi') }}</th>
+                <th scope="col">{{ "Element Group"|t('easyapi') }}</th>
+                <th scope="col">{{ "Parent Element Type"|t('easyapi') }}</th>
+                <th scope="col">{{ "Parent Element Group"|t('easyapi') }}</th>
+                <th scope="col">{{ "Strategy"|t('easyapi') }}</th>
+                <th scope="col">{{ "Process"|t('easyapi') }}</th>
+                <th class="thin" colspan="3"></th>
+            </thead>
+            <tbody>
+                {% for api in apis %}
+                    <tr data-id="{{ api.id }}" data-name="{{ api.name|t('easyapi') }}">
+                        <th scope="row" data-title="Name">
+                            <a href="{{ url('easyapi/apis/' ~ api.id) }}">{{ api.name|t('easyapi') }}</a>
+
+                            <span class="index-url">
+                                {% if api.apiUrl|length > 40 %}
+                                    {{ api.apiUrl|slice(0, 40) }}&hellip;
+                                {% else %}
+                                    {{ api.apiUrl }}
+                                {% endif %}
+                            </span>
+                        </th>
+
+                        <td>{{ api.getDataType().name ?? 'Unknown datatype' }}</td>
+
+                        <td>
+                            {% if api.getElement() %}
+                                {{ api.getElement().name }}
+                            {% else %}
+                                <span class="error">{{ api.elementType }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if api.getElement() %}
+                                {% include api.getElement().columnTemplate ignore missing with { elementType: api.elementType } %}
+                            {% else %}
+                                <span class="error">{{ 'Element group not found'|t('easyapi') }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if api.getParentElement() %}
+                                {{ api.getParentElement().name }}
+                            {% else %}
+                                <span class="error">{{ api.parentElementType }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if api.getParentElement() %}
+                                {% include api.getParentElement().columnTemplate ignore missing with { parentElementType: api.parentElementType } %}
+                            {% else %}
+                                <span class="error">{{ 'Element group not found'|t('easyapi') }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ api.duplicateHandleFriendly }}</td>
+
+                        <td><a href="{{ url('easyapi/apis/run/' ~ api.id) }}">{{ 'Run Api'|t('easyapi') }}</a></td>
+
+                        <td class="thin action">
+                            <a class="settings icon" title="{{ 'Duplicate'|t('easyapi') }}" role="button"></a>
+                        </td>
+
+                        <td class="thin action">
+                            <a class="move icon" title="{{ 'Reorder'|t('easyapi') }}" role="button"></a>
+                        </td>
+
+                        <td class="thin action">
+                            <a class="delete icon" title="{{ 'Delete'|t('easyapi') }}" role="button"></a>
+                        </td>
+                    </tr>
+
+                    <tr data-settings-id="{{ api.id }}-settings">
+                        <td colspan="9" class="settings-pane">
+                            <div class="settings-pane-wrap">
+                                <div class="btngroup" role="group">
+                                    {% if craft.app.config.general.devMode %}
+                                        {% set debugUrl = actionUrl('easyapi/apis/debug', { apiId: api.id }) %}
+
+                                        <a class="btn" href="{{ debugUrl }}" target="_blank" role="button">
+                                            <i class="fa fa-bug"></i>
+                                            <span class="btn-text">{{ 'Debug'|t('easyapi') }}</span>
+                                        </a>
+                                    {% endif %}
+
+                                    <a class="btn" href="{{ url('easyapi/apis/status/' ~ api.id) }}" role="button">
+                                        <i class="fa fa-info-circle"></i>
+                                        <span class="btn-text">{{ 'Api Status'|t('easyapi') }}</span>
+                                    </a>
+
+                                    <a class="btn" href="{{ actionUrl('easyapi/apis/save-and-duplicate-api', { 'apiId': api.id }) }}" role="button">
+                                        <i class="fa fa-clone"></i>
+                                        <span class="btn-text">{{ 'Duplicate Api'|t('easyapi') }}</span>
+                                    </a>
+                                </div>
+
+                                {% set cpTrigger = craft.app.config.general.cpTrigger ? craft.app.config.general.cpTrigger ~ '/' : null %}
+
+                                {% set directUrl = actionUrl('easyapi/apis/run-task', { direct: true, apiId: api.id, authorization: api.authorization })|replace(cpTrigger, '') %}
+
+                                {{ forms.textField({
+                                    label: 'Direct Api URL'|t('easyapi'),
+                                    instructions: 'Copy and paste this URL for direct-access to processing this api. Commonly used when triggering via a Cron Job.'|t('easyapi'),
+                                    readonly: true,
+                                    value: directUrl,
+                                }) }}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% js %}
+    var adminTable = new Craft.AdminTable({
+        tableSelector: '#apis',
+        noObjectsSelector: '#noapis',
+        newObjectBtnSelector: '#newapicontainer',
+        sortable: true,
+        duplicateAction: 'easyapi/apis/save-and-duplicate-api',
+        reorderAction: 'easyapi/apis/reorder-apis',
+        deleteAction: 'easyapi/apis/delete-api',
+        confirmDeleteMessage: '{{ "Are you sure you want to delete “{name}”?"|t('easyapi') }}'
+    });
+{% endjs %}
+

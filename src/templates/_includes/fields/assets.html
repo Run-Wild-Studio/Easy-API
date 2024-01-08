@@ -1,0 +1,59 @@
+{# ------------------------ #}
+{# Available Variables #}
+{# ------------------------ #}
+{# Attributes: #}
+{# type, name, handle, instructions, attribute, default, api, apiData #}
+{# ------------------------ #}
+{# Fields: #}
+{# name, handle, instructions, api, apiData, field, fieldClass #}
+{# ------------------------ #}
+
+{% import 'easyapi/_macros' as easyApiMacro %}
+{% import '_includes/forms' as forms %}
+
+{% if field is defined %}
+    {% set default = default ?? {
+        type: 'elementselect',
+        options: {
+            elementType: fieldClass.elementType,
+            selectionLabel: "Default Asset"|t('easyapi'),
+        },
+    } %}
+{% endif %}
+
+{# Get any sub-fields for the element. Also check to go only one level deep #}
+{% if field is defined and isSubElementField is not defined %}
+    {% set elementFields = [] %}
+
+    {# Prevent infinite loop by only allow elements that are not the same as this #}
+    {% for elementField in craft.easyApi.getElementLayoutByField(className(field), field) %}
+        {% if craft.easyApi.supportedSubField(className(elementField)) %}
+            {% set elementFields = elementFields|merge([ elementField ]) %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% extends 'easyapi/_includes/fields/_base' %}
+
+{% block extraSettings %}
+
+    <div class="assets-uploads">
+        {{ easyApiMacro.checkbox({
+            label: 'Create asset from URL<span class="asset-label-hide">, if exists:</span>'|t('easyapi')|raw,
+            name: 'options[upload]',
+            value: 1,
+            checked: hash_get(api.fieldMapping, optionsPath ~ '.upload') ?: '',
+        }) }}
+
+        {{ forms.selectField({
+            name: 'options[conflict]',
+            class: '',
+            options: [
+                { value: 'index', label: 'Use existing asset' },
+                { value: 'replace', label: 'Replace existing asset' },
+                { value: 'create', label: 'Keep both (rename api data)' },
+            ],
+            value: hash_get(api.fieldMapping, optionsPath ~ '.conflict') ?: '',
+        }) }}
+    </div>
+{% endblock %}

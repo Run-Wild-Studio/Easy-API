@@ -1,0 +1,6 @@
+{% extends 'easyapi/_layouts' %}
+
+{% set crumbs = [
+    { label: craft.easyApi.getPluginName|t('easyapi'), url: url('easyapi') },
+    { label: "Settings"|t('easyapi'), url: url('easyapi/settings') },
+] %}

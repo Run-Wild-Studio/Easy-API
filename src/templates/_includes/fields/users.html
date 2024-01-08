@@ -1,0 +1,74 @@
+{# ------------------------ #}
+{# Available Variables #}
+{# ------------------------ #}
+{# Attributes: #}
+{# type, name, handle, instructions, attribute, default, api, apiData #}
+{# ------------------------ #}
+{# Fields: #}
+{# name, handle, instructions, api, apiData, field, fieldClass #}
+{# ------------------------ #}
+
+{% import 'easyapi/_macros' as easyApiMacro %}
+{% import '_includes/forms' as forms %}
+
+{% if field is defined %}
+    {% set default = default ?? {
+        type: 'elementselect',
+        options: {
+            elementType: fieldClass.elementType,
+            selectionLabel: "Default User"|t('easyapi'),
+            sources: field.sources ?? '*',
+        },
+    } %}
+{% endif %}
+
+{# Get any sub-fields for the element. Also check to go only one level deep #}
+{% if field is defined and isSubElementField is not defined %}
+    {% set elementFields = [] %}
+
+    {# Prevent infinite loop by only allow elements that are not the same as this #}
+    {% for elementField in craft.easyApi.getUserLayoutByField() %}
+        {% if craft.easyApi.supportedSubField(className(elementField)) %}
+            {% set elementFields = elementFields|merge([ elementField ]) %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% extends 'easyapi/_includes/fields/_base' %}
+
+{% block extraSettings %}
+    <div class="element-match">
+        <span>{{ 'Data provided for this user is:'|t('easyapi') }}</span>
+
+        {% set matchAttributes = [
+            { value: 'email', label: 'Email'|t('easyapi') },
+            { value: 'elements.id', label: 'ID'|t('easyapi') },
+            { value: 'username', label: 'Username'|t('easyapi') },
+            { value: 'fullName', label: 'Full Name'|t('easyapi') },
+        ] %}
+
+        {% for field in craft.app.fields.getAllFields() %}
+            {% if craft.easyApi.fieldCanBeUniqueId(field) %}
+                {# Check for columnSuffix (since 3.7) #}
+                {% set suffix = field['columnSuffix'] is defined and field.columnSuffix|length  ? '_' ~ field.columnSuffix : '' %}
+                {% set matchAttributes = matchAttributes|merge({ ('field_' ~ field.handle ~ suffix): field.name }) %}
+            {% endif %}
+        {% endfor %}
+
+        {{ forms.selectField({
+            name: 'options[match]',
+            class: 'users-field-match',
+            value: hash_get(api.fieldMapping, optionsPath ~ '.match') ?: '',
+            options: matchAttributes,
+        }) }}
+    </div>
+
+    <div class="element-create">
+        {{ easyApiMacro.checkbox({
+            label: 'Create users if they do not exist'|t('easyapi'),
+            name: 'options[create]',
+            value: 1,
+            checked: hash_get(api.fieldMapping, optionsPath ~ '.create') ?: '',
+        }) }}
+    </div>
+{% endblock %}

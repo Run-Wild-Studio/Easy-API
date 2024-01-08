@@ -1,0 +1,3 @@
+{% set group = craft.commerce.productTypes.getProductTypeById(api.elementGroup[elementType]) %}
+
+{{ group.name ?? '' }}

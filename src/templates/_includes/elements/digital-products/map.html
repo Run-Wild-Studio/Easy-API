@@ -1,0 +1,165 @@
+{% import '_includes/forms' as forms %}
+{% import 'easyapi/_macros' as easyApiMacro %}
+
+{% if api.elementGroup %}
+    {% set productTypeId = api.elementGroup[api.elementType] %}
+
+    {% set productType = craft.digitalProducts.getPlugin().getProductTypes().getProductTypeById(productTypeId) %}
+{% endif %}
+
+{% set fields = [{
+    name: 'Title',
+    handle: 'title',
+    default: {
+        type: 'text',
+    },
+}, {
+    name: 'Slug',
+    handle: 'slug',
+    instructions: 'If not set, the Slug will be automatically created from Title.'|t('easyapi'),
+    default: {
+        type: 'text',
+    },
+}, {
+    type: 'date',
+    name: 'Post Date',
+    handle: 'postDate',
+    instructions: 'Accepts Unix timestamp, or just about any English textual datetime description.'|t('easyapi'),
+    default: {
+        type: 'dateTime',
+    },
+}, {
+    type: 'date',
+    name: 'Expiry Date',
+    handle: 'expiryDate',
+    instructions: 'Accepts Unix timestamp, or just about any English textual datetime description.'|t('easyapi'),
+    default: {
+        type: 'dateTime',
+    },
+}, {
+    name: 'Status',
+    handle: 'enabled',
+    instructions: 'Choose either a default status from the list or the imported field that will contain the status.'|t('easyapi'),
+    default: {
+        type: 'select',
+        options: [
+            { label: 'Don’t import'|t('easyapi'), value: '' },
+            { label: 'Enabled', value: '1' },
+            { label: 'Disabled', value: '0' },
+        ],
+    },
+}, {
+    name: 'Tax Category',
+    handle: 'taxCategoryId',
+    required: true,
+    default: {
+        type: 'select',
+        options: craft.commerce.taxCategories.getAllTaxCategoriesAsList(),
+    },
+}, {
+    name: 'Free Shipping',
+    handle: 'freeShipping',
+    default: {
+        type: 'checkbox',
+    },
+}, {
+    name: 'Promotable',
+    handle: 'promotable',
+    required: true,
+    default: {
+        type: 'checkbox',
+    },
+}, {
+    name: 'SKU',
+    handle: 'sku',
+    required: true,
+    default: {
+        type: 'text',
+    },
+}, {
+    name: 'Price',
+    handle: 'price',
+    default: {
+        type: 'text',
+    },
+}, {
+    name: 'Product ID',
+    handle: 'id',
+    instructions: '<strong class="error">Warning: </strong>This should only be used for an existing Product ID.'|t('easyapi'),
+    default: {
+        type: 'text',
+    },
+}] %}
+
+<h2>{{ 'Product Fields'|t('easyapi') }}</h2>
+
+<table class="easyapi-mapping data fullwidth collapsible">
+    <thead>
+        <th>{{ 'Field'|t('easyapi') }}</th>
+        <th>{{ 'Api Element'|t('easyapi') }}</th>
+        <th>{{ 'Default Value'|t('easyapi') }}</th>
+    </thead>
+    <tbody>
+        {% for field in fields %}
+            {% set template = field.type ?? 'default' %}
+            {% set variables = field|merge({ api: api, apiData: apiData, attribute: true }) %}
+
+            {% include 'easyapi/_includes/fields/' ~ template ignore missing with variables only %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% set tabs = [] %}
+
+{% if productType.fieldLayoutId %}
+    {% set tabs = craft.app.fields.getLayoutById(productType.fieldLayoutId).getTabs() %}
+
+    {% for tab in tabs %}
+        <hr>
+
+        <h2>{{ tab.name }} Fields</h2>
+
+        <table class="easyapi-mapping data fullwidth collapsible">
+            <thead>
+                <th>{{ 'Field'|t('easyapi') }}</th>
+                <th>{{ 'Api Element'|t('easyapi') }}</th>
+                <th>{{ 'Default Value'|t('easyapi') }}</th>
+            </thead>
+            <tbody>
+                {% for layoutField in tab.getElements()|filter(e => e is instance of('craft\\fieldlayoutelements\\CustomField')) %}
+                    {% set field = layoutField.getField() %}
+                    {% set fieldClass = craft.easyApi.fields.getRegisteredField(className(field)) %}
+                    {% set template = fieldClass.getMappingTemplate() %}
+
+                    {% set variables = { name: field.name, handle: field.handle, api: api, apiData: apiData, field: field, fieldClass: fieldClass } %}
+
+                    {% include template ignore missing with variables only %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endif %}
+
+<hr>
+
+<h2 id="digital-product-uniques-label">{{ "Set a unique identifier to match against existing elements"|t('easyapi') }}</h2>
+<p>{{ "Select the fields you want to use to check for existing elements. When selected, Easy API will look for existing elements that match the fields provided below and either update, or skip depending on your choice of Import Strategy."|t('easyapi') }}</p>
+
+{% for tab in tabs %}
+    {% for layoutField in tab.getElements()|filter(e => e is instance of('craft\\fieldlayoutelements\\CustomField')) %}
+        {% set field = layoutField.getField() %}
+        {% set fields = fields|merge([{ name: field.name, handle: field.handle, type: className(field) }]) %}
+    {% endfor %}
+{% endfor %}
+
+<fieldset class="easyapi-uniques" aria-labelledby="digital-product-uniques-label">
+    {% for field in fields %}
+        {% if field and craft.easyApi.fieldCanBeUniqueId(field) %}
+            {{ forms.checkboxField({
+                name: 'fieldUnique[' ~ field.handle ~ ']',
+                label: field.name,
+                checked: api.fieldUnique[field.handle] ?? '',
+            }) }}
+        {% endif %}
+    {% endfor %}
+</fieldset>

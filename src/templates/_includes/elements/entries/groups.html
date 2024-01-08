@@ -1,0 +1,116 @@
+{% import '_includes/forms' as forms %}
+
+{% set sections = element.groups %}
+
+{% if elementType|default(null) %}
+    {% set sectionEntryTypes = [] %}
+
+    {# Create a section-indexed array of element types #}
+    {% set entryTypes = [] %}
+    {% for section in sections %}
+        {% set options = craft.easyApi.getSelectOptions(section.model.getEntryTypes()) %}
+
+        {# We have to prefix the index, otherwise Twig doesn't maintain numbered index correctly #}
+        {% set entryTypes = entryTypes|merge({ ('item_' ~ section.id): options }) %}
+    {% endfor %}
+
+    {% set sectionId = null %}
+    {% set entryTypeId = null %}
+
+    {# Load saved values for api #}
+    {% if api.elementGroup[elementType] is defined %}
+        {% set sectionId = api.elementGroup[elementType].section ?? null %}
+        {% set entryTypeId = api.elementGroup[elementType].entryType ?? null %}
+    {% endif %}
+
+    {% if sectionId %}
+        {% set section = craft.app.sections.getSectionById(sectionId) %}
+
+        {% if section %}
+            {% set sectionEntryTypes = section.getEntryTypes() %}
+        {% endif %}
+    {% elseif sections[0] is defined %}
+        {% set sectionEntryTypes = sections[0].model.getEntryTypes() ?? null %}
+    {% endif %}
+
+    <div class="element-sub-group" data-items="{{ entryTypes|json_encode }}">
+        {{ forms.selectField({
+            label: "Section"|t('easyapi'),
+            instructions: 'Choose the Section you want to save your api data to.'|t('easyapi'),
+            class: 'element-parent-group',
+            id: 'elementGroup-' ~ elementType ~ '-section',
+            name: 'elementGroup[' ~ elementType ~ '][section]',
+            options: craft.easyApi.getSelectOptions(sections|map(s => s.model)),
+            value: sectionId ?? '',
+            errors: api.getErrors('elementGroup'),
+            required: true,
+        }) }}
+
+        {{ forms.selectField({
+            label: "Entry Type"|t('easyapi'),
+            instructions: 'Choose the Entry Type you want to save your api data into.'|t('easyapi'),
+            class: 'element-child-group',
+            id: 'elementGroup-' ~ elementType ~ '-entryType',
+            name: 'elementGroup[' ~ elementType ~ '][entryType]',
+            options: craft.easyApi.getSelectOptions(sectionEntryTypes),
+            value: entryTypeId ?? '',
+            errors: api.getErrors('elementGroup'),
+            required: true,
+        }) }}
+    </div>
+{% else %}
+    {% set parentSectionEntryTypes = [] %}
+
+    {# Create a section-indexed array of element types #}
+    {% set parentEntryTypes = [] %}
+    {% for section in sections %}
+        {% set options = craft.easyApi.getSelectOptions(section.model.getEntryTypes()) %}
+
+        {# We have to prefix the index, otherwise Twig doesn't maintain numbered index correctly #}
+        {% set parentEntryTypes = parentEntryTypes|merge({ ('item_' ~ section.id): options }) %}
+    {% endfor %}
+
+    {% set parentSectionId = null %}
+    {% set parentEntryTypeId = null %}
+
+    {# Load saved values for api #}
+    {% if api.parentElementGroup[parentElementType] is defined %}
+        {% set parentSectionId = api.parentElementGroup[parentElementType].section ?? null %}
+        {% set parentEntryTypeId = api.parentElementGroup[parentElementType].entryType ?? null %}
+    {% endif %}
+
+    {% if parentSectionId %}
+        {% set section = craft.app.sections.getSectionById(parentSectionId) %}
+
+        {% if section %}
+            {% set parentSectionEntryTypes = section.getEntryTypes() %}
+        {% endif %}
+    {% elseif sections[0] is defined %}
+        {% set parentSectionEntryTypes = sections[0].model.getEntryTypes() ?? null %}
+    {% endif %}
+
+    <div class="parent-element-sub-group" data-items="{{ parentEntryTypes|json_encode }}">
+        {{ forms.selectField({
+            label: "Section"|t('easyapi'),
+            instructions: 'Choose the Section you want to save your api data to.'|t('easyapi'),
+            class: 'parent-element-parent-group',
+            id: 'parentElementGroup-' ~ parentElementType ~ '-section',
+            name: 'parentElementGroup[' ~ parentElementType ~ '][section]',
+            options: craft.easyApi.getSelectOptions(sections|map(s => s.model)),
+            value: parentSectionId ?? '',
+            errors: api.getErrors('parentElementGroup'),
+        }) }}
+
+        {{ forms.selectField({
+            label: "Entry Type"|t('easyapi'),
+            instructions: 'Choose the Entry Type you want to save your api data into.'|t('easyapi'),
+            class: 'parent-element-child-group',
+            id: 'parentElementGroup-' ~ parentElementType ~ '-entryType',
+            name: 'parentElementGroup[' ~ parentElementType ~ '][entryType]',
+            options: craft.easyApi.getSelectOptions(parentSectionEntryTypes),
+            value: parentEntryTypeId ?? '',
+            errors: api.getErrors('parentElementGroup'),
+            required: true,
+        }) }}
+    </div>
+{% endif %}

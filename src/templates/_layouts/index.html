@@ -1,0 +1,43 @@
+{% extends parentLayout|default('_layouts/cp') %}
+
+{% do view.registerAssetBundle('runwildstudio\\easyapi\\web\\assets\\easyapi\\EasyApiAsset') %}
+{% set baseAssetsUrl = view.getAssetManager().getPublishedUrl('@runwildstudio/easyapi/web/assets/easyapi/dist', true) %}
+
+{% if title is not defined %}
+    {% set title = craft.easyApi.getPluginName ~ ' ' %}
+{% endif %}
+
+{% set selectedItem = craft.app.request.getSegment(3) %}
+
+{% set navItems = {
+    'general-heading': { heading: "Easy API"|t('easyapi') },
+    'apis': { title: "APIs"|t('easyapi') },
+    'settings': { title: "General Settings"|t('easyapi') },
+    'logs': { title: "Logs"|t('easyapi') },
+} %}
+
+{% block sidebar %}
+    <nav class="easyapi-nav">
+        <ul>
+            {% for id, item in navItems %}
+                {% if item.heading is defined %}
+                    <li class="heading"><span>{{ item.heading }}</span></li>
+                {% else %}
+                    <li><a href="{{ url('easyapi/' ~ id) }}"{% if id == selectedItem %} class="sel"{% endif %}>{{ item.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    {% if block('footerButton') is defined %}
+        <hr>
+
+        <div id="plugin-footer">
+            <div class="footer-left">
+                {{ block('footerButton') }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

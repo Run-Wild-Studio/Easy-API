@@ -1,0 +1,52 @@
+{% extends 'easyapi/_layouts/settings' %}
+
+{% import '_includes/forms' as forms %}
+
+{% set fullPageForm = true %}
+
+{% block content %}
+    <input type="hidden" name="action" value="plugins/save-plugin-settings">
+    <input type="hidden" name="pluginHandle" value="easyapi">
+
+    {% namespace 'settings' %}
+
+    {{ forms.textField({
+        id: 'pluginName',
+        name: 'pluginName',
+        label: 'Plugin Name'|t('easyapi'),
+        value: settings.pluginName,
+        first: true,
+        autofocus: true,
+        instructions: 'Plugin name for the end user.'|t('easyapi'),
+    }) }}
+
+    {{ forms.textField({
+        id: 'jobQueueInterval',
+        name: 'jobQueueInterval',
+        label: 'Job Queue Interval'|t('easyapi'),
+        value: settings.jobQueueInterval,
+        instructions: 'Interval (in minutes) between job queue runs for API imports.'|t('easyapi'),
+    }) }}
+
+    {{ forms.textField({
+        id: 'cache',
+        name: 'cache',
+        label: 'Cache Duration'|t('easyapi'),
+        value: settings.cache,
+        instructions: 'Cache duration (in seconds) to cache requests. Note: this only affects calls using the template tag - requests are never cached when triggering directly via the CP.'|t('easyapi'),
+    }) }}
+
+    <hr>
+
+    <a class="btn" href="{{ actionUrl('easyapi/base/start-job-queue') }}">
+        {{ "Start Job Queue"|t('easyapi') }}
+    </a>
+
+    <a class="btn" href="{{ actionUrl('easyapi/base/clear-tasks') }}">
+        {{ "Clear pending job queue"|t('easyapi') }}
+    </a>
+
+    {% endnamespace %}
+
+    {{ parent() }}
+{% endblock %}

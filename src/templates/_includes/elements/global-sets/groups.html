@@ -1,0 +1,34 @@
+{% import '_includes/forms' as forms %}
+
+{% if elementType|default(null) %}
+    {% set globalSetId = api.elementGroup[elementType].globalSet ?? null %}
+
+    <div class="element-sub-group">
+        {{ forms.selectField({
+            label: 'Global Set'|t('easyapi'),
+            instructions: 'Choose the global set you want to save your api data to.'|t('easyapi'),
+            class: 'element-parent-group',
+            id: 'elementGroup-' ~ elementType ~ '-global-set',
+            name: 'elementGroup[' ~ elementType ~ '][globalSet]',
+            options: craft.easyApi.getSelectOptions(element.groups|map(s => s.model)),
+            value: globalSetId,
+            errors: api.getErrors('elementGroup'),
+            required: true,
+        }) }}
+    </div>
+{% else %}
+    {% set globalSetId = api.elementGroup[parentElementType].globalSet ?? null %}
+
+    <div class="element-sub-group">
+        {{ forms.selectField({
+            label: 'Global Set'|t('easyapi'),
+            instructions: 'Choose the global set you want to save your api data to.'|t('easyapi'),
+            class: 'element-parent-group',
+            id: 'parentElementGroup-' ~ parentElementType ~ '-global-set',
+            name: 'parentElementGroup[' ~ parentElementType ~ '][globalSet]',
+            options: craft.easyApi.getSelectOptions(element.groups|map(s => s.model)),
+            value: globalSetId,
+            errors: api.getErrors('parentElementGroup'),
+        }) }}
+    </div>
+{% endif %}

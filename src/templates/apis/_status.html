@@ -1,0 +1,39 @@
+{% extends 'easyapi/_layouts' %}
+
+{% set crumbs = [
+    { label: craft.easyApi.getPluginName|t('easyapi'), url: url('easyapi') },
+    { label: api.name|t('easyapi'), url: url('easyapi/apis/' ~ api.id) },
+] %}
+
+{% set title = api.name %}
+
+{% set title = (api.id) ? api.name : 'Create a new api'|t('easyapi') %}
+{% set noTabs = true %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block content %}
+    <div class="easyapi-fullpage fullpage-running fullpage-running-cp">
+        <img src="{{ baseAssetsUrl ~ '/img/icon-success.svg' }}">
+
+        <h2>{{ '{name} has been saved.'|t('easyapi', { name: api.name }) }}</h2>
+
+        <div class="easyapi-success-btns">
+            {% apply spaceless %}
+                {{ tag('a', {
+                    class: ['btn', 'submit'],
+                    href: url('easyapi/apis/run/' ~ api.id),
+                    text: 'Process it now'|t('easyapi'),
+                }) }}
+                {{ tag('a', {
+                    class: ['btn'],
+                    href: url('easyapi/apis'),
+                    text: 'View apis'|t('easyapi'),
+                }) }}
+            {% endapply %}
+        </div>
+    </div>
+
+    {{ parent() }}
+{% endblock %}
