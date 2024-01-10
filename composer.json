@@ -13,15 +13,15 @@
   "authors": [
     {
       "name": "Run Wild Studio",
-      "homepage": "https://runwildstudio.co.nz/"
+      "homepage": "https://www.runwildstudio.co.nz/"
     }
   ],
   "support": {
-    "email": "support@runwildstudio.co.nz",
-    "issues": "https://github.com/runwildstudio/easyapi/issues?state=open",
-    "source": "https://github.com/runwildstudio/easyapi",
+    "email": "enquire@runwildstudio.co.nz",
+    "issues": "https://github.com/Run-Wild-Studio-Ltd/Easy-API/issues?state=open",
+    "source": "https://github.com/Run-Wild-Studio-Ltd/Easy-API",
     "docs": "https://docs.runwildstudio.co.nz/easyapi/v4/",
-    "rss": "https://github.com/runwildstudio/easyapi/commits/master.atom"
+    "rss": "https://github.com/Run-Wild-Studio-Ltd/Easy-API/commits/master.atom"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
