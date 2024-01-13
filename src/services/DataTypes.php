@@ -142,7 +142,6 @@ class DataTypes extends Component
      * @param $url
      * @param null $apiId
      * @return array
-     * @throws GuzzleException
      */
     public function getRawData($url, $apiId = null): array
     {
@@ -183,19 +182,7 @@ class DataTypes extends Component
             ));
 
             $data = curl_exec($curl);
-            //$data = str_replace('&quot;', '"', $data);
-            // $resp = json_decode($response, false);
-
             curl_close($curl);
-
-            // $client = EasyApi::$plugin->service->createGuzzleClient($apiId);
-            // $options = EasyApi::$plugin->service->getRequestOptions($apiId);
-
-            // $resp = $client->request('GET', $url, $options);
-            // $data = (string)$resp->getBody();
-
-            // // Save headers for later
-            // $this->_headers = $resp->getHeaders();
 
             $response = ['success' => true, 'data' => $data];
         } catch (Exception $e) {

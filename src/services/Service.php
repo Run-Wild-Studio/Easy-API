@@ -52,15 +52,6 @@ class Service extends Component
     }
 
     /**
-     * @param null $apiId
-     * @return array|ArrayAccess|mixed|null
-     */
-    public function getRequestOptions($apiId = null): mixed
-    {
-        return $this->getConfig('requestOptions', $apiId);
-    }
-
-    /**
      * @param $dateTime
      * @return DateTime|false
      * @throws \Exception

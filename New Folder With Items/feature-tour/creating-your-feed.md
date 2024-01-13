@@ -67,9 +67,9 @@ Enable a backup of your database to be taken on each import. Please note the [pe
 
 ### Set Empty Values
 
-When enabled, empty values in a api item are considered valid and will clear the corresponding fields when your [Import Strategy](#import-strategy) includes _update existing elements_. When disabled, empty values are ignored or treated as unchanged.
+When enabled, empty values in an api item are considered valid and will clear the corresponding fields when your [Import Strategy](#import-strategy) includes _update existing elements_. When disabled, empty values are ignored or treated as unchanged.
 
-Keys omitted from a api item are not considered “empty” and will not clear values on existing entries.
+Keys omitted from an api item are not considered “empty” and will not clear values on existing entries.
 
 * * *
 

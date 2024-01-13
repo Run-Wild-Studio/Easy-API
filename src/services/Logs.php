@@ -92,7 +92,7 @@ class Logs extends Component
             'message' => $message,
         ], $options);
 
-        // If we're not explicitly sending a key for logging, check if we've started a api.
+        // If we're not explicitly sending a key for logging, check if we've started an api.
         // If we have, our $stepKey variable will have a value and can use it here.
         if (!isset($options['key']) && EasyApi::$stepKey) {
             $options['key'] = EasyApi::$stepKey;

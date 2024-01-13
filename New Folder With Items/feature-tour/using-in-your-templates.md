@@ -1,6 +1,6 @@
 # Using in your Templates
 
-While you can create a api queue job to insert data as elements, there are times which you may prefer to capture api data on-demand, rather than saving as an entry. You can easily do this through your twig templates using the below.
+While you can create an api queue job to insert data as elements, there are times which you may prefer to capture api data on-demand, rather than saving as an entry. You can easily do this through your twig templates using the below.
 
 Apis are cached for performance (default to 60 seconds), which can be set by a tag parameter, or in the plugin settings.
 

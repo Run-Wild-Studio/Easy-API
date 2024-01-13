@@ -35,15 +35,6 @@ class Settings extends Model
     public array $clientOptions = [];
 
     /**
-     * @var string[][]
-     */
-    public array $requestOptions = [
-        'headers' => [
-            'User-Agent' => 'Easy API',
-        ],
-    ];
-
-    /**
      * @var bool
      */
     public bool $compareContent = true;
@@ -87,9 +78,4 @@ class Settings extends Model
      * @var int|null
      */
     public ?int $queueMaxRetry = null;
-
-    /**
-     * @var bool
-     */
-    public bool $assetDownloadCurl = false;
 }

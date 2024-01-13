@@ -6,7 +6,7 @@ Events can be used to extend the functionality of Easy API.
 
 ### The `beforeSaveApi` event
 
-Plugins can get notified before a api has been saved (through the control panel).
+Plugins can get notified before an api has been saved (through the control panel).
 
 ```php
 use runwildstudio\easyapi\events\ApiEvent;
@@ -20,7 +20,7 @@ Event::on(Apis::class, Apis::EVENT_BEFORE_SAVE_API, function(ApiEvent $event) {
 
 ### The `afterSaveApi` event
 
-Plugins can get notified after a api has been saved (through the control panel).
+Plugins can get notified after an api has been saved (through the control panel).
 
 ```php
 use runwildstudio\easyapi\events\ApiEvent;
@@ -37,7 +37,7 @@ Event::on(Apis::class, Apis::EVENT_AFTER_SAVE_API, function(ApiEvent $event) {
 
 ### The `beforeFetchApi` event
 
-Plugins can get notified before a api's data has been fetched. You can also return with a response to bypass Easy API's default fetching.
+Plugins can get notified before an api's data has been fetched. You can also return with a response to bypass Easy API's default fetching.
 
 ```php
 use runwildstudio\easyapi\events\ApiDataEvent;
@@ -55,7 +55,7 @@ Event::on(DataTypes::class, DataTypes::EVENT_BEFORE_FETCH_API, function(ApiDataE
 
 ### The `afterFetchApi` event
 
-Plugins can get notified after a api's data has been fetched. Note the api data hasn't been parsed at this point.
+Plugins can get notified after an api's data has been fetched. Note the api data hasn't been parsed at this point.
 
 ```php
 use runwildstudio\easyapi\events\ApiDataEvent;
@@ -69,7 +69,7 @@ Event::on(DataTypes::class, DataTypes::EVENT_AFTER_FETCH_API, function(ApiDataEv
 
 ### The `afterParseApi` event
 
-Plugins can get notified after a api's data has been fetched and parsed into an array.
+Plugins can get notified after an api's data has been fetched and parsed into an array.
 
 ```php
 use runwildstudio\easyapi\events\ApiDataEvent;

@@ -147,7 +147,7 @@ class DataHelper
      */
     public static function fetchValue($apiData, $fieldInfo, $api = null): mixed
     {
-        // $api will be a ApiModel when calling `fetchValue` from an element
+        // $api will be an ApiModel when calling `fetchValue` from an element
         if ($api instanceof ApiModel) {
             $api = $api->toArray();
         }

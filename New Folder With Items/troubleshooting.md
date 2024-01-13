@@ -21,7 +21,7 @@ For example, if you're mapping 20+ fields for an Entry import, but it isn't work
 
 ### Logging
 
-Easy API create a log event for just about everything it does, including errors and other status information. If you're experiencing issues or unexpected results with a Api, consult the **Logs** tab first.
+Easy API create a log event for just about everything it does, including errors and other status information. If you're experiencing issues or unexpected results with an Api, consult the **Logs** tab first.
 
 ![The Logs tab](./screenshots/easyapi-logs.png)
 
@@ -34,5 +34,5 @@ Easy API includes a special view to assist with debugging your api, should you e
 Debug output will be a combination of [`print_r`](https://www.php.net/manual/en/function.print-r.php)-formatted objects and log messages, providing you with as much information as possible about your api settings, field-mappings, and data. If exceptions occur while processing the api, they’ll appear on this page, too.
 
 ::: warning
-Debugging a api attempts to actually run the import, so make sure you have [backups](./feature-tour/creating-your-api.md#backup) on, or are working in a disposable environment!
+Debugging an api attempts to actually run the import, so make sure you have [backups](./feature-tour/creating-your-api.md#backup) on, or are working in a disposable environment!
 :::

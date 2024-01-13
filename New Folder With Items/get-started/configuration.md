@@ -43,7 +43,7 @@ return [
 - `compareContent` - Whether to check against existing element content before updating. This can have considerable performance improvements and prevent against needless updating.
 - `sleepTime` - Add the number of seconds to sleep after each api item has been processed.
 - `logging` - Set the level of logging to do. Possible values are `true` (default) to log everything, `false` to disable logging or `error` to only record errors.
-- `runGcBeforeApi` - Whether to run the Garbage Collection service before running a api.
+- `runGcBeforeApi` - Whether to run the Garbage Collection service before running an api.
 - `queueTtr` - Set the 'time to reserve' time in seconds, to prevent the job being cancelled after 300 seconds (default).
 - `queueMaxRetry` - Set the maxiumum amount of retries the queue job should have before failing.
 - `assetDownloadCurl` - Use curl to download assets from a remote source. Can be used when issues arise using the default implementation.

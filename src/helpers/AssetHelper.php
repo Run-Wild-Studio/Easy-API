@@ -33,22 +33,6 @@ class AssetHelper
      */
     public static function downloadFile($srcName, $dstName, int $chunkSize = 1, bool $returnbytes = true): bool|int
     {
-        $assetDownloadCurl = EasyApi::$plugin->getSettings()->assetDownloadCurl;
-
-        // Provide some legacy support
-        if ($assetDownloadCurl) {
-            $ch = curl_init($srcName);
-            $fp = fopen($dstName, 'wb');
-
-            curl_setopt($ch, CURLOPT_FILE, $fp);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-
-            curl_exec($ch);
-            curl_close($ch);
-
-            return fclose($fp);
-        }
-
         $newChunkSize = $chunkSize * (1024 * 1024);
         $bytesCount = 0;
         $handle = fopen($srcName, 'rb');

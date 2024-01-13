@@ -27,7 +27,7 @@ class ApisController extends Controller
     public ?int $offset = null;
 
     /**
-     * @var bool Whether to continue processing a api (and subsequent pages) if an error occurs.
+     * @var bool Whether to continue processing an api (and subsequent pages) if an error occurs.
      * @since 4.3.0
      */
     public bool $continueOnError = false;
@@ -95,7 +95,7 @@ class ApisController extends Controller
     }
 
     /**
-     * Push a api to the queue to be processed.
+     * Push an api to the queue to be processed.
      *
      * @param      $api
      * @param null $limit

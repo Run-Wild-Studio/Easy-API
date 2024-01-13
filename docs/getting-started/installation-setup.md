@@ -4,15 +4,21 @@ title: Installation and setup
 permalink: /getting-started/installation-setup/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+# Installation & Setup
+You can install Easy API via the plugin store, or through Composer.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+### Craft Plugin Store
+To install **Easy API**, navigate to the _Plugin Store_ section of your Craft control panel, search for `Easy API`, and click the _Try_ button.
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+### Composer
+You can also add the package to your project using Composer.
 
-
-[jekyll-organization]: https://github.com/jekyll
+1. Open your terminal and go to your Craft project:
+```
+cd /path/to/project
+```
+2. Then tell Composer to load the plugin:
+```
+composer require runwildstudio/easyapi
+```
+3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Easy API.

@@ -40,7 +40,7 @@ class ApiImport extends BaseJob implements RetryableJobInterface
     public ?array $processedElementIds = null;
 
     /**
-     * @var bool Whether to continue processing a api (and subsequent pages) if an error occurs
+     * @var bool Whether to continue processing an api (and subsequent pages) if an error occurs
      * @since 4.3.0
      */
     public bool $continueOnError = true;
