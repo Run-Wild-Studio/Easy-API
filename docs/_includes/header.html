@@ -1,0 +1,34 @@
+<header class="site-header" role="banner">
+
+  <div class="container">
+    {%- assign default_paths = site.pages | map: "path" -%}
+    {%- assign page_paths = site.header_pages | default: default_paths -%}
+
+    {%- if page_paths -%}
+      <nav class="navbar sticky-top navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              {%- for item in site.data.site-nav.toc -%}
+                <li class="nav-item {% if item.subfolderitems %}dropdown{% endif %}">
+                  <a class="nav-link {% if item.subfolderitems %}dropdown-toggle{% endif %}" {% if item.subfolderitems %}id="{{ item.url }}" role="button" data-bs-toggle="dropdown"{% endif %} aria-expanded="false" aria-current="page" href="{{ item.url | relative_url }}">{{ item.title | escape }}</a>
+                  {% if item.subfolderitems %}
+                    <ul class="dropdown-menu" aria-labelledby="{{ item.url }}">
+                      {%- for subitem in item.subfolderitems -%}
+                        <li><a class="dropdown-item" href="{{ subitem.url }}">{{ subitem.page }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    {%- endif -%}
+  </div>
+</header>

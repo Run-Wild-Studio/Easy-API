@@ -1,3 +1,7 @@
+---
+layout: home
+---
+
 # About Easy API
 
 Easy API is a Craft plugin for super-simple importing of content, either once-off, at regular intervals or live through a Twig variable. With support for XML or JSON apis, you'll be able to import your content as Entries, Categories, Craft Commerce Products (and variants), and more.
