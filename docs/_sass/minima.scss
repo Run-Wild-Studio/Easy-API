@@ -1,5 +1,8 @@
+$black: #333333;
+$white: #ffffff;
 $primary: #618985;
 $secondary: #96bbbb;
+$secondary-light: lighten($secondary, 20%);
 
 $grid-breakpoints: (
   xs: 0,
