@@ -1,0 +1,21 @@
+toc:
+  - title: Getting Started
+    subfolderitems:
+      - page: Installation and Setup
+        url: /getting-started/installation-setup
+      - page: Requirements
+        url: /getting-started/requirements
+      - page: Configuration
+        url: /getting-started/configuration
+  - title: API Feed Setup
+    subfolderitems:
+      - page: Creating Your Feed
+        url: /feed-setup/creating
+  - title: Content Mapping
+    subfolderitems:
+      - page: Element Types
+        url: /mapping/elements
+      - page: Field Types
+        url: /mapping/fields
+  - title: Troubleshooting
+    url: /troubleshooting
