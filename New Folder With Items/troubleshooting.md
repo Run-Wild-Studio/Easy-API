@@ -29,7 +29,7 @@ Easy API create a log event for just about everything it does, including errors 
 
 Easy API includes a special view to assist with debugging your api, should you encounter issues or errors during an import. With [devMode](https://runwildstudio.co.nz/docs/config-settings#devMode) enabled, click the “gear” in the problematic api’s row to expand its utility drawer, then click **Debug**.
 
-![Apiint Overview](./screenshots/easyapi-overview.png)
+![EasyAPI Overview](./screenshots/easyapi-overview.png)
 
 Debug output will be a combination of [`print_r`](https://www.php.net/manual/en/function.print-r.php)-formatted objects and log messages, providing you with as much information as possible about your api settings, field-mappings, and data. If exceptions occur while processing the api, they’ll appear on this page, too.
 

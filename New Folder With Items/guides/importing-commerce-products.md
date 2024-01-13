@@ -78,7 +78,7 @@ Choose either the XML or JSON (depending on your preference), and save as a file
 
 With your api data in place, go to Easy API's main control panel screen, and add a new api.
 
-![Apiint Matrix Guide Setup](../screenshots/easyapi-matrix-guide-setup.png)
+![EasyAPI Matrix Guide Setup](../screenshots/easyapi-matrix-guide-setup.png)
 
 Enter the following details:
 
@@ -108,7 +108,7 @@ Click the _Save & Continue_ button to set up the field mapping.
 
 Use the below screenshot as a guide for the data we want to map to our product fields.
 
-![Apiint Products Guide Mapping](../screenshots/easyapi-products-guide-mapping.png)
+![EasyAPI Products Guide Mapping](../screenshots/easyapi-products-guide-mapping.png)
 
 #### Things to note
 
@@ -122,7 +122,7 @@ Click the _Save & Import_ button to begin importing your content.
 
 Wait for the api processing to finish. Remember, you can always navigate away from this confirmation screen.
 
-![Apiint Matrix Guide Start](../screenshots/easyapi-matrix-guide-start.png)
+![EasyAPI Matrix Guide Start](../screenshots/easyapi-matrix-guide-start.png)
 
 :::tip
 If you're having issues, or seeing errors at this point, look at the [Troubleshooting](../troubleshooting.md) section.
@@ -130,8 +130,8 @@ If you're having issues, or seeing errors at this point, look at the [Troublesho
 
 You should now have 2 brand new products in your Clothing product type.
 
-![Apiint Matrix Guide Finish1](../screenshots/easyapi-matrix-guide-finish1.png)
+![EasyAPI Matrix Guide Finish1](../screenshots/easyapi-matrix-guide-finish1.png)
 
-![Apiint Matrix Guide Finish2](../screenshots/easyapi-matrix-guide-finish2.png)
+![EasyAPI Matrix Guide Finish2](../screenshots/easyapi-matrix-guide-finish2.png)
 
 

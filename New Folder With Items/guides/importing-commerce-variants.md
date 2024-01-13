@@ -183,7 +183,7 @@ Choose either the XML or JSON (depending on your preference), and save as a file
 
 With your api data in place, go to Easy API's main control panel screen, and add a new api.
 
-![Apiint Variants Guide Setup](../screenshots/easyapi-variants-guide-setup.png)
+![EasyAPI Variants Guide Setup](../screenshots/easyapi-variants-guide-setup.png)
 
 Enter the following details:
 
@@ -213,7 +213,7 @@ Click the _Save & Continue_ button to set up the field mapping.
 
 Use the below screenshot as a guide for the data we want to map to our product fields.
 
-![Apiint Variants Guide Mapping](../screenshots/easyapi-variants-guide-mapping.png)
+![EasyAPI Variants Guide Mapping](../screenshots/easyapi-variants-guide-mapping.png)
 
 #### Things to note
 
@@ -228,7 +228,7 @@ Click the _Save & Import_ button to begin importing your content.
 
 Wait for the api processing to finish. Remember, you can always navigate away from this confirmation screen.
 
-![Apiint Products Guide Start](../screenshots/easyapi-products-guide-start.png)
+![EasyAPI Products Guide Start](../screenshots/easyapi-products-guide-start.png)
 
 :::tip
 If you're having issues, or seeing errors at this point, look at the [Troubleshooting](../troubleshooting.md) section.
@@ -236,6 +236,6 @@ If you're having issues, or seeing errors at this point, look at the [Troublesho
 
 You should now have 2 brand new products in your Clothing product type.
 
-![Apiint Variants Guide Finish 1](../screenshots/easyapi-variants-guide-finish-1.png)
+![EasyAPI Variants Guide Finish 1](../screenshots/easyapi-variants-guide-finish-1.png)
 
-![Apiint Variants Guide Finish 2](../screenshots/easyapi-variants-guide-finish-2.png)
+![EasyAPI Variants Guide Finish 2](../screenshots/easyapi-variants-guide-finish-2.png)

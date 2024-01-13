@@ -230,7 +230,7 @@ Choose either the XML or JSON (depending on your preference), and save as a file
 
 With your api data in place, go to Easy API's main control panel screen, and add a new api.
 
-![Apiint Guide Setup](../screenshots/easyapi-guide-setup.png)
+![EasyAPI Guide Setup](../screenshots/easyapi-guide-setup.png)
 
 Enter the following details:
 
@@ -266,7 +266,7 @@ Use the below screenshot as a guide for the data we want to map to our entry fie
 - We're uploading the remote URLs in the api for Property Images. These will be uploaded to Craft's assets.
 - We're checking against existing entries and their Property Unique ID value. In this case, Title isn't necessarily unique enough.
 
-![Apiint Guide Mapping](../screenshots/easyapi-guide-mapping.png)
+![EasyAPI Guide Mapping](../screenshots/easyapi-guide-mapping.png)
 
 Click the _Save & Import_ button to begin importing your content.
 
@@ -274,7 +274,7 @@ Click the _Save & Import_ button to begin importing your content.
 
 Wait for the api processing to finish. Remember, you can always navigate away from this confirmation screen.
 
-![Apiint Start](../screenshots/easyapi-start.png)
+![EasyAPI Start](../screenshots/easyapi-start.png)
 
 :::tip
 If you're having issues, or seeing errors at this point, look at the [Troubleshooting](../troubleshooting.md) section.
@@ -282,4 +282,4 @@ If you're having issues, or seeing errors at this point, look at the [Troublesho
 
 You should now have 2 brand new entries in your Property Listings section.
 
-![Apiint Guide Finish](../screenshots/easyapi-guide-finish.png)
+![EasyAPI Guide Finish](../screenshots/easyapi-guide-finish.png)

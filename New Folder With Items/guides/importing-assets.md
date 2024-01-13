@@ -122,7 +122,7 @@ Your api can include a folder ID for each item which you can then use to determi
 Every folder has an ID whether it’s the top level or a subfolder, and you can find it in the database or inspecting the markup in the Assets section of the control panel. (Look for the `data-folder-id` attribute on menu elements.)
 :::
 
-![Apiint Guide Mapping](../screenshots/easyapi-guide-asset-field-mapping.png)
+![EasyAPI Guide Mapping](../screenshots/easyapi-guide-asset-field-mapping.png)
 
 Choose **Save & Import** to begin importing your content.
 
@@ -130,7 +130,7 @@ Choose **Save & Import** to begin importing your content.
 
 Wait for the api processing to finish. Remember, you can always navigate away from this confirmation screen.
 
-![Apiint Start](../screenshots/easyapi-start.png)
+![EasyAPI Start](../screenshots/easyapi-start.png)
 
 :::tip
 If you’re having issues, see the [Troubleshooting](../troubleshooting.md) section.
@@ -138,4 +138,4 @@ If you’re having issues, see the [Troubleshooting](../troubleshooting.md) sect
 
 You should now have two brand new assets in your General volume.
 
-![Apiint Guide Finish](../screenshots/easyapi-guide-asset-finish.png)
+![EasyAPI Guide Finish](../screenshots/easyapi-guide-asset-finish.png)
