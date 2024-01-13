@@ -11,4 +11,4 @@ Easy API is a Craft plugin for super-simple importing of content, either once-of
 - Duplication handling - control what happens when apis are processed again.
 - Uses Craft's Queue service to process apis in the background and schedule recurring processing.
 - Troubleshoot api processing issues with logs.
-- Grab api data directly from your twig templates.
+- Grab api data directly from your twig templates. Test
