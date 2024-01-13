@@ -21,7 +21,7 @@
 title: Easy API for CraftCMS v4
 email: enquire@runwildstudio.co.nz
 description: >- # this means to ignore newlines until "baseurl:"
-  Easy API is a Craft plugin for super-simple importing of content, either once-off, at regular intervals or live through a Twig variable.
+  Easy API is a Craft plugin for super-simple importing of content, either once-off, at regular intervals or live through a Twig variable. With support for XML or JSON apis, you'll be able to import your content as Entries, Categories, Craft Commerce Products (and variants), and more.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://easy-api.runwildstudio.co.nz/" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  Run-Wild-Studio-Ltd/Easy-API
