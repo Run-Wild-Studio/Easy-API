@@ -1,3 +1,8 @@
+---
+layout: page
+title: Importing your content
+permalink: /setup/importing
+---
 # Importing your Content
 
 Once you've completed mapping your fields, you can import your content. You'll see an overview screen with a loading bar showing the progress of your import. If any errors occur, you'll be notified here.

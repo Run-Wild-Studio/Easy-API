@@ -1,23 +1,28 @@
+---
+layout: page
+title: Using in your templates
+permalink: /setup/templates
+---
 # Using in your Templates
 
 While you can create an api queue job to insert data as elements, there are times which you may prefer to capture api data on-demand, rather than saving as an entry. You can easily do this through your twig templates using the below.
 
 Apis are cached for performance (default to 60 seconds), which can be set by a tag parameter, or in the plugin settings.
 
-```twig
-{% set params = {
+<pre>
+&#123;% set params = &#123;
     url: 'http://path.to/api/',
     type: 'xml',
     element: 'item',
     cache: 60,
-} %}
+&#125; %&#125;
 
-{% set api = craft.easyApi.api(params) %}
+&#123;% set api = craft.easyApi.api(params) %&#125;
 
-{% for node in api %}
-    {# Your template code goes here #}
-{% endfor %}
-```
+&#123;% for node in api %&#125;
+    &#123;# Your template code goes here #&#125;
+&#123;% endfor %&#125;
+</pre>
 
 #### Parameters
 
@@ -28,7 +33,7 @@ Apis are cached for performance (default to 60 seconds), which can be set by a t
 
 ### Example template code
 
-```xml
+<pre>
 <?xml version="1.0" encoding="UTF-8" ?>
 <entries>
     <entry>
@@ -47,28 +52,28 @@ Apis are cached for performance (default to 60 seconds), which can be set by a t
         </item>
     </entry>
 </entries>
-```
+</pre>
 
 With the above example XML, we would use the following Twig code to loop through each `entry` to extract its data.
 
-```twig
-{% set params = {
+<pre>
+&#123;% set params = &#123;
     url: 'http://path.to/api/',
     type: 'xml',
     element: 'entry',
     cache: 60,
-} %}
+&#125; %&#125;
 
-{% set api = craft.easyApi.api(params) %}
+&#123;% set api = craft.easyApi.api(params) %&#125;
 
-{% for node in api %}
-    Title: {{ node.title }}
-    Item: {{ node.item.title['@'] }}
-    Item Format: {{ node.item.title['@format'] }}
-    Type: {{ node.item.type }}
-{% endfor %}
+&#123;% for node in api %&#125;
+    Title: &#123;&#123; node.title &#125;&#125;
+    Item: &#123;&#123; node.item.title['@'] &#125;&#125;
+    Item Format: &#123;&#123; node.item.title['@format'] &#125;&#125;
+    Type: &#123;&#123; node.item.type &#125;&#125;
+&#123;% endfor %&#125;
 
-{# Producing the following output #}
+&#123;# Producing the following output #&#125;
 Title: Monday
 Item: Event 1
 Item Format: html
@@ -78,7 +83,7 @@ Title: Tuesday
 Item: Event 2
 Item Format: html
 Type: Half-day
-```
+</pre>
 
 :::tip
 There's a special case for XML-based apis, which is illustrated above when attributes are present on a node. To retrieve the node value, use `['@']`, and to fetch the attribute value, use `['@attribute_name']`.

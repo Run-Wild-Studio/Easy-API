@@ -1,3 +1,8 @@
+---
+layout: page
+title: Creating your API
+permalink: /setup/creating
+---
 # Creating your Api
 
 Each field is fairly self-explanatory, but any additional information is provided below.

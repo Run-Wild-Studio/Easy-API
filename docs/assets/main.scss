@@ -16,6 +16,13 @@ header {
   }
 }
 
+.page-content {
+  padding-top: 130px;
+  @include media-breakpoint-up(sm) {
+    padding-top: 80px;
+  }
+}
+
 h1 {
   Border-bottom: 3px solid $black;
   margin-bottom: 30px;

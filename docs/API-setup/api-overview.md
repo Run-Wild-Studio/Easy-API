@@ -1,3 +1,8 @@
+---
+layout: page
+title: Overview
+permalink: /setup/overview
+---
 # Api Overview
 
 Go to the main Easy API section via your CP sidebar menu. You'll be presented with a table listing of your saved apis, or none if you haven't set any up yet.

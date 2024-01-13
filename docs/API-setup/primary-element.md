@@ -1,3 +1,8 @@
+---
+layout: page
+title: Primary element
+permalink: /setup/primary-element
+---
 # Primary Element
 
 The primary element can be confusing at first, but its vitally important to ensure Easy API can hone in on the content in your api correctly.

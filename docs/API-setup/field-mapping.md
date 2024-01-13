@@ -1,3 +1,9 @@
+---
+layout: page
+title: Field Mapping
+permalink: /setup/mapping
+---
+
 # Field Mapping
 
 Now that you’ve told Easy API where your data comes from, it’s time to define how individual items in the api map to new or existing elements in Craft.
@@ -59,7 +65,7 @@ Keep in mind that nested field values will be applied uniformly to all relations
 
 ### Matrix
 
-See the [Importing into Matrix](../guides/importing-into-matrix.md) guide to learn more about this special field type.
+See the [Importing into Matrix](../mapping/fields#matrix) guide to learn more about this special field type.
 
 ### Plugin Fields
 
@@ -67,27 +73,23 @@ Easy API comes with support for the following plugin-provided field types:
 
 Field Type | Developer
 --- | ---
-[Calendar Events](https://plugins.runwildstudio.co.nz/calendar) | Solspace
-[Commerce Products](https://plugins.runwildstudio.co.nz/commerce) | Pixel & Tonic
-[Commerce Variants](https://plugins.runwildstudio.co.nz/commerce) | Pixel & Tonic
-[Entries Subset](https://plugins.runwildstudio.co.nz/entriessubset) | Nathaniel Hammond
-[Google Maps](https://plugins.runwildstudio.co.nz/google-maps) | Double Secret Agency
-[Linkit](https://plugins.runwildstudio.co.nz/linkit) | Pressed Digital
-[Simplemap](https://plugins.runwildstudio.co.nz/simplemap) | Ether Creative
-[Super Table](https://plugins.runwildstudio.co.nz/supertable) | Verbb
-[Typed Link](https://plugins.runwildstudio.co.nz/typedlinkfield) | Sebastian Lenz
+[Calendar Events](https://plugins.craftcms.com/calendar) | Solspace
+[Commerce Products](https://plugins.craftcms.com/commerce) | Pixel & Tonic
+[Commerce Variants](https://plugins.craftcms.com/commerce) | Pixel & Tonic
+[Entries Subset](https://plugins.craftcms.com/entriessubset) | Nathaniel Hammond
+[Google Maps](https://plugins.craftcms.com/google-maps) | Double Secret Agency
+[Linkit](https://plugins.craftcms.com/linkit) | Pressed Digital
+[Simplemap](https://plugins.craftcms.com/simplemap) | Ether Creative
+[Super Table](https://plugins.craftcms.com/supertable) | Verbb
+[Typed Link](https://plugins.craftcms.com/typedlinkfield) | Sebastian Lenz
 
 ::: tip
-Other fields that store simple text values (like [Redactor](https://plugins.runwildstudio.co.nz/redactor)) will work automatically.
+Other fields that store simple text values (like [Redactor](https://plugins.craftcms.com/redactor)) will work automatically.
 :::
 
 ## Default Values
 
-When the source for a native or custom field is set to “Use default value,” you may provide a value in the third column that will supersede any default value defined by the field itself. If `parseTwig` is enabled in your [Configuration](../get-started/configuration.md), textual fields are treated as Twig “object templates,” and have access to other fields on the element you're importing:
-
-```txt
-{title} was last imported on {{ now | date }}
-```
+When the source for a native or custom field is set to “Use default value,” you may provide a value in the third column that will supersede any default value defined by the field itself. If `parseTwig` is enabled in your [Configuration](../get-started/configuration.md), textual fields are treated as Twig “object templates,” and have access to other fields on the element you're importing.
 
 ## Unique Identifiers
 
