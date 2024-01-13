@@ -16,6 +16,28 @@ header {
   }
 }
 
+h1 {
+  Border-bottom: 3px solid $black;
+  margin-bottom: 30px;
+  display: inline-block;
+}
+
+h2 {
+  margin-bottom: 20px;
+  margin-top: 50px;
+}
+
+h3, h4 {
+  font-weight: normal;
+  margin-bottom: 20px;
+  margin-top: 50px;
+}
+
+hr:not([size]) {
+  height: 2px;
+  background-color: $black;
+}
+
 .code {
   margin-bottom: 30px;
   .nav-tabs {
@@ -55,5 +77,8 @@ footer {
   }
   p:last-of-type {
     margin-bottom: 0px;
+  }
+  h2 {
+    margin-top: 0px;
   }
 }
