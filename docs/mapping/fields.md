@@ -18,16 +18,16 @@ Accepts single or multiple values. You should supply the filename only, excludin
 - [Inner-element fields](#inner-element-fields)
 
 <div class="code">
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="xml-tab" data-bs-toggle="tab" data-bs-target="#xml" type="button" role="tab" aria-controls="xml" aria-selected="true">XML</button>
+      <button class="nav-link active" id="assets-xml-tab" data-bs-toggle="tab" data-bs-target="#assets-xml" type="button" role="tab" aria-controls="assets-xml" aria-selected="true">XML</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="json-tab" data-bs-toggle="tab" data-bs-target="#json" type="button" role="tab" aria-controls="json" aria-selected="false">JSON</button>
+      <button class="nav-link" id="assets-json-tab" data-bs-toggle="tab" data-bs-target="#assets-json" type="button" role="tab" aria-controls="assets-json" aria-selected="false">JSON</button>
     </li>
   </ul>
-  <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="xml" role="tabpanel" aria-labelledby="xml-tab">
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="assets-xml" role="tabpanel" aria-labelledby="assets-xml-tab">
       <pre>
       &lt;Asset&gt;my_filename.jpg&lt;/Asset&gt;
 
@@ -49,7 +49,7 @@ Accepts single or multiple values. You should supply the filename only, excludin
       &lt;/Assets&gt;
       </pre>
     </div>
-    <div class="tab-pane fade" id="json" role="tabpanel" aria-labelledby="json-tab">
+    <div class="tab-pane fade" id="assets-json" role="tabpanel" aria-labelledby="assets-json-tab">
       <pre>
       {
           "Asset": "my_filename.jpg"
@@ -96,16 +96,16 @@ Accepts single or multiple values.
 - Slug
 
 <div class="code">
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="xml-tab" data-bs-toggle="tab" data-bs-target="#xml" type="button" role="tab" aria-controls="xml" aria-selected="true">XML</button>
+      <button class="nav-link active" id="categories-xml-tab" data-bs-toggle="tab" data-bs-target="#categories-xml" type="button" role="tab" aria-controls="categories-xml" aria-selected="true">XML</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="json-tab" data-bs-toggle="tab" data-bs-target="#json" type="button" role="tab" aria-controls="json" aria-selected="false">JSON</button>
+      <button class="nav-link" id="categories-json-tab" data-bs-toggle="tab" data-bs-target="#categories-json" type="button" role="tab" aria-controls="categories-json" aria-selected="false">JSON</button>
     </li>
   </ul>
-  <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="xml" role="tabpanel" aria-labelledby="xml-tab">
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="categories-xml" role="tabpanel" aria-labelledby="categories-xml-tab">
       <pre>
         &lt;Category>My Category&lt;/Category>
 
@@ -116,7 +116,7 @@ Accepts single or multiple values.
         &lt;/Categories&gt;
       </pre>
     </div>
-    <div class="tab-pane fade" id="json" role="tabpanel" aria-labelledby="json-tab">
+    <div class="tab-pane fade" id="categories-json" role="tabpanel" aria-labelledby="categories-json-tab">
       <pre>
         {
             "Category": "My Category"
