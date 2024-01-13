@@ -48,8 +48,6 @@ return [
 - `queueMaxRetry` - Set the maxiumum amount of retries the queue job should have before failing.
 - `apiOptions` - Provide an array of any of the above options or [Api Settings](../feature-tour/api-overview.md) to set specifically for certain apis. Use the Api ID as the key for the array.
 
-```
-
 ## Control Panel
 
 You can also manage configuration settings through the Control Panel by visiting Settings → Easy API.

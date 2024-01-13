@@ -76,6 +76,8 @@ Accepts single or multiple values. You should supply the filename only, excludin
   </div>
 </div>
 
+<hr>
+
 ### Categories
 
 Accepts single or multiple values.
@@ -126,6 +128,8 @@ Accepts single or multiple values.
   </div>
 </div>
 
+<hr>
+
 ### Checkboxes
 
 Accepts single or multiple values. You must provide the Value of the option to check, not the Label.
@@ -167,6 +171,8 @@ Accepts single or multiple values. You must provide the Value of the option to c
   </div>
 </div>
 
+<hr>
+
 ### Colour
 
 Accepts a single valid Colour value - usually in Hexadecimal.
@@ -195,6 +201,8 @@ Accepts a single valid Colour value - usually in Hexadecimal.
     </div>
   </div>
 </div>
+
+<hr>
 
 ### Date/Time
 Accepts a single valid date and time string. Supports many different formats, using PHP's [date\_parse](http://php.net/manual/en/function.date-parse.php) function.
@@ -233,6 +241,8 @@ Accepts a single valid date and time string. Supports many different formats, us
   </div>
 </div>
 
+<hr>
+
 ### Dropdown
 
 Accepts a single value. You must provide the Value of the option to select, not the Label.
@@ -261,6 +271,8 @@ Accepts a single value. You must provide the Value of the option to select, not 
     </div>
   </div>
 </div>
+
+<hr>
 
 ### Entries
 
@@ -312,6 +324,8 @@ Accepts single or multiple values.
   </div>
 </div>
 
+<hr>
+
 ### Lightswitch
 
 Accepts a single value. Can be provided as any boolean-like string.
@@ -354,6 +368,8 @@ Accepts a single value. Can be provided as any boolean-like string.
     </div>
   </div>
 </div>
+
+<hr>
 
 ### Matrix
 
@@ -428,6 +444,8 @@ Accepts a nested set of tags.
   </div>
 </div>
 
+<hr>
+
 ### Money
 
 Accepts a single value.
@@ -456,6 +474,8 @@ Accepts a single value.
     </div>
   </div>
 </div>
+
+<hr>
 
 ### Multi-select
 
@@ -498,6 +518,8 @@ Accepts single or multiple values. You must provide the Value of the option to s
   </div>
 </div>
 
+<hr>
+
 ### Number
 
 Accepts a single value.
@@ -526,6 +548,8 @@ Accepts a single value.
     </div>
   </div>
 </div>
+
+<hr>
 
 ### Plain Text
 
@@ -556,6 +580,8 @@ Accepts a single value.
   </div>
 </div>
 
+<hr>
+
 ### Radio Buttons
 
 Accepts a single value. You must provide the Value of the option to select, not the Label.
@@ -584,6 +610,8 @@ Accepts a single value. You must provide the Value of the option to select, not 
     </div>
   </div>
 </div>
+
+<hr>
 
 ### Table
 
@@ -628,6 +656,8 @@ Each Table field row has multiple columns, so you map each field value to a colu
     </div>
   </div>
 </div>
+
+<hr>
 
 ### Tags
 
@@ -674,6 +704,8 @@ Accepts single or multiple values.
     </div>
   </div>
 </div>
+
+<hr>
 
 ### Users
 
@@ -726,6 +758,8 @@ Accepts single or multiple values.
   </div>
 </div>
 
+<hr>
+
 ## Third Party
 
 The following third-party fields are supported.
@@ -740,6 +774,8 @@ The following third-party fields are supported.
 - [Commerce Variants](https://docs.craftcms.com/commerce/v2/products-fields.html)
 - [Linkit](https://github.com/fruitstudios/linkit)
 - [Typed Link](https://github.com/sebastian-lenz/craft-linkfield)
+
+<hr>
 
 ## Element Attributes
 
@@ -789,6 +825,8 @@ For instance, look at the following example api data we want to import into a Ca
 </div>
 
 Depending on what data your api contains, you'll need to select the appropriate attribute, to tell Easy API how to deal with your data.
+
+<hr>
 
 ## Inner Element Fields
 
