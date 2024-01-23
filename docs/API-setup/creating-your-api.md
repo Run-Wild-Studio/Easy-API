@@ -9,26 +9,50 @@ Each field is fairly self-explanatory, but any additional information is provide
 
 ### Name
 
-Setup a name for you api, so you can easily keep track of what you're importing.
+Setup a name for your api, so you can easily keep track of what you're importing.
+
+### Target Site
+
+If you have a multi-site Craft installation, you'll have an additional “Target Site” setting where you can select which site the elements should be initially saved in. The content will get propagated to your other sites from there, according to your fields’ Translation Method settings.
 
 ### Api URL
 
-Provide the URL for your api. This can be an absolute URL, relative (to the web root) and make use of any [aliases](https://docs.runwildstudio.co.nz/v3/config/#aliases).
+Provide the URL for your api. This can be an absolute URL, relative (to the web root) and make use of any [aliases](https://docs.runwildstudio.co.nz/v3/config/#aliases). If this API is fetching data relative to another entity insert {{ Id }} in the URL and select Parent Element Type and Parent Element Id Field to dynamically update the URL per parent entity record.
 
-### Api Type
+### Parent Element Type
 
-Set the Api Type to match the type of data you're importing. Your options are:
+Select the [element type](../mapping/element-types.md) you wish to use when fetching data from an API which is related to another entity.
+
+### Parent Element Id Field
+
+Select the field that is used from the parent element when you are using a parent element to determine the API URL.
+
+### Content Type
+
+Set the Content Type to match the type of data you're importing. Your options are:
 
 - JSON
 - XML
+
+### Authorization
+
+Enter the authorization value for the API call.
 
 ### Element Type
 
 Select the [element type](../content-mapping/element-types.md) you wish to import your api content into.
 
-### Target Site
+### Use API from front end
 
-If you have a multi-site Craft installation, you'll have an additional “Target Site” setting where you can select which site the elements should be initially saved in. The content will get propagated to your other sites from there, according to your fields’ Translation Method settings.
+Tick this checkbox when you want to use the Easy API entry from the front end of your site to get live calls.
+
+### Use Job Queue
+
+Tick this checkbox if you want to use Craft's job queue to continuously fetch data from the API to update your site.
+
+### Job Queue Process Order
+
+When using job queue enter an integer to determine the sequence of Easy API entries that are processed (1 is processed first).
 
 ### Import Strategy
 

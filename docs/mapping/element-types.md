@@ -1,3 +1,8 @@
+---
+layout: page
+title: Element Types
+permalink: /mapping/element-type
+---
 # Element Types
 
 Selecting which element type your import targets is the first step in using Easy API. As each element type is different, the presented [mapping](../feature-tour/field-mapping.md) options will be unique.

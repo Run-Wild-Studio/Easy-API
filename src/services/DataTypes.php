@@ -29,7 +29,7 @@ class DataTypes extends Component
     // Constants
     // =========================================================================
 
-    public const EVENT_REGISTER_API_ME_DATA_TYPES = 'registerEasyApiDataTypes';
+    public const EVENT_REGISTER_EASY_API_DATA_TYPES = 'registerEasyApiDataTypes';
     public const EVENT_BEFORE_FETCH_API = 'onBeforeFetchApi';
     public const EVENT_AFTER_FETCH_API = 'onAfterFetchApi';
     public const EVENT_AFTER_PARSE_API = 'onAfterParseApi';
@@ -108,7 +108,7 @@ class DataTypes extends Component
             ],
         ]);
 
-        $this->trigger(self::EVENT_REGISTER_API_ME_DATA_TYPES, $event);
+        $this->trigger(self::EVENT_REGISTER_EASY_API_DATA_TYPES, $event);
 
         return $event->dataTypes;
     }

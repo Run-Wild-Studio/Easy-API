@@ -50,7 +50,7 @@ class Fields extends Component
     // Constants
     // =========================================================================
 
-    public const EVENT_REGISTER_API_ME_FIELDS = 'registerEasyApiFields';
+    public const EVENT_REGISTER_EASY_API_FIELDS = 'registerEasyApiFields';
     public const EVENT_BEFORE_PARSE_FIELD = 'onBeforeParseField';
     public const EVENT_AFTER_PARSE_FIELD = 'onAfterParseField';
 
@@ -153,7 +153,7 @@ class Fields extends Component
             ],
         ]);
 
-        $this->trigger(self::EVENT_REGISTER_API_ME_FIELDS, $event);
+        $this->trigger(self::EVENT_REGISTER_EASY_API_FIELDS, $event);
 
         return $event->fields;
     }

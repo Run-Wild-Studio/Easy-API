@@ -29,7 +29,7 @@ class Elements extends Component
     // Constants
     // =========================================================================
 
-    public const EVENT_REGISTER_API_ME_ELEMENTS = 'registerEasyApiElements';
+    public const EVENT_REGISTER_EASY_API_ELEMENTS = 'registerEasyApiElements';
 
 
     // Properties
@@ -122,7 +122,7 @@ class Elements extends Component
             'elements' => $elements,
         ]);
 
-        $this->trigger(self::EVENT_REGISTER_API_ME_ELEMENTS, $event);
+        $this->trigger(self::EVENT_REGISTER_EASY_API_ELEMENTS, $event);
 
         return $event->elements;
     }
