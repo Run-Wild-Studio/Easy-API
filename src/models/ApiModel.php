@@ -174,12 +174,6 @@ class ApiModel extends Model
     public ?string $uid = null;
 
     /**
-     * @var bool
-     * @since 4.3.0
-     */
-    public ?bool $singleton = false;
-
-    /**
      * @var array|null
      */
     public ?array $duplicateHandle = null;

@@ -105,16 +105,14 @@
     },
 }) %}
 
-{% if not api.singleton %}
-    {% set fields = fields|push({
-        name: 'Entry ID',
-        handle: 'id',
-        instructions: '<strong class="error">Warning: </strong>This should only be used for an existing Craft Entry ID.'|t('easyapi'),
-        default: {
-            type: 'text',
-        },
-    }) %}
-{% endif %}
+{% set fields = fields|push({
+    name: 'Entry ID',
+    handle: 'id',
+    instructions: '<strong class="error">Warning: </strong>This should only be used for an existing Craft Entry ID.'|t('easyapi'),
+    default: {
+        type: 'text',
+    },
+}) %}
 
 <h2>{{ 'Entry Fields'|t('easyapi') }}</h2>
 
@@ -165,28 +163,26 @@
     {% endfor %}
 {% endif %}
 
-{% if not api.singleton %}
-    <hr>
+<hr>
 
-    <h2 id="entry-uniques-label">{{ "Set a unique identifier to match against existing elements"|t('easyapi') }}</h2>
-    <p>{{ "Select the fields you want to use to check for existing elements. When selected, Easy API will look for existing elements that match the fields provided below and either update, or skip depending on your choice of Import Strategy."|t('easyapi') }}</p>
+<h2 id="entry-uniques-label">{{ "Set a unique identifier to match against existing elements"|t('easyapi') }}</h2>
+<p>{{ "Select the fields you want to use to check for existing elements. When selected, Easy API will look for existing elements that match the fields provided below and either update, or skip depending on your choice of Import Strategy."|t('easyapi') }}</p>
 
-    {% for tab in tabs %}
-        {% for layoutField in tab.getElements()|filter(e => e is instance of('craft\\fieldlayoutelements\\CustomField')) %}
-            {% set field = layoutField.getField() %}
-            {% set fields = fields|merge([{ name: field.name, handle: field.handle, type: className(field) }]) %}
-        {% endfor %}
+{% for tab in tabs %}
+    {% for layoutField in tab.getElements()|filter(e => e is instance of('craft\\fieldlayoutelements\\CustomField')) %}
+        {% set field = layoutField.getField() %}
+        {% set fields = fields|merge([{ name: field.name, handle: field.handle, type: className(field) }]) %}
     {% endfor %}
+{% endfor %}
 
-    <fieldset class="easyapi-uniques" aria-labelledby="entry-uniques-label">
-        {% for field in fields %}
-            {% if field and craft.easyApi.fieldCanBeUniqueId(field) %}
-                {{ forms.checkboxField({
-                    name: 'fieldUnique[' ~ field.handle ~ ']',
-                    label: field.name,
-                    checked: api.fieldUnique[field.handle] ?? '',
-                }) }}
-            {% endif %}
-        {% endfor %}
-    </fieldset>
-{% endif %}
+<fieldset class="easyapi-uniques" aria-labelledby="entry-uniques-label">
+    {% for field in fields %}
+        {% if field and craft.easyApi.fieldCanBeUniqueId(field) %}
+            {{ forms.checkboxField({
+                name: 'fieldUnique[' ~ field.handle ~ ']',
+                label: field.name,
+                checked: api.fieldUnique[field.handle] ?? '',
+            }) }}
+        {% endif %}
+    {% endfor %}
+</fieldset>

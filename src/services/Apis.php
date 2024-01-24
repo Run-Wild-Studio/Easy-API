@@ -89,11 +89,6 @@ class Apis extends Component
      */
     public function saveApi(ApiModel $model, bool $runValidation = true): bool
     {
-        // If a singleton group was selected, then override the import strategy selection
-        if ($model->singleton) {
-            $model->duplicateHandle = ['update'];
-        }
-
         $isNewModel = !$model->id;
 
         // Fire a 'beforeSaveApi' event
@@ -139,7 +134,6 @@ class Apis extends Component
         $record->parentFilter = $model->parentFilter;
         $record->queueRequest = $model->queueRequest;
         $record->queueOrder = $model->queueOrder;
-        $record->singleton = $model->singleton;
         $record->useLive = $model->useLive;
         $record->duplicateHandle = $model->duplicateHandle;
         $record->updateSearchIndexes = $model->updateSearchIndexes;
@@ -292,7 +286,6 @@ class Apis extends Component
                 'dateCreated',
                 'dateUpdated',
                 'uid',
-                'singleton',
                 'duplicateHandle',
                 'updateSearchIndexes',
                 'paginationNode',

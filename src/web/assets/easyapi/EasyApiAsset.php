@@ -31,7 +31,7 @@ class EasyApiAsset extends AssetBundle
         ];
 
         $this->css = [
-            'dist/css/EasyApi.css',
+            'src/scss/easyapi.css',
         ];
 
         parent::init();
@@ -51,7 +51,6 @@ class EasyApiAsset extends AssetBundle
             foreach ($elementGroups as $group) {
                 if ($group instanceof ElementGroup) {
                     $groups[$group->id] = [
-                        'isSingleton' => $group->isSingleton,
                     ];
                 }
             }

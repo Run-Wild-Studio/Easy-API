@@ -85,7 +85,6 @@ class Entry extends Element
             $groups[] = new ElementGroup([
                 'id' => $section->id,
                 'model' => $section,
-                'isSingleton' => $section->type === Section::TYPE_SINGLE,
             ]);
         }
 

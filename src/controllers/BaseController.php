@@ -36,12 +36,16 @@ class BaseController extends Controller
      */
     public function actionClearTasks(): Response
     {
+        $settings = EasyApi::$plugin->getSettings();
+        
         // Function to clear (delete) all stuck tasks.
         Craft::$app->getDb()->createCommand()
             ->delete('{{%queue}}')
             ->execute();
 
-        return $this->redirect('easyapi/settings/general');
+        return $this->renderTemplate('easyapi/settings/general', [
+            'settings' => $settings,
+        ]);
     }
 
     /**
@@ -60,6 +64,8 @@ class BaseController extends Controller
         
         Craft::$app->getQueue()->push($job);
 
-        return $this->redirect('easyapi/settings/general');
+        return $this->renderTemplate('easyapi/settings/general', [
+            'settings' => $settings,
+        ]);
     }
 }

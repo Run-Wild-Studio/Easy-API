@@ -98,30 +98,6 @@ $(function () {
     } else {
       $($('.element-child-group select').children()[1]).attr('selected', true);
     }
-
-    // Show/hide the import settings depending on whether this group is a singleton
-    var elementType = $('#elementType').val();
-    if (
-      Craft.EasyApi.elementTypes[elementType] &&
-      Craft.EasyApi.elementTypes[elementType].groups[groupId] &&
-      Craft.EasyApi.elementTypes[elementType].groups[groupId].isSingleton
-    ) {
-      if (!$('#singleton').val()) {
-        $('#singleton').val('1');
-        $('#is-create').attr({checked: false, disabled: true});
-        $('#is-update').attr({checked: true, disabled: true});
-        $('#is-disable-globally').attr({checked: false, disabled: true});
-        $('#is-disable-site').attr({checked: false, disabled: true});
-        $('#is-delete').attr({checked: false, disabled: true});
-      }
-    } else if ($('#singleton').val()) {
-      $('#singleton').val('');
-      $('#is-create').attr({checked: true, disabled: false});
-      $('#is-update').attr({checked: false, disabled: false});
-      $('#is-disable-globally').attr({checked: false, disabled: false});
-      $('#is-disable-site').attr({checked: false, disabled: false});
-      $('#is-delete').attr({checked: false, disabled: false});
-    }
   });
 
   $('.element-parent-group select:visible').trigger('change');
@@ -150,30 +126,6 @@ $(function () {
       $('.parent-element-child-group select').val(currentValue);
     } else {
       $($('.parent-element-child-group select').children()[1]).attr('selected', true);
-    }
-
-    // Show/hide the import settings depending on whether this group is a singleton
-    var parentElementType = $('#parentElementType').val();
-    if (
-      Craft.EasyApi.elementTypes[parentElementType] &&
-      Craft.EasyApi.elementTypes[parentElementType].groups[groupId] &&
-      Craft.EasyApi.elementTypes[parentElementType].groups[groupId].isSingleton
-    ) {
-      if (!$('#singleton').val()) {
-        $('#singleton').val('1');
-        $('#is-create').attr({checked: false, disabled: true});
-        $('#is-update').attr({checked: true, disabled: true});
-        $('#is-disable-globally').attr({checked: false, disabled: true});
-        $('#is-disable-site').attr({checked: false, disabled: true});
-        $('#is-delete').attr({checked: false, disabled: true});
-      }
-    } else if ($('#singleton').val()) {
-      $('#singleton').val('');
-      $('#is-create').attr({checked: true, disabled: false});
-      $('#is-update').attr({checked: false, disabled: false});
-      $('#is-disable-globally').attr({checked: false, disabled: false});
-      $('#is-disable-site').attr({checked: false, disabled: false});
-      $('#is-delete').attr({checked: false, disabled: false});
     }
   });
 

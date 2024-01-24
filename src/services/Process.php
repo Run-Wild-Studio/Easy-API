@@ -109,7 +109,7 @@ class Process extends Component
             }
         }
 
-        if (empty($api['singleton']) && empty($return['fieldUnique'])) {
+        if (empty($return['fieldUnique'])) {
             throw new \Exception(Craft::t('easyapi', 'No unique fields checked.'));
         }
 
@@ -209,33 +209,31 @@ class Process extends Component
         // that are selected as the unique identifier. We prep everything else later on.
         $matchExistingElementData = [];
 
-        if (empty($api['singleton'])) {
-            foreach ($api['fieldUnique'] as $fieldHandle => $value) {
-                $mappingInfo = Hash::get($api['fieldMapping'], $fieldHandle);
+        foreach ($api['fieldUnique'] as $fieldHandle => $value) {
+            $mappingInfo = Hash::get($api['fieldMapping'], $fieldHandle);
 
-                if (!$mappingInfo) {
-                    continue;
-                }
+            if (!$mappingInfo) {
+                continue;
+            }
 
-                if (Hash::get($mappingInfo, 'attribute')) {
-                    $attributeValue = $this->_service->parseAttribute($apiData, $fieldHandle, $mappingInfo);
+            if (Hash::get($mappingInfo, 'attribute')) {
+                $attributeValue = $this->_service->parseAttribute($apiData, $fieldHandle, $mappingInfo);
 
-                    if ($attributeValue !== null) {
-                        $matchExistingElementData[$fieldHandle] = $attributeValue;
-                    }
-                }
-
-                if (Hash::get($mappingInfo, 'field')) {
-                    $fieldValue = EasyApi::$plugin->fields->parseField($api, $element, $apiData, $fieldHandle, $mappingInfo);
-
-                    if ($fieldValue !== null) {
-                        $matchExistingElementData[$fieldHandle] = $fieldValue;
-                    }
+                if ($attributeValue !== null) {
+                    $matchExistingElementData[$fieldHandle] = $attributeValue;
                 }
             }
 
-            EasyApi::info('Match existing element with data `{i}`.', ['i' => Json::encode($matchExistingElementData)]);
+            if (Hash::get($mappingInfo, 'field')) {
+                $fieldValue = EasyApi::$plugin->fields->parseField($api, $element, $apiData, $fieldHandle, $mappingInfo);
+
+                if ($fieldValue !== null) {
+                    $matchExistingElementData[$fieldHandle] = $fieldValue;
+                }
+            }
         }
+
+        EasyApi::info('Match existing element with data `{i}`.', ['i' => Json::encode($matchExistingElementData)]);
 
         //
         // Check for Add/Update/Delete for existing elements

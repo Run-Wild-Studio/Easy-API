@@ -1,7 +1,7 @@
 {% extends parentLayout|default('_layouts/cp') %}
 
 {% do view.registerAssetBundle('runwildstudio\\easyapi\\web\\assets\\easyapi\\EasyApiAsset') %}
-{% set baseAssetsUrl = view.getAssetManager().getPublishedUrl('@runwildstudio/easyapi/web/assets/easyapi/dist', true) %}
+{% set baseAssetsUrl = view.getAssetManager().getPublishedUrl('@runwildstudio/easyapi/web/assets/easyapi/src', true) %}
 
 {% if title is not defined %}
     {% set title = craft.easyApi.getPluginName ~ ' ' %}

@@ -68,7 +68,6 @@ class GlobalSet extends Element
             $groups[] = new ElementGroup([
                 'id' => $globalSet->id,
                 'model' => $globalSet,
-                'isSingleton' => true,
             ]);
         }
 

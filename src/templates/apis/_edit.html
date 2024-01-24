@@ -233,10 +233,6 @@
     </div>
     <div class="useBackground" {% if api.useLive %} style="display:none"{% endif %}>
 
-    {{ hiddenInput('singleton', api.singleton ? '1' : '', {
-        id: 'singleton',
-    }) }}
-
     <h2>{{ 'Import strategy'|t('easyapi') }}</h2>
     <p>{{ 'Choose what happens when this api is run again.'|t('easyapi') }}</p>
 
@@ -246,8 +242,7 @@
         label: 'Create new elements'|t('easyapi'),
         instructions: 'Adds new elements if they do not already exist.'|t('easyapi'),
         value: 'add',
-        checked: not api.singleton and 'add' in (api.duplicateHandle ?? ['add']),
-        disabled: api.singleton,
+        checked: 'add' in (api.duplicateHandle ?? ['add']),
     }) }}
 
     {{ forms.checkboxField({
@@ -256,8 +251,7 @@
         label: 'Update existing elements'|t('easyapi'),
         instructions: 'Updates elements that match the Unique Identifier (next step).'|t('easyapi'),
         value: 'update',
-        checked: api.singleton or 'update' in (api.duplicateHandle ?? []),
-        disabled: api.singleton,
+        checked: 'update' in (api.duplicateHandle ?? []),
     }) }}
 
     {{ forms.checkboxField({
@@ -270,8 +264,7 @@
         ? 'Disables any elements that are missing from the api, across all sites.'|t('easyapi')
         : 'Disables any elements that are missing from the api.'|t('easyapi'),
         value: 'disable',
-        checked: not api.singleton and 'disable' in (api.duplicateHandle ?? []),
-        disabled: api.singleton,
+        checked: 'disable' in (api.duplicateHandle ?? []),
     }) }}
 
     {% if craft.app.isMultiSite %}
@@ -281,8 +274,7 @@
             label: 'Disable missing elements in the target site'|t('easyapi'),
             instructions: 'Disables any elements that are missing from the api, in the api’s target site only.'|t('easyapi'),
             value: 'disableForSite',
-            checked: not api.singleton and 'disableForSite' in (api.duplicateHandle ?? []),
-            disabled: api.singleton,
+            checked: 'disableForSite' in (api.duplicateHandle ?? []),
         }) }}
     {% endif %}
 
@@ -292,8 +284,7 @@
         label: 'Delete missing elements'|t('easyapi'),
         instructions: 'Deletes any elements that are missing from the api. Be careful.'|t('easyapi'),
         value: 'delete',
-        checked: not api.singleton and 'delete' in (api.duplicateHandle ?? []),
-        disabled: api.singleton,
+        checked: 'delete' in (api.duplicateHandle ?? []),
     }) }}
 
     {{ forms.checkboxField({
@@ -301,8 +292,7 @@
         name: 'updateSearchIndexes',
         label: 'Update search indexes'|t('easyapi'),
         instructions: 'Whether search indexes should be updated.'|t('easyapi'),
-        checked: not api.singleton and api.updateSearchIndexes,
-        disabled: api.singleton,
+        checked: api.updateSearchIndexes,
     }) }}
     </div>
 

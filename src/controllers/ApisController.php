@@ -439,7 +439,6 @@ class ApisController extends Controller
         $api->parentFilter = $request->getBodyParam('parentFilter', $api->parentFilter);
         $api->queueRequest = $request->getBodyParam('queueRequest', $api->queueRequest);
         $api->useLive = $request->getBodyParam('useLive', $api->useLive);
-        $api->singleton = $request->getBodyParam('singleton', $api->singleton);
         $api->duplicateHandle = $request->getBodyParam('duplicateHandle', $api->duplicateHandle);
         $api->updateSearchIndexes = (bool)$request->getBodyParam('updateSearchIndexes', $api->updateSearchIndexes);
         $api->paginationNode = $request->getBodyParam('paginationNode', $api->paginationNode);

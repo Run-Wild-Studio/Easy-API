@@ -20,9 +20,4 @@ class ElementGroup extends Model
      * @var mixed The group model
      */
     public mixed $model;
-
-    /**
-     * @var bool Whether the group contains a singleton element
-     */
-    public bool $isSingleton = false;
 }

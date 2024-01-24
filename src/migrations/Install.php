@@ -59,7 +59,6 @@ class Install extends Migration
             'dateUpdated' => $this->dateTime()->notNull(),
             'uid' => $this->uid(),
 
-            'singleton' => $this->boolean()->notNull()->defaultValue(false),
             'duplicateHandle' => $this->text(),
             'updateSearchIndexes' => $this->boolean()->notNull()->defaultValue(true),
             'paginationNode' => $this->text(),
