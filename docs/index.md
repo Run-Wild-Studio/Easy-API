@@ -16,3 +16,8 @@ Easy API is a Craft plugin for super-simple importing of content, either once-of
 - Uses Craft's Queue service to process APIs in the background and schedule recurring processing.
 - Troubleshoot API processing issues with logs.
 - View API data directly into your templates for templating live pulls.
+
+<div style="display: flex; justify-content: space-between">
+<span></span>
+<a href="/getting-started/installation-setup">Installation & Setup →</a>
+</div>

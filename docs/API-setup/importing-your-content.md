@@ -5,8 +5,10 @@ permalink: /setup/importing
 ---
 # Importing your Content
 
-Once you've completed mapping your fields, you can import your content. You'll see an overview screen with a loading bar showing the progress of your import. If any errors occur, you'll be notified here.
+After finishing the field mapping process, you can proceed to import your content. Upon initiation, you'll encounter an overview screen featuring a loading bar that indicates the progress of your import. If any errors arise during the process, notifications will be displayed on this screen.
 
-![EasyAPI Start](../screenshots/easyapi-start.png)
+Once the import begins, you are free to navigate away from this page, as your import is executed as Craft queue jobs. The status of your API import can be monitored at any time through the queue job sidebar notification.
 
-You can navigate away from this page once started, as your import is run as a Craft queue jobs. You can see the status of your api at any time through the queue job sidebar notification.
+<div style="display: flex; justify-content: space-between">
+<a href="/setup/mapping">← Field Mapping</a><a href="/setup/templates">Using in Your Templates →</a>
+</div>

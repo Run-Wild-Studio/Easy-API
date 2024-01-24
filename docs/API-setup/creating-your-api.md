@@ -1,35 +1,35 @@
 ---
 layout: page
-title: Creating your API
+title: Creating your API Feed
 permalink: /setup/creating
 ---
-# Creating your Api
+# Creating your API Feed
 
-Each field is fairly self-explanatory, but any additional information is provided below.
+Setting up your API feed involves configuring various fields. Although each field is quite self-explanatory, additional details are provided below:
 
 ### Name
 
-Setup a name for your api, so you can easily keep track of what you're importing.
+Set a name for your API feed to easily track your imports.
 
 ### Target Site
 
-If you have a multi-site Craft installation, you'll have an additional “Target Site” setting where you can select which site the elements should be initially saved in. The content will get propagated to your other sites from there, according to your fields’ Translation Method settings.
+For multi-site Craft installations, choose a **Target Site** where elements will be initially saved. Content will then propagate to other sites based on **Translation Method** settings.
 
-### Api URL
+### API URL
 
-Provide the URL for your api. This can be an absolute URL, relative (to the web root) and make use of any [aliases](https://docs.runwildstudio.co.nz/v3/config/#aliases). If this API is fetching data relative to another entity insert {{ Id }} in the URL and select Parent Element Type and Parent Element Id Field to dynamically update the URL per parent entity record.
+Specify the API URL. It can be absolute, relative (to the web root), and may utilize aliases. For dynamic URL updates per parent entity record, insert the URL relative to another entity and select Parent Element Type and Parent Element Id Field.
 
 ### Parent Element Type
 
-Select the [element type](../mapping/element-types.md) you wish to use when fetching data from an API which is related to another entity.
+Select the [element type](/mapping/element-types) when fetching data from an API related to another entity.
 
 ### Parent Element Id Field
 
-Select the field that is used from the parent element when you are using a parent element to determine the API URL.
+Choose the field used from the parent element to determine the API URL.
 
 ### Content Type
 
-Set the Content Type to match the type of data you're importing. Your options are:
+Set the Content Type to match the data type being imported. Your options are:
 
 - JSON
 - XML
@@ -40,55 +40,64 @@ Enter the authorization value for the API call.
 
 ### Element Type
 
-Select the [element type](../content-mapping/element-types.md) you wish to import your api content into.
+Specify the [element type](/mapping/element-types) where you want to import your API content.
 
 ### Use API from front end
 
-Tick this checkbox when you want to use the Easy API entry from the front end of your site to get live calls.
+Check this box to enable Easy API entry from the front end for live calls. This will disable the various content importing fields and setup such as the job queue and element types.
 
 ### Use Job Queue
 
-Tick this checkbox if you want to use Craft's job queue to continuously fetch data from the API to update your site.
+Enable Craft’s job queue if you want continuous data fetching from the API to update your site.
 
 ### Job Queue Process Order
 
-When using job queue enter an integer to determine the sequence of Easy API entries that are processed (1 is processed first).
+Enter an integer to determine the processing sequence of Easy API entries when using job queue. Jobs are processed in ascending order, i.e. 1 will be processed, then 2 etc.
 
 ### Import Strategy
 
-The **Import Strategy** tells Easy API how to act when (or if) it comes across elements that are similar to what you’re importing. If you’ve imported your content once, there will very likely be elements with the same title or content as what you're trying to import.
+Define how Easy API should handle similar elements during import. Options include creating new elements, updating existing ones, disabling missing elements, and more.
 
-::: tip
-The actual matching behavior is determined by a [unique identifier](field-mapping.md#unique-identifiers), which you’ll configure in a moment.
-:::
+<div class="alert alert-primary">
+  Matching behavior is determined by a <a href="/setup/mapping#unique-identifiers">unique identifier</a>, configured later.
+</div>
 
-For example: you have an existing entry called “About Us,” but you also have an item in your api with exactly the same title. You should tell Easy API what to do when it comes to processing this entry in your api. Do you want to update that same entry, or add a new one?
+You can select from any combination of the following (handles for configuration in brackets):
 
-You can select from any combination of the following:
+- **Create new elements** (`add`) - Adds new elements if they do not already exist (as determined by a _unique identifier_). If an element _does_ exist, it will only be updated if **Update existing elements** is enabled.
+- **Update existing elements** (`update`) - Updates elements that match the _unique identifier_. If no existing element matches, one will be only be created if **Create new elements** is also enabled.
+- **Disable missing elements** (`disable`) - Disables elements that are not updated by this API.
+- **Disable missing elements in the target site** (`disableForSite`) - Disables elements that are not updated by this API, but only in the API’s target site.
+- **Delete missing elements** (`delete`) - Deletes elements that are not updated by this API. **Be careful when deleting**.
+- **Update search indexes** (`updateSearchIndexes`) - Whether search indexes should be updated.
 
-Attribute | Description
---- | ---
-**Create new elements** | Adds new elements if they do not already exist (as determined by a _unique identifier_). If an element _does_ exist, it will only be updated if **Update existing elements** is enabled.
-**Update existing elements** | Updates elements that match the _unique identifier_. If no existing element matches, one will be only be created if **Create new elements** is also enabled.
-**Disable missing elements** | Disables elements that are not updated by this api.
-**Disable missing elements in the target site** | Disables elements that are not updated by this api, but only in the api’s [target site](#target-site).
-**Delete missing elements** | Deletes elements that are not updated by this api. **Be careful when deleting**.
-**Update search indexes** | Whether search indexes should be updated.
+Setting the import strategy in a configuration file requires a nested array in the following format:
+```php
+<?php
+  'apiOptions' => [
+      '1' => [
+          'duplicateHandle' => ['add', 'update', 'delete'],
+          'updateSearchIndexes' => true,
+      ]
+  ]
+```
 
 ### Passkey
 
-A generated, unique string to increase security against imports being run inadvertently. This is mainly used when triggering an import via the direct api link.
+A unique, generated string for increased import security when triggered via the direct API link.
 
 ### Backup
 
-Enable a backup of your database to be taken on each import. Please note the [performance implications](../troubleshooting.md#performance) when switching this on.
+Enable database backup on each import, considering performance implications.
 
 ### Set Empty Values
 
-When enabled, empty values in an api item are considered valid and will clear the corresponding fields when your [Import Strategy](#import-strategy) includes _update existing elements_. When disabled, empty values are ignored or treated as unchanged.
+When enabled, empty values in an API item are considered valid and clear corresponding fields when updating existing elements in your Import Strategy.
 
-Keys omitted from an api item are not considered “empty” and will not clear values on existing entries.
+Keys omitted from an API item are not considered "empty" and won't clear values on existing entries.
 
-* * *
+Click **Save & Continue** to proceed to the Primary Element screen, or simply **Save** to continue making changes on this screen.
 
-Click **Save & Continue** to be taken to the [Primary Element](primary-element.md) screen, or **Save** to continue making changes on this screen.
+<div style="display: flex; justify-content: space-between">
+<a href="/setup/overview">← Feed Setup</a><a href="/setup/primary-element">Primary Element →</a>
+</div>

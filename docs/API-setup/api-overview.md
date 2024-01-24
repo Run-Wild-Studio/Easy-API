@@ -3,29 +3,32 @@ layout: page
 title: Overview
 permalink: /setup/overview
 ---
-# Api Overview
+# API Overview
 
-Go to the main Easy API section via your CP sidebar menu. You'll be presented with a table listing of your saved apis, or none if you haven't set any up yet.
+Go to the main Easy API section via your CP sidebar menu. You'll be presented with a table listing of your saved APIs, or none if you haven't set any up yet.
 
-This overview shows the following:
+This overview shows the following (field handle for configuration in brackets):
 
-- **Name** - Name your api something useful so you'll remember what it does.
-- **Api URL** The URL to the external api.
-- **Type** - The data type you're importing.
-- **Element Type** - The element type you are importing into.
-- **Element Group** - Depending on the element type chosen. Entries will show Section/Entry Type, Categories will show Group, etc.
-- **Parent Element Type** - The element type you are linking the imported data to.
-- **Parent Element Group** - Depending on the parent element type chosen. Entries will show Section/Entry Type, Categories will show Group, etc.
-- **Strategy** - What [import strategy](creating-your-api.md#import-strategy) you have chosen: how you'd like to handle duplicate api items (if you're going to be re-running this api).
-- **Run Api** - Runs the api immediately
+- **Name** (`name`) - Name your API something useful so you'll remember what it does.
+- **API URL** (`APIUrl`) The URL to the external API.
+- **Type** (`contentType`) - The data type you're importing.
+- **Element Type** (`elementType`) - The element type you are importing into.
+- **Element Group** (`elementGroup`) - Depending on the element type chosen. Entries will show Section/Entry Type, Categories will show Group, etc.
+- **Parent Element Type** (`parentElementType`) - The element type you are linking the imported data to.
+- **Parent Element Group** (`parentElementGroup`) - Depending on the parent element type chosen. Entries will show Section/Entry Type, Categories will show Group, etc.
+- **Strategy** (`duplicateHandle`) - What [import strategy](creating#import-strategy) you have chosen: how you'd like to handle duplicate API items (if you're going to be re-running this API).
+- **Run API** - Runs the API immediately
 - **Settings (icon)** - Additional settings pane (see below).
-- **Delete (icon)** - Delete this api (be careful).
+- **Delete (icon)** - Delete this API (be careful).
 
-### Settings Pane
-Clicking on the settings cog icon will expand additional settings for each api.
-- **Debug Api** - Opens in a new window and runs the [Debug action](../troubleshooting.md#debugging).
-- **Api Status** - Takes you to an overview screen showing the process of your api if currently running.
-- **Duplicate Api** - Duplicates this api and all settings into a new api.
-- **Direct Api URL** - Can be used in your [Cron job setup](trigger-import-via-cron.md) to directly trigger the job.
+### Settings Panel
+Clicking on the settings cog icon will expand additional settings for each API.
+- **Debug API** - Opens in a new window and runs the [Debug action](../troubleshooting#debugging).
+- **API Status** - Takes you to an overview screen showing the process of your API if currently running.
+- **Duplicate API** - Duplicates this API and all settings into a new API.
 
-Create a new api by pressing the red _\+ New Api_ button in the top-right, or click on the Name column in your table. You'll then be taken to [Create your Api →](creating-your-api.md).
+Create a new API by pressing the red _\+ New API_ button in the top-right, or click on the Name column in your table. You'll then be taken to "Create your API".
+
+<div style="display: flex; justify-content: space-between">
+<a href="/getting-started/configuration">← Configuration</a><a href="/setup/creating">Creating Your API Feed →</a>
+</div>

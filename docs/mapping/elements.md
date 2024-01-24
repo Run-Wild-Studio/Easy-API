@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Elements
+title: Element Types
 permalink: /mapping/elements/
 ---
 
@@ -20,4 +20,8 @@ As this plugin is based on Feed Me, the following element types are supported by
 
 <div class="alert alert-primary">
 Plugins can add support for their own custom element types, as well.
+</div>
+
+<div style="display: flex; justify-content: space-between">
+<a href="/setup/templates">← Using in Your Templates</a><a href="/mapping/fields">Mapping Fields →</a>
 </div>

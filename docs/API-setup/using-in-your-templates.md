@@ -5,9 +5,7 @@ permalink: /setup/templates
 ---
 # Using in your Templates
 
-While you can create an api queue job to insert data as elements, there are times which you may prefer to capture api data on-demand, rather than saving as an entry. You can easily do this through your twig templates using the below.
-
-Apis are cached for performance (default to 60 seconds), which can be set by a tag parameter, or in the plugin settings.
+To capture API data on-demand without saving it as an entry, you can utilize Twig templates with the following code. APIs are cached for performance (default to 60 seconds), and you can adjust this duration through a tag parameter or in the plugin settings.
 
 <pre>
 &#123;% set params = &#123;
@@ -26,32 +24,31 @@ Apis are cached for performance (default to 60 seconds), which can be set by a t
 
 #### Parameters
 
-- `url` (string, required) - URL to the api.
-- `type` (string, optional) - The type of api you're fetching data from. Valid options are json or xml (defaults to xml).
-- `element` (string, optional) - Element to start api from. Useful for deep apis.
-- `cache` (bool or number, optional) - Whether or not to cache the request. If true, will use the default as set in the plugin settings, or if a number, will use that as its duration. Setting to false will disable cache completely.
+- `url` (string, required) - URL to the API.
+- `type` (string, optional) - The type of API you're fetching data from. Valid options are json or xml (defaults to xml).
+- `element` (string, optional) - Element to start API from. Useful for deep APIs.
+- `cache` (bool or number, optional) - Whether or not to cache the request. If true, it will use the default duration set in the plugin settings. If a number is provided, it will use that as the cache duration. Setting to false will disable caching completely.
 
 ### Example template code
 
 <pre>
-<?xml version="1.0" encoding="UTF-8" ?>
-<entries>
-    <entry>
-        <title>Monday</title>
-        <item>
-            <title format="html">Event 1</title>
-            <type>All-day</type>
-        </item>
-    </entry>
-    
-    <entry>
-        <title>Tuesday</title>
-        <item>
-            <title format="html">Event 2</title>
-            <type>Half-day</type>
-        </item>
-    </entry>
-</entries>
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;entries&gt;
+    &lt;entry&gt;
+        &lt;title&gt;Monday&lt;/title&gt;
+        &lt;item&gt;
+            &lt;title format="html"&gt;Event 1&lt;/title&gt;
+            &lt;type&gt;All-day&lt;/type&gt;
+        &lt;/item&gt;
+    &lt;/entry&gt;
+    &lt;entry&gt;
+        &lt;title&gt;Tuesday&lt;/title&gt;
+        &lt;item&gt;
+            &lt;title format="html"&gt;Event 2&lt;/title&gt;
+            &lt;type&gt;Half-day&lt;/type&gt;
+        &lt;/item&gt;
+    &lt;/entry&gt;
+&lt;/entries&gt;
 </pre>
 
 With the above example XML, we would use the following Twig code to loop through each `entry` to extract its data.
@@ -85,6 +82,10 @@ Item Format: html
 Type: Half-day
 </pre>
 
-:::tip
-There's a special case for XML-based apis, which is illustrated above when attributes are present on a node. To retrieve the node value, use `['@']`, and to fetch the attribute value, use `['@attribute_name']`.
-:::
+<div class="alert alert-primary">
+There's a special case for XML-based apis, which is illustrated above when attributes are present on a node. To retrieve the node value, use <code>['@']</code>, and to fetch the attribute value, use <code>['@attribute_name']</code>.
+</div>
+
+<div style="display: flex; justify-content: space-between">
+<a href="/setup/importing">← Importing Your Content</a><a href="/mapping/elements">Mapping Elements →</a>
+</div>

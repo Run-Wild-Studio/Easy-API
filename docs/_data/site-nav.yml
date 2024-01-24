@@ -11,7 +11,7 @@ toc:
     subfolderitems:
       - page: Overview
         url: /setup/overview
-      - page: Creating your API
+      - page: Creating your API Feed
         url: /setup/creating
       - page: Primary element
         url: /setup/primary-element
@@ -23,7 +23,7 @@ toc:
         url: /setup/templates
   - title: Content Mapping
     subfolderitems:
-      - page: Element Types
+      - page: Elements Types
         url: /mapping/elements
       - page: Field Types
         url: /mapping/fields

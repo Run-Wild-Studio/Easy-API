@@ -17,3 +17,7 @@ $grid-breakpoints: (
 @import
   "bootstrap/bootstrap"
 ;
+
+.alert {
+  margin-top: 15px;
+}

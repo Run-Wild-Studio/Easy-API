@@ -40,14 +40,18 @@ return [
 - `cache` - For template calls, change the default cache time.
 - `skipUpdateFieldHandle` - A provided field handle attached to your elements (often a Lightswitch or similar). If this field has a value during processing, Easy API will skip the element.
 - `parseTwig` - Whether to parse field data and default values for Twig. Disabled by default.
-- `compareContent` - Whether to check against existing element content before updating. This can have considerable performance improvements and prevent against needless updating.
-- `sleepTime` - Add the number of seconds to sleep after each api item has been processed.
-- `logging` - Set the level of logging to do. Possible values are `true` (default) to log everything, `false` to disable logging or `error` to only record errors.
-- `runGcBeforeApi` - Whether to run the Garbage Collection service before running an api.
+- `compareContent` - Whether to check against existing element content before updating. Enabling this can impact performance and prevent already up to date content from being re-updated.
+- `sleepTime` - Add the number of seconds to pause/sleep after each API item has been processed.
+- `logging` - Set the level of logging to do. The following options are available: `true` (default) to log everything, `false` to disable logging or `error` to only record errors.
+- `runGcBeforeApi` - Whether to run the Garbage Collection service before running an API.
 - `queueTtr` - Set the 'time to reserve' time in seconds, to prevent the job being cancelled after 300 seconds (default).
 - `queueMaxRetry` - Set the maxiumum amount of retries the queue job should have before failing.
-- `apiOptions` - Provide an array of any of the above options or [Api Settings](../feature-tour/api-overview.md) to set specifically for certain apis. Use the Api ID as the key for the array.
+- `apiOptions` - Provide an array of any of the above options or [API Settings](/setup/overview) to set specifically for certain APIs. Use the API ID as the key for the array.
 
 ## Control Panel
 
 You can also manage configuration settings through the Control Panel by visiting Settings → Easy API.
+
+<div style="display: flex; justify-content: space-between">
+<a href="/getting-started/requirements">← Requirements</a><a href="/setup/overview">Feed Setup →</a>
+</div>

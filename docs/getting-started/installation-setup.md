@@ -22,3 +22,7 @@ cd /path/to/project
 composer require runwildstudio/easyapi
 ```
 3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Easy API.
+
+<div style="display: flex; justify-content: space-between">
+<a href="/">← Overview</a><a href="/getting-started/requirements">Requirements →</a>
+</div>

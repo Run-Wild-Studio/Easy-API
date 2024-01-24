@@ -6,62 +6,66 @@ permalink: /setup/mapping
 
 # Field Mapping
 
-Now that you’ve told Easy API where your data comes from, it’s time to define how individual items in the api map to new or existing elements in Craft.
+Now that you've informed Easy API about the origin of your data, it's time to establish how individual items in the API correspond to new or existing elements in Craft.
 
-While the specifics will vary widely depending on your content model (and the structure of the incoming data), the same pattern applies to most map configuration:
+The process follows a general pattern, albeit with variations based on your content model and the incoming data structure:
 
-1. Find the _target_ field in the **Field** column;
-1. Choose a _source_ for that field’s data from the menu in its row’s **Api Element** column;
-1. Customize options for the type of data being imported;
-1. (Optional) Set a static or dynamic [default value](#default-values);
+1. Locate the target field in the **Field** column.
+1. Choose a source for the field's data from the menu in the **API Element** column of its respective row.
+1. Customize options for the type of data being imported.
+1. Optionally, set a static or dynamic default value.
 
 ## Native Fields
 
-The native fields you have available to map against depend on the element type you’ve selected as the target for the import—for example, entries support a **Title**, **Slug**, **Parent**, **Post Date**, **Expiry Date**, **Status**, and **Author** in addition to the [custom fields](#custom-fields) attached via its field layout.
+The native fields available for mapping depend on the selected target element type. For example, entries support fields like **Title**, **Slug**, **Parent**, **Post Date**, **Expiry Date**, **Status**, and **Author**, in addition to custom fields attached via the field layout.
 
-::: tip
-Native fields have similar options to [custom fields](#custom-fields), so we’ll only cover the novel ones, in this section.
-:::
+<div class="alert alert-primary">
+Native fields share similar options with custom fields, and this section will highlight the unique ones.
+</div>
 
 ### Element IDs
 
-You can map data in your api to the element ID, which is useful if you are certain which element you want a given api item to update. This can be when updating for content in other locales, or bulk-updating existing items.
+Mapping data in your API to the element ID is useful when certain about which element you want a given API item to update. However, exercise caution and avoid using this for importing new data, as IDs from other systems may not match Craft's.
 
-::: danger
-Do not use this when importing “new” data! Content from another system (ExpressionEngine, WordPress, etc.) will _not_ have the same IDs as their corresponding elements in Craft, by virtue of how records are created in the database. If you specify the _wrong_ element ID (deliberately or coincidentally), you run the risk of updating completely unrelated content (i.e. an asset when you meant to update an entry).
+Recommended scenarios for setting IDs include re-importing modified data exported from Craft or importing/synchronizing data from external systems that already track Craft element IDs. In most cases, matching based on a different unique identifier is preferable.
 
-There are only two situations in which setting IDs is recommended:
-- When re-importing data that was exported from Craft, then modified;
-- Importing or synchronizing data from external systems that already track Craft element IDs;
+<div class="alert alert-danger">
+<p><strong>Do not use this when importing “new” data!</strong></p>
 
-In most cases, incoming data should be matched based on a different [unique identifier](#unique-identifiers).
-:::
+<p>Content from another system (ExpressionEngine, WordPress, etc.) will _not_ have the same IDs as their corresponding elements in Craft, by virtue of how records are created in the database. If you specify the _wrong_ element ID (deliberately or coincidentally), you run the risk of updating completely unrelated content (i.e. an asset when you meant to update an entry).</p>
+
+<p>There are only two situations in which setting IDs is recommended:</p>
+<ul>
+  <li>When re-importing data that was exported from Craft, then modified;</li>
+  <li>Importing or synchronizing data from external systems that already track Craft element IDs;</li>
+</ul>
+
+<p>In most cases, incoming data should be matched based on a different unique identifier.</p>
+</div>
 
 ## Custom Fields
 
-Like native fields, each custom field type’s configuration options depend on what kind of data it stores.
+Like native fields, configuration options for each custom field type depend on the data it stores.
 
 ### Scalar Data
 
-Text, numbers, booleans, and other basic data types require no additional configuration. Color, dropdown, email, lightswitch, money, radio, and URL fields all use “scalar” values.
+Basic data types like text, numbers, booleans, and others require no additional configuration.
 
 ### Dates
 
-Easy API can parse [most date formats](https://www.php.net/manual/en/function.strtotime.php), but to handle cases where it may be ambiguous (i.e. `01-02-2023`), you can lock the mapping to a specific pattern.
+Easy API can parse [most date formats](https://www.php.net/manual/en/function.strtotime.php). Specify a specific pattern to handle ambiguous date formats.
 
 ### Relational Fields
 
-When setting up related content through an assets, categories, entries, tags, or users field, you will be asked how Easy API should locate the referenced element(s).
-
-For example, if you were importing a list of AKC winners that contained a `breed` property with values like `Dachshund` or `Greyhound`, you might tell Easy API to look up existing _Breed_ entries by their **Title**, and to **Create entries if they do not exist**. The same holds true for other element types and their corresponding relational field types.
+Define how Easy API should locate referenced elements in assets, categories, entries, tags, or users fields.
 
 #### Nested Fields
 
-When importing relational data, you have an opportunity to map values onto those elements’ fields, as well. Enable **Element fields (x)** to expand controls for those nested fields.
+When importing relational data, map values onto nested fields. Note that nested field values apply uniformly to all relations. Enable **Element fields (x)** to expand controls for those nested fields.
 
-::: warning
+<div class="alert alert-primary">
 Keep in mind that nested field values will be applied uniformly to all relations.
-:::
+</div>
 
 ### Matrix
 
@@ -69,7 +73,7 @@ See the [Importing into Matrix](../mapping/fields#matrix) guide to learn more ab
 
 ### Plugin Fields
 
-Easy API comes with support for the following plugin-provided field types:
+Easy API supports various plugin-provided field types, including:
 
 Field Type | Developer
 --- | ---
@@ -83,22 +87,27 @@ Field Type | Developer
 [Super Table](https://plugins.craftcms.com/supertable) | Verbb
 [Typed Link](https://plugins.craftcms.com/typedlinkfield) | Sebastian Lenz
 
-::: tip
-Other fields that store simple text values (like [Redactor](https://plugins.craftcms.com/redactor)) will work automatically.
-:::
+ 
+<div class="alert alert-primary">
+Other fields that store simple text values (like Redactor) will work automatically.
+</div>
 
 ## Default Values
 
-When the source for a native or custom field is set to “Use default value,” you may provide a value in the third column that will supersede any default value defined by the field itself. If `parseTwig` is enabled in your [Configuration](../get-started/configuration.md), textual fields are treated as Twig “object templates,” and have access to other fields on the element you're importing.
+When the source for a native or custom field is set to "Use default value," you can provide a value in the third column to override any default value defined by the field itself. If `parseTwig` is enabled, textual fields are treated as Twig "object templates" with access to other fields on the imported element.
 
 ## Unique Identifiers
 
-It's important to select a **unique identifier** for your api to assist with the **Import Strategy** you’ve chosen. When comparing against existing entries, it will compare the fields you select here with the data in your api. In addition to the element’s native fields (like title, slug, status, or ID), you may use custom field values for matching.
+Selecting a **Unique Identifier** is crucial for your API to align with the chosen **Import Strategy**. This identifier, used when comparing against existing entries, includes native fields (title, slug, status, or ID) and custom field values.
 
-::: warning
-There are _some_ limitations to the matching engine, though—it will not work for content stored in Matrix and other nested, Matrix-like fields such as Super Table and Neo which can’t be easily or reliably serialized.
-:::
+<div class="alert alert-primary">
+There are limitations — the matching engine won't work for content stored in Matrix and other nested, Matrix-like fields such as Super Table and Neo, which can't be easily or reliably serialized.
+</div>
 
-::: danger
-If data that is used as part of a unique identifier is altered between imports by a user (or any other means—including a different import), Easy API may not be able to match it again! When combined with the **Delete missing elements** [import strategy](creating-your-api.md#import-strategy), this can result in inadvertent data loss.
-:::
+<div class="alert alert-danger">
+If data used as part of a unique identifier is altered between imports, Easy API may not match it again. This, when combined with the **Delete missing elements** import strategy, can lead to inadvertent data loss.
+</div>
+
+<div style="display: flex; justify-content: space-between">
+<a href="/setup/primary-element">← Primary Element</a><a href="/setup/importing">Importing Your Content →</a>
+</div>
