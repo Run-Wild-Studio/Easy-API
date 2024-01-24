@@ -1,3 +1,9 @@
-{% set group = craft.app.volumes.getVolumeById(api.elementGroup[elementType]) %}
+{% if elementType|default(null) %}
+    {% set group = craft.app.volumes.getVolumeById(api.elementGroup[elementType]) %}
+{% else %}
+    {% if parentElementType|default(null) %}
+        {% set group = craft.app.volumes.getVolumeById(api.parentElementGroup[parentElementType]) %}
+    {% endif %}
+{% endif %}
 
 {{ group.name ?? '' }}

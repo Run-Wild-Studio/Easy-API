@@ -1,4 +1,10 @@
-{% set calendarId = api.elementGroup[elementType] %}
+{% if elementType|default(null) %}
+    {% set calendarId = api.elementGroup[elementType] %}
+{% else %}
+    {% if parentElementType|default(null) %}
+        {% set calendarId = api.parentElementGroup[parentElementType] %}
+    {% endif %}
+{% endif %}
 {% set calendar = craft.calendar.calendar({ id: calendarId }) %}
 
 {{ calendar.name ?? '' }}

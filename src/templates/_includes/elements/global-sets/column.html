@@ -1,4 +1,10 @@
-{% set globalSetId = api.elementGroup[elementType].globalSet %}
+{% if elementType|default(null) %}
+    {% set globalSetId = api.elementGroup[elementType].globalSet %}
+{% else %}
+    {% if parentElementType|default(null) %}
+        {% set globalSetId = api.parentElementGroup[parentElementType].globalSet %}
+    {% endif %}
+{% endif %}
 
 {% if globalSetId %}
     {% set globalSet = craft.app.globals.getSetById(globalSetId) %}

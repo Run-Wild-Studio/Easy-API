@@ -1,3 +1,9 @@
-{% set group = craft.commerce.productTypes.getProductTypeById(api.elementGroup[elementType]) %}
+{% if elementType|default(null) %}
+    {% set group = craft.commerce.productTypes.getProductTypeById(api.elementGroup[elementType]) %}
+{% else %}
+    {% if parentElementType|default(null) %}
+        {% set group = craft.commerce.productTypes.getProductTypeById(api.parentElementGroup[parentElementType]) %}
+    {% endif %}
+{% endif %}
 
 {{ group.name ?? '' }}

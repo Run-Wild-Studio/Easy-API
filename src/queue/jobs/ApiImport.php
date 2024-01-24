@@ -5,7 +5,11 @@ namespace runwildstudio\easyapi\queue\jobs;
 use Craft;
 use runwildstudio\easyapi\models\ApiModel;
 use runwildstudio\easyapi\EasyApi;
+use craft\elements\Asset;
+use craft\elements\Category;
 use craft\elements\Entry;
+use craft\elements\GlobalSet;
+use craft\elements\Tag;
 use craft\queue\BaseJob;
 use Throwable;
 use yii\queue\RetryableJobInterface;
@@ -72,20 +76,63 @@ class ApiImport extends BaseJob implements RetryableJobInterface
     {
         try {
             if ($this->api->parentElementType != null && $this->api->parentElementType != "") {
-                $sectionId = $this->api->parentElementGroup[$this->api->parentElementType]["section"];
-                $entryTypeId = $this->api->parentElementGroup[$this->api->parentElementType]["entryType"];
-
-                $entries = Entry::find()
-                    ->siteId($this->api->siteId)
-                    ->sectionId($sectionId)
-                    ->typeId($entryTypeId)
-                    ->all();
-
                 $originalUrl = $this->api->apiUrl;
-
-                foreach ($entries as $entry) {
+                switch ($this->api->parentElementType) {
+                    case 'craft\\elements\\Asset':
+                        $assetId = $this->api->parentElementGroup[$this->api->parentElementType];
+            
+                        $parents = Asset::find()
+                            ->siteId($this->api->siteId)
+                            ->assetId($assetId)
+                            ->all();
+                        break;
+    
+                    case 'craft\\elements\\Category':
+                        $groupId = $this->api->parentElementGroup[$this->api->parentElementType];
+                        
+                        $parents = Category::find()
+                            ->siteId($this->api->siteId)
+                            ->groupId($groupId)
+                            ->all();
+                        break;
+    
+                    case 'craft\\elements\\Entry':
+                        $sectionId = $this->api->parentElementGroup[$this->api->parentElementType]["section"];
+                        $entryTypeId = $this->api->parentElementGroup[$this->api->parentElementType]["entryType"];
+            
+                        $parents = Entry::find()
+                            ->siteId($this->api->siteId)
+                            ->sectionId($sectionId)
+                            ->typeId($entryTypeId)
+                            ->all();
+                        break;
+                        
+                    case 'craft\\elements\\Tag':
+                        $tagId = $this->api->parentElementGroup[$this->api->parentElementType];
+            
+                        $parents = Tag::find()
+                            ->siteId($this->api->siteId)
+                            ->tagId($tagId)
+                            ->all();
+                        break;
+                        
+                        case 'craft\\elements\\GlobalSet':
+                            $globalSetId = $this->api->parentElementGroup[parentElementType]->globalSet;
+                
+                            $parents = Glogal::find()
+                                ->siteId($this->api->siteId)
+                                ->globalSetId($globalSetId)
+                                ->all();
+                            break;
+    
+                    default:
+                        # shouldn't get here
+                        break;
+                }
+            
+                foreach ($parents as $parent) {
                     // Access entry fields
-                    $dynamicValue = $entry->getFieldValue($this->api->parentElementIdField); // Replace 'yourDynamicField' with the handle of your dynamic field
+                    $dynamicValue = $parent->getFieldValue($this->api->parentElementIdField); // Replace 'yourDynamicField' with the handle of your dynamic field
 
                     // Original string with placeholder
                     $originalString = $originalUrl;

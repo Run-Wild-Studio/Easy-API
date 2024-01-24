@@ -6,7 +6,11 @@ use ArrayAccess;
 use Cake\Utility\Hash;
 use Craft;
 use craft\base\Model;
+use craft\elements\Asset;
+use craft\elements\Category;
 use craft\elements\Entry;
+use craft\elements\GlobalSet;
+use craft\elements\Tag;
 use runwildstudio\easyapi\base\Element;
 use runwildstudio\easyapi\base\ElementInterface;
 use runwildstudio\easyapi\helpers\DuplicateHelper;
@@ -282,19 +286,7 @@ class ApiModel extends Model
     public function getApiNodes(bool $usePrimaryElement = false): mixed
     {
         if ($this->parentElementType != null && $this->parentElementType != "") {
-            $sectionId = $this->parentElementGroup[$this->parentElementType]["section"];
-            $entryTypeId = $this->parentElementGroup[$this->parentElementType]["entryType"];
-
-            $entry = Entry::find()
-                ->sectionId($sectionId)
-                ->typeId($entryTypeId)
-                ->one();
-
-            $originalUrl = $this->apiUrl;
-            $dynamicValue = $entry->getFieldValue($this->parentElementIdField);
-            $originalString = $originalUrl;
-            $modifiedString = str_replace('{{ Id }}', $dynamicValue, $originalString);
-            $this->apiUrl = $modifiedString;
+            $this->updateURLFromParent();
         }
 
         $apiDataResponse = EasyApi::$plugin->data->getApiData($this, $usePrimaryElement);
@@ -313,19 +305,7 @@ class ApiModel extends Model
     public function getApiMapping(bool $usePrimaryElement = true): mixed
     {
         if ($this->parentElementType != null && $this->parentElementType != "") {
-            $sectionId = $this->parentElementGroup[$this->parentElementType]["section"];
-            $entryTypeId = $this->parentElementGroup[$this->parentElementType]["entryType"];
-
-            $entry = Entry::find()
-                ->sectionId($sectionId)
-                ->typeId($entryTypeId)
-                ->one();
-
-            $originalUrl = $this->apiUrl;
-            $dynamicValue = $entry->getFieldValue($this->parentElementIdField);
-            $originalString = $originalUrl;
-            $modifiedString = str_replace('{{ Id }}', $dynamicValue, $originalString);
-            $this->apiUrl = $modifiedString;
+            $this->updateURLFromParent();
         }
 
         $apiDataResponse = EasyApi::$plugin->data->getApiData($this, $usePrimaryElement);
@@ -335,6 +315,64 @@ class ApiModel extends Model
         $apiDataResponse['data'] = EasyApi::$plugin->data->getApiMapping($apiData);
 
         return $apiDataResponse;
+    }
+
+    private function updateURLFromParent()
+    {
+
+        switch ($this->parentElementType) {
+            case 'craft\\elements\\Asset':
+                $assetId = $this->parentElementGroup[$this->parentElementType];
+    
+                $parent = Asset::find()
+                    ->assetId($assetId)
+                    ->one();
+                break;
+
+            case 'craft\\elements\\Category':
+                $groupId = $this->parentElementGroup[$this->parentElementType];
+                
+                $parent = Category::find()
+                    ->groupId($groupId)
+                    ->one();
+                break;
+
+            case 'craft\\elements\\Entry':
+                $sectionId = $this->parentElementGroup[$this->parentElementType]["section"];
+                $entryTypeId = $this->parentElementGroup[$this->parentElementType]["entryType"];
+    
+                $parent = Entry::find()
+                    ->sectionId($sectionId)
+                    ->typeId($entryTypeId)
+                    ->one();
+                break;
+                
+            case 'craft\\elements\\Tag':
+                $tagId = $this->parentElementGroup[$this->parentElementType];
+    
+                $parent = Tag::find()
+                    ->tagId($tagId)
+                    ->one();
+                break;
+                
+                case 'craft\\elements\\GlobalSet':
+                    $globalSetId = $this->parentElementGroup[parentElementType]->globalSet;
+        
+                    $parent = Glogal::find()
+                        ->globalSetId($globalSetId)
+                        ->one();
+                    break;
+
+            default:
+                # Should never get to this
+                break;
+        }
+
+        $originalUrl = $this->apiUrl;
+        $originalString = $originalUrl;
+        $dynamicValue = $parent->getFieldValue($this->parentElementIdField);
+        $modifiedString = str_replace('{{ Id }}', $dynamicValue, $originalString);
+        $this->apiUrl = $modifiedString;
     }
 
     /**
