@@ -5,7 +5,7 @@ Easy API is a Craft plugin for super-simple importing of content, either once-of
 ## Features
 
 - Import data from XML or JSON APIs.
-- Built-in importers for [several element types](content-mapping/element-types.md), plus an importer API. 
+- Built-in importers for several element types, plus an importer API. 
 - APIs are saved to allow easy re-processing on-demand, or to be used in a Cron job.
 - Simple field-mapping interface to match your API data with your element fields.
 - Duplication handling - control what happens when APIs are processed again.
