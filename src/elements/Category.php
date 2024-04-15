@@ -7,6 +7,7 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\elements\Category as CategoryElement;
 use craft\errors\ElementNotFoundException;
+// use craft\feedme\elements\Category as FeedMeCategory;
 use runwildstudio\easyapi\base\Element;
 use runwildstudio\easyapi\helpers\DataHelper;
 use runwildstudio\easyapi\EasyApi;
@@ -162,7 +163,6 @@ class Category extends Element
             $query->siteId($this->api['siteId']);
         }
 
-        // fix for https://github.com/runwildstudio/easyapi/issues/1154#issuecomment-1429622276
         if (!empty($this->element->groupId)) {
             $query->groupId($this->element->groupId);
         }
@@ -188,8 +188,6 @@ class Category extends Element
             return $element->id;
         }
 
-        // use the default value if it's provided and none of the above worked
-        // https://github.com/runwildstudio/easyapi/issues/1154
         if (!empty($default)) {
             $this->element->parentId = $default[0];
 

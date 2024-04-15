@@ -10,6 +10,7 @@ use craft\commerce\elements\Product as ProductElement;
 use craft\commerce\elements\Variant as VariantElement;
 use craft\commerce\Plugin as Commerce;
 use craft\db\Query;
+// use craft\feedme\elements\CommerceProduct as FeedMeCommerceProduct;
 use runwildstudio\easyapi\base\Element;
 use runwildstudio\easyapi\events\ApiProcessEvent;
 use runwildstudio\easyapi\helpers\BaseHelper;

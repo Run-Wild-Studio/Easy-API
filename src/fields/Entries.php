@@ -121,7 +121,6 @@ class Entries extends Field implements FieldInterface
             }
 
             // special provision for falling back on default BaseRelationField value
-            // https://github.com/runwildstudio/easyapi/issues/1195
             if (trim($dataValue) === '') {
                 $foundElements = $default;
                 break;
@@ -130,7 +129,6 @@ class Entries extends Field implements FieldInterface
             $query = EntryElement::find();
 
             // In multi-site, there's currently no way to query across all sites - we use the current site
-            // See https://github.com/runwildstudio/easyapi/issues/2854
             if (Craft::$app->getIsMultiSite()) {
                 if ($targetSiteId) {
                     $criteria['siteId'] = Craft::$app->getSites()->getSiteByUid($targetSiteId)->id;

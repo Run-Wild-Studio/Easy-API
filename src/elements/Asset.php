@@ -6,6 +6,7 @@ use Cake\Utility\Hash;
 use Craft;
 use craft\base\ElementInterface;
 use craft\elements\Asset as AssetElement;
+//use craft\feedme\elements\Asset as FeedMeAsset;
 use runwildstudio\easyapi\base\Element;
 use runwildstudio\easyapi\events\ApiProcessEvent;
 use runwildstudio\easyapi\helpers\AssetHelper;

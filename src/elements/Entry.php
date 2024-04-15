@@ -9,6 +9,8 @@ use craft\base\ElementInterface;
 use craft\elements\Entry as EntryElement;
 use craft\elements\User as UserElement;
 use craft\errors\ElementNotFoundException;
+//use craft\feedme\elements\Entry as FeedMeEntry;
+//use craft\feedme\base\Element;
 use runwildstudio\easyapi\base\Element;
 use runwildstudio\easyapi\helpers\DataHelper;
 use runwildstudio\easyapi\models\ElementGroup;
@@ -253,7 +255,6 @@ class Entry extends Element
             $query->siteId($this->api['siteId']);
         }
 
-        // fix for https://github.com/runwildstudio/easyapi/issues/1154#issuecomment-1429622276
         if (!empty($this->element->sectionId)) {
             $query->sectionId($this->element->sectionId);
         }
@@ -283,8 +284,6 @@ class Entry extends Element
             return $element->id;
         }
 
-        // use the default value if it's provided and none of the above worked
-        // https://github.com/runwildstudio/easyapi/issues/1154
         if (!empty($default)) {
             $this->element->parentId = $default[0];
 

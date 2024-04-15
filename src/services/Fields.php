@@ -38,6 +38,7 @@ use runwildstudio\easyapi\fields\Table;
 use runwildstudio\easyapi\fields\Tags;
 use runwildstudio\easyapi\fields\TypedLink;
 use runwildstudio\easyapi\fields\Users;
+use runwildstudio\easyapi\EasyApi;
 use craft\helpers\Component as ComponentHelper;
 use yii\base\InvalidConfigException;
 

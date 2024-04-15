@@ -6,6 +6,7 @@ use Cake\Utility\Hash;
 use Carbon\Carbon;
 use Craft;
 use craft\base\ElementInterface;
+// use craft\feedme\elements\DigitalProduct as FeedMeDigitalProduct;
 use craft\digitalproducts\elements\Product as ProductElement;
 use craft\digitalproducts\Plugin as DigitalProducts;
 use runwildstudio\easyapi\base\Element;

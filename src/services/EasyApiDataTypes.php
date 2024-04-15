@@ -24,7 +24,7 @@ use yii\base\InvalidConfigException;
  *
  * @property-read mixed $registeredDataTypes
  */
-class DataTypes extends Component
+class EasyApiDataTypes extends Component
 {
     // Constants
     // =========================================================================
@@ -58,7 +58,7 @@ class DataTypes extends Component
     {
         parent::init();
 
-        foreach ($this->getRegisteredDataTypes() as $dataTypeClass) {
+        foreach ($this->getRegisteredApiDataTypes() as $dataTypeClass) {
             $dataType = $this->createDataType($dataTypeClass);
 
             // Does this data type exist in Craft right now?
@@ -91,7 +91,7 @@ class DataTypes extends Component
      * @param $handle
      * @return mixed|null
      */
-    public function getRegisteredDataType($handle): mixed
+    public function getRegisteredApiDataType($handle): mixed
     {
         return $this->_dataTypes[$handle] ?? null;
     }
@@ -99,7 +99,7 @@ class DataTypes extends Component
     /**
      * @return array
      */
-    public function getRegisteredDataTypes(): array
+    public function getRegisteredApiDataTypes(): array
     {
         $event = new RegisterEasyApiDataTypesEvent([
             'dataTypes' => [

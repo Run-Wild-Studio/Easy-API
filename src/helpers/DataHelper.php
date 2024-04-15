@@ -210,7 +210,6 @@ class DataHelper
         }
 
         // We want to preserve 0 and '0', but if it's empty, return null.
-        // https://github.com/runwildstudio/easyapi/issues/779
         if (!is_numeric($value) && !is_bool($value) && empty($value)) {
             return null;
         }

@@ -5,9 +5,12 @@ namespace runwildstudio\easyapi;
 use Craft;
 use craft\base\Model;
 use craft\events\RegisterUrlRulesEvent;
+use craft\helpers\UrlHelper;
+use craft\web\twig\variables\CraftVariable;
+use craft\web\UrlManager;
 use runwildstudio\easyapi\base\PluginTrait;
 use runwildstudio\easyapi\models\Settings;
-use runwildstudio\easyapi\services\DataTypes;
+use runwildstudio\easyapi\services\EasyApiDataTypes;
 use runwildstudio\easyapi\services\Elements;
 use runwildstudio\easyapi\services\Apis;
 use runwildstudio\easyapi\services\Fields;
@@ -16,9 +19,6 @@ use runwildstudio\easyapi\services\Process;
 use runwildstudio\easyapi\services\Service;
 use runwildstudio\easyapi\web\twig\Extension;
 use runwildstudio\easyapi\web\twig\variables\EasyApiVariable;
-use craft\helpers\UrlHelper;
-use craft\web\twig\variables\CraftVariable;
-use craft\web\UrlManager;
 use yii\base\Event;
 use yii\di\Instance;
 use yii\queue\Queue;
@@ -26,7 +26,7 @@ use yii\queue\Queue;
 /**
  * Class EasyApi
  *
- * @property-read DataTypes $data
+ * @property-read EasyApiDataTypes $data
  * @property-read Elements $elements
  * @property-read Apis $apis
  * @property-read Fields $fields
@@ -50,7 +50,7 @@ class EasyApi extends \craft\base\Plugin
     {
         return [
             'components' => [
-                'data' => ['class' => DataTypes::class],
+                'data' => ['class' => EasyApiDataTypes::class],
                 'elements' => ['class' => Elements::class],
                 'apis' => ['class' => Apis::class],
                 'fields' => ['class' => Fields::class],
@@ -61,7 +61,7 @@ class EasyApi extends \craft\base\Plugin
         ];
     }
 
-    public string $minVersionRequired = '4.4.8';
+    public string $minVersionRequired = '4.1.0';
     public string $schemaVersion = '5.1.0.0';
     public bool $hasCpSettings = true;
     public bool $hasCpSection = true;

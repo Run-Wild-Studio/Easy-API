@@ -140,7 +140,6 @@ abstract class Element extends Component implements ElementInterface
         return DataHelper::fetchArrayValue($apiData, $fieldInfo);
     }
 
-
     // Interface Methods
     // =========================================================================
 
@@ -150,7 +149,7 @@ abstract class Element extends Component implements ElementInterface
     public function matchExistingElement($data, $settings): mixed
     {
         $criteria = [];
-
+        
         foreach ($settings['fieldUnique'] as $handle => $value) {
             $apiValue = Hash::get($data, $handle);
 
@@ -175,7 +174,7 @@ abstract class Element extends Component implements ElementInterface
         // Make sure we have data to match on, otherwise it'll just grab the first found entry
         // without matching against anything. Not what we want at all!
         if (count($criteria) === 0) {
-            throw new Exception('Unable to match an existing element. Have you set a unique identifier for ' . Json::encode(array_keys($settings['fieldUnique'])) . '? Make sure you are also mapping this in your api and it has a value.');
+            throw new Exception('Unable to match an existing ' . $apiValue . ' element. Are you sure you have set a unique identifier for ' . Json::encode(array_keys($settings['fieldUnique'])) . '? Make sure you are also mapping this in your api and it has a value.');
         }
 
         // Check against elements that may be disabled for site

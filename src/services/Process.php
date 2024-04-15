@@ -7,6 +7,7 @@ use Craft;
 use craft\base\Component;
 use craft\elements\User;
 use craft\errors\ShellCommandException;
+//use craft\feedme\base\ElementInterface;
 use runwildstudio\easyapi\base\ElementInterface;
 use runwildstudio\easyapi\events\ApiProcessEvent;
 use runwildstudio\easyapi\helpers\DataHelper;
@@ -144,7 +145,7 @@ class Process extends Component
             'api' => $api,
             'apiData' => $this->_data,
         ]);
-
+        
         $this->trigger(self::EVENT_BEFORE_PROCESS_API, $event);
 
         if (!$event->isValid) {
@@ -315,7 +316,6 @@ class Process extends Component
         }
 
         // Are we only disabling/deleting only, we need to quit right here
-        // https://github.com/runwildstudio/easyapi/issues/696
         if (
             DuplicateHelper::isDisable($api, true) ||
             DuplicateHelper::isDisableForSite($api, true) ||

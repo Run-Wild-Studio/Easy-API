@@ -218,7 +218,6 @@ class EasyApiVariable extends ServiceLocator
 
                     $section = Craft::$app->getSections()->getSectionByUid($uid);
                     // only add to sources, if this was a section that we were able to retrieve (native section's uid)
-                    // https://github.com/runwildstudio/easyapi/issues/1186
                     if ($section) {
                         $sources[] = $section;
                     }

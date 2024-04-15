@@ -130,7 +130,6 @@ class Users extends Field implements FieldInterface
             }
 
             // special provision for falling back on default BaseRelationField value
-            // https://github.com/runwildstudio/easyapi/issues/1195
             if (trim($dataValue) === '') {
                 $foundElements = $default;
                 break;

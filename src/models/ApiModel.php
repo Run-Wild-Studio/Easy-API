@@ -11,6 +11,7 @@ use craft\elements\Category;
 use craft\elements\Entry;
 use craft\elements\GlobalSet;
 use craft\elements\Tag;
+use craft\feedme\models\FeedModel;
 use runwildstudio\easyapi\base\Element;
 use runwildstudio\easyapi\base\ElementInterface;
 use runwildstudio\easyapi\helpers\DuplicateHelper;
@@ -25,20 +26,10 @@ use DateTime;
  * @property-read bool $nextPagination
  * @property-read ElementInterface|Element|null $element
  */
-class ApiModel extends Model
+class ApiModel extends FeedModel
 {
     // Properties
     // =========================================================================
-
-    /**
-     * @var int|null
-     */
-    public ?int $id = null;
-
-    /**
-     * @var string
-     */
-    public string $name = '';
 
     /**
      * @var string|null
@@ -73,47 +64,12 @@ class ApiModel extends Model
     /**
      * @var string|null
      */
-    public ?string $primaryElement = null;
-
-    /**
-     * @var string|null
-     */
-    public ?string $elementType = null;
-
-    /**
-     * @var array|null
-     */
-    public ?array $elementGroup = null;
-
-    /**
-     * @var string|null
-     */
     public ?string $requestHeader = null;
 
     /**
      * @var string|null
      */
     public ?string $requestBody = null;
-
-    /**
-     * @var int|null
-     */
-    public ?int $siteId = null;
-
-    /**
-     * @var int|null
-     */
-    public ?int $sortOrder = null;
-
-    /**
-     * @var
-     */
-    public mixed $fieldMapping = null;
-
-    /**
-     * @var
-     */
-    public mixed $fieldUnique = null;
 
     /**
      * @var string|null
@@ -158,47 +114,6 @@ class ApiModel extends Model
      */
     public ?bool $useLive = false;
 
-    /**
-     * @var DateTime|null
-     */
-    public ?DateTime $dateCreated = null;
-
-    /**
-     * @var DateTime|null
-     */
-    public ?DateTime $dateUpdated = null;
-
-    /**
-     * @var string|null
-     */
-    public ?string $uid = null;
-
-    /**
-     * @var array|null
-     */
-    public ?array $duplicateHandle = null;
-
-    /**
-     * @var bool
-     * @since 4.4.0
-     */
-    public ?bool $updateSearchIndexes = true;
-
-    /**
-     * @var string|null
-     */
-    public ?string $paginationNode = null;
-
-    /**
-     * @var string|null
-     */
-    public ?string $paginationUrl = null;
-
-    /**
-     * @var string|null
-     */
-    public ?string $passkey = null;
-
     // Model-only properties
 
     // Public Methods
@@ -225,7 +140,7 @@ class ApiModel extends Model
      */
     public function getDataType(): mixed
     {
-        return EasyApi::$plugin->data->getRegisteredDataType($this->contentType);
+        return EasyApi::$plugin->data->getRegisteredApiDataType($this->contentType);
     }
 
     /**
