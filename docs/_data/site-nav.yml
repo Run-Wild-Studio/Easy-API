@@ -21,11 +21,15 @@ toc:
         url: /setup/importing
       - page: Using in your templates
         url: /setup/templates
-  - title: Content Mapping
+  - title: Developers
     subfolderitems:
-      - page: Elements Types
-        url: /mapping/elements
+      - page: Data Types
+        url: /developers/data
+      - page: Element Types
+        url: /developer/elements
+      - page: Events
+        url: /developers/events
       - page: Field Types
-        url: /mapping/fields
+        url: /developers/fields
   - title: Troubleshooting
     url: /troubleshooting

@@ -25,7 +25,7 @@ For example, if mapping 20+ fields for an Entry import isn't working, try mappin
 
 ### Logging
 
-Easy API logs events for nearly every action, including errors and status information. If you face issues or unexpected results, consult the Logs tab for insights.
+Easy API logs events for nearly every action, including errors and status information. If you face issues or unexpected results, consult the Logs tab for insights. If any logs appear unclear or you are unable to find the problem, please feel free to contact us through our website.
 
 ### Debugging
 
@@ -34,5 +34,5 @@ Easy API includes a dedicated view to assist with debugging your API in case of 
 The debug output combines print_r-formatted objects and log messages, offering comprehensive information about your API settings, field mappings, and data. If exceptions occur during API processing, they'll be visible on this page.
 
 <div class="alert alert-danger">
-Debugging an API attempts to actually run the import, so make sure you have a backup, or are working in a disposable environment!
+Debugging an API attempts to actually run the import, so make sure you have a backup, or are working in a disposable environment and have enough cap in your API call limit!
 </div>

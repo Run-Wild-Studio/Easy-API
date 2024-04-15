@@ -5,7 +5,7 @@ permalink: /setup/primary-element
 ---
 # Primary Element
 
-Understanding the primary element may initially be perplexing, but it is crucial to ensure that Easy API accurately identifies the content in your API. Consider the following example in both XML and JSON formats:
+Understanding the primary element may initially be perplexing, but, as is the case with FeedMe it is crucial to ensure that Easy API accurately identifies the content in your API. If you encounter an error where a string is passed instead of an array for a particular feed, revisit your primary element to ensure that the correct item has been set. The primary element may not always be the top level element in the feed. Consider the following example in both XML and JSON formats:
 
 <div class="code">
   <ul class="nav nav-tabs" role="tablist">

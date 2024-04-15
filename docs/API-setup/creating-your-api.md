@@ -5,7 +5,7 @@ permalink: /setup/creating
 ---
 # Creating your API Feed
 
-Setting up your API feed involves configuring various fields. Although each field is quite self-explanatory, additional details are provided below:
+Setting up your API feed involves configuring various fields, much like a feed created through FeedMe. Aside from the standard FeedMe fields, you have the option of selecting a parent element to allow nested calls to subsequent API data. Although each field is quite self-explanatory, additional details are provided below:
 
 ### Name
 
@@ -21,11 +21,11 @@ Specify the API URL. It can be absolute, relative (to the web root), and may uti
 
 ### Parent Element Type
 
-Select the [element type](/mapping/element-types) when fetching data from an API related to another entity.
+Select the element type when fetching data from an API related to another entity. For more information on Mapping your element types, please refer to the FeedMe documentation.
 
 ### Parent Element Id Field
 
-Choose the field used from the parent element to determine the API URL.
+Choose the field used from the parent element to determine the API URL for subsequent feed imports where a feed is reliant on unique identifiers contained in the parent element.
 
 ### Content Type
 
@@ -40,7 +40,7 @@ Enter the authorization value for the API call.
 
 ### Element Type
 
-Specify the [element type](/mapping/element-types) where you want to import your API content.
+Specify the element type where you want to import your API content. For more information on Mapping your element types, please refer to the FeedMe documentation.
 
 ### Use API from front end
 
@@ -52,7 +52,7 @@ Enable Craft’s job queue if you want continuous data fetching from the API to 
 
 ### Job Queue Process Order
 
-Enter an integer to determine the processing sequence of Easy API entries when using job queue. Jobs are processed in ascending order, i.e. 1 will be processed, then 2 etc.
+Enter an integer to determine the processing sequence of Easy API entries when using job queue. Jobs are processed in ascending order, i.e. 1 will be processed, then 2 etc. This will allow parent API calls to be processed before subsequent API calls which are reliant on data contained in the parent element.
 
 ### Import Strategy
 
@@ -62,7 +62,7 @@ Define how Easy API should handle similar elements during import. Options includ
   Matching behavior is determined by a <a href="/setup/mapping#unique-identifiers">unique identifier</a>, configured later.
 </div>
 
-You can select from any combination of the following (handles for configuration in brackets):
+You can select from any combination of the following (handles for configuration in brackets), as per FeedMe's default behavior:
 
 - **Create new elements** (`add`) - Adds new elements if they do not already exist (as determined by a _unique identifier_). If an element _does_ exist, it will only be updated if **Update existing elements** is enabled.
 - **Update existing elements** (`update`) - Updates elements that match the _unique identifier_. If no existing element matches, one will be only be created if **Create new elements** is also enabled.

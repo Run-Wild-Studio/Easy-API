@@ -1,3 +1,8 @@
+---
+layout: page
+title: Events
+permalink: /developers/events
+---
 # Events
 
 Events can be used to extend the functionality of Easy API.

@@ -1,3 +1,9 @@
+---
+layout: page
+title: Data Types
+permalink: /developers/data
+---
+
 # Data Types
 
 ### The `registerEasyApiDataTypes` event

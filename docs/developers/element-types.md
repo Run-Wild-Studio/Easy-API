@@ -1,3 +1,8 @@
+---
+layout: page
+title: Data Types
+permalink: /developers/elements
+---
 # Element Types
 
 ### The `registerEasyApiElements` event

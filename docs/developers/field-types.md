@@ -1,3 +1,8 @@
+---
+layout: page
+title: Field Types
+permalink: /developers/fields
+---
 # Field Types
 
 ### The `registerEasyApiFields` event
