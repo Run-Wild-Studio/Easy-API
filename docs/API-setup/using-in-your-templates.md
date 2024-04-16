@@ -87,5 +87,5 @@ There's a special case for XML-based apis, which is illustrated above when attri
 </div>
 
 <div style="display: flex; justify-content: space-between">
-<a href="/setup/importing">← Importing Your Content</a><a href="/mapping/elements">Mapping Elements →</a>
+<a href="/setup/importing">← Importing Your Content</a>
 </div>
