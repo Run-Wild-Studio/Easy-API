@@ -125,7 +125,7 @@ class EasyApiVariable extends ServiceLocator
         return $api->apiUrl;
     }
 
-    public function runApi($apiId, $apiUrl = null, $apiRequestHeader = null, $apiRequestBody = null): string
+    public function runApi($apiId, $apiUrl = null): string //, $apiRequestHeader = null, $apiRequestBody = null): string
     {
         $api = EasyApi::$plugin->apis->getApiById($apiId);
         if (!$api->useLive)
@@ -137,16 +137,16 @@ class EasyApiVariable extends ServiceLocator
         {
             $api->apiUrl = $apiUrl;
         }
-        if ($apiRequestHeader != null)
-        {
-            $api->requestHeader = $apiRequestHeader;
-        }
-        if ($apiRequestBody != null)
-        {
-            $api->requestBody = $apiRequestBody;
-        }
+        // if ($apiRequestHeader != null)
+        // {
+        //     $api->requestHeader = $apiRequestHeader;
+        // }
+        // if ($apiRequestBody != null)
+        // {
+        //     $api->requestBody = $apiRequestBody;
+        // }
         $response = EasyApi::$plugin->data->getRawData($api->apiUrl, $apiId);
-        return "API response: " . $response['data'];
+        return $response['data'];
     }
 
 

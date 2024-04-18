@@ -82,20 +82,6 @@ Setting the import strategy in a configuration file requires a nested array in t
   ]
 ```
 
-### Passkey
-
-A unique, generated string for increased import security when triggered via the direct API link.
-
-### Backup
-
-Enable database backup on each import, considering performance implications.
-
-### Set Empty Values
-
-When enabled, empty values in an API item are considered valid and clear corresponding fields when updating existing elements in your Import Strategy.
-
-Keys omitted from an API item are not considered "empty" and won't clear values on existing entries.
-
 Click **Save & Continue** to proceed to the Primary Element screen, or simply **Save** to continue making changes on this screen.
 
 <div style="display: flex; justify-content: space-between">

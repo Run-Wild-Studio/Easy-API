@@ -12,10 +12,10 @@ This overview shows the following (field handle for configuration in brackets):
 - **Name** (`name`) - Name your API something useful so you'll remember what it does.
 - **API URL** (`APIUrl`) The URL to the external API.
 - **Type** (`contentType`) - The data type you're importing.
-- **Element Type** (`elementType`) - The element type you are importing into.
-- **Element Group** (`elementGroup`) - Depending on the element type chosen. Entries will show Section/Entry Type, Categories will show Group, etc.
 - **Parent Element Type** (`parentElementType`) - The element type you are linking the imported data to.
 - **Parent Element Group** (`parentElementGroup`) - Depending on the parent element type chosen. Entries will show Section/Entry Type, Categories will show Group, etc.
+- **Element Type** (`elementType`) - The element type you are importing into.
+- **Element Group** (`elementGroup`) - Depending on the element type chosen. Entries will show Section/Entry Type, Categories will show Group, etc.
 - **Strategy** (`duplicateHandle`) - What import strategy you have chosen: how you'd like to handle duplicate API items (if you're going to be re-running this API).
 - **Run API** - Runs the API immediately
 - **Settings (icon)** - Additional settings pane (see below).

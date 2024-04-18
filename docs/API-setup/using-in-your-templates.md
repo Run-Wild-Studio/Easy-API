@@ -8,14 +8,13 @@ permalink: /setup/templates
 To capture API data on-demand without saving it as an entry, you can utilize Twig templates with the following code. APIs are cached for performance (default to 60 seconds), and you can adjust this duration through a tag parameter or in the plugin settings.
 
 <pre>
-&#123;% set params = &#123;
-    url: 'http://path.to/api/',
-    type: 'xml',
-    element: 'item',
-    cache: 60,
-&#125; %&#125;
+&#123;% set apiId = '#apiId' %&#125;
 
-&#123;% set api = craft.easyApi.api(params) %&#125;
+&#123;% set apiUrl = craft.easyApi.getApiUrl(apiId) %&#125;
+
+    &#123;# Your template code to modify the target URL goes here #&#125;
+
+&#123;% set apiResponse = craft.easyApi.runApi(apiId, apiUrl) %&#125;
 
 &#123;% for node in api %&#125;
     &#123;# Your template code goes here #&#125;
@@ -24,10 +23,8 @@ To capture API data on-demand without saving it as an entry, you can utilize Twi
 
 #### Parameters
 
-- `url` (string, required) - URL to the API.
-- `type` (string, optional) - The type of API you're fetching data from. Valid options are json or xml (defaults to xml).
-- `element` (string, optional) - Element to start API from. Useful for deep APIs.
-- `cache` (bool or number, optional) - Whether or not to cache the request. If true, it will use the default duration set in the plugin settings. If a number is provided, it will use that as the cache duration. Setting to false will disable caching completely.
+- `apiId` (string, required) - Id of the API.
+- `apiUrl` (string, optional) - The URL of the API being called, only needs to be sent when the URL needs to be modified at run time.
 
 ### Example template code
 
@@ -54,14 +51,8 @@ To capture API data on-demand without saving it as an entry, you can utilize Twi
 With the above example XML, we would use the following Twig code to loop through each `entry` to extract its data.
 
 <pre>
-&#123;% set params = &#123;
-    url: 'http://path.to/api/',
-    type: 'xml',
-    element: 'entry',
-    cache: 60,
-&#125; %&#125;
-
-&#123;% set api = craft.easyApi.api(params) %&#125;
+&#123;% set apiId = '#apiId' %&#125;
+&#123;% set api = craft.easyApi.runApi(apiId) %&#125;
 
 &#123;% for node in api %&#125;
     Title: &#123;&#123; node.title &#125;&#125;
