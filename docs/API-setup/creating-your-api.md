@@ -7,7 +7,7 @@ permalink: /setup/creating
 
 Setting up your API feed involves configuring various fields, much like a feed created through FeedMe. Aside from the standard FeedMe fields, you have the option of selecting a parent element to allow nested calls to subsequent API data. Although each field is quite self-explanatory, additional details are provided below:
 
-![Start Page](/assets/img/feed-setup.jpg)
+![Start Page](/assets/img/api-setup.jpg)
 
 ### Name
 
@@ -86,7 +86,9 @@ Setting the import strategy in a configuration file requires a nested array in t
   ]
 ```
 
-Click **Save & Continue** to proceed to the Primary Element screen, or simply **Save** to continue making changes on this screen. From this point, we revert to FeedMe to process the remaining import tasks. Please refer to their excellent documentation for further guidance: <a href="https://docs.craftcms.com/feed-me/v4/" target="_blank">FeedMe Documentation</a>.
+Click **Save & Continue** to proceed to the Primary Element screen, or simply **Save** to continue making changes on this screen. A FeedMe feed with " - Easy API" appended to the feed name will be created. From this point, we revert to FeedMe to process the remaining import tasks. Please refer to their excellent documentation for further guidance: <a href="https://docs.craftcms.com/feed-me/v4/" target="_blank">FeedMe Documentation</a>.
+
+![Start Page](/assets/img/feedme-feeds.jpg)
 
 <div style="display: flex; justify-content: space-between">
 <a href="/setup/overview">← Feed Setup</a><a href="/setup/templates">Using in Your Templates →</a>

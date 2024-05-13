@@ -7,6 +7,8 @@ permalink: /setup/overview
 
 Go to the main Easy API section via your CP sidebar menu. You'll be presented with a table listing of your saved APIs, or none if you haven't set any up yet. Setup is very similar to a feed in FeedMe, with the addition of being able to select parent elements and parent element groups.
 
+![Start Page](/assets/img/api-list.jpg)
+
 This overview shows the following (field handle for configuration in brackets):
 
 - **Name** (`name`) - Name your API something useful so you'll remember what it does.
@@ -29,7 +31,7 @@ Clicking on the settings cog icon will expand additional settings for each API.
 
 Create a new API by pressing the red _\+ New API_ button in the top-right, or click on the Name column in your table. You'll then be taken to "Create your API".
 
-![Start Page](/assets/img/feed-setup.jpg)
+
 
 <div style="display: flex; justify-content: space-between">
 <a href="/getting-started/configuration">← Configuration</a><a href="/setup/creating">Creating Your API Feed →</a>

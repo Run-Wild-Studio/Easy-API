@@ -51,6 +51,9 @@ return [
 ## Control Panel
 
 You can also manage configuration settings through the Control Panel by visiting Settings → Easy API.
+Queue management can be found under the **General Settings** menu item.
+
+![Start Page](/assets/img/general-settings.jpg)
 
 <div style="display: flex; justify-content: space-between">
 <a href="/getting-started/requirements">← Requirements</a><a href="/setup/overview">Feed Setup →</a>
