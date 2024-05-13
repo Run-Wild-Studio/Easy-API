@@ -8,7 +8,7 @@ permalink: /getting-started/installation-setup/
 You can install Easy API via the plugin store, or through Composer.
 
 ### Craft Plugin Store
-To install **Easy API**, navigate to the _Plugin Store_ section of your Craft control panel, search for `Easy API`, and click the _Try_ button.
+To install **Easy API**, navigate to the _Plugin Store_ section of your Craft control panel, search for `Easy API`, and click the _Try_ or _Add to cart_ button.
 
 ### Composer
 You can also add the package to your project using Composer.

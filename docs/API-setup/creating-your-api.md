@@ -7,6 +7,8 @@ permalink: /setup/creating
 
 Setting up your API feed involves configuring various fields, much like a feed created through FeedMe. Aside from the standard FeedMe fields, you have the option of selecting a parent element to allow nested calls to subsequent API data. Although each field is quite self-explanatory, additional details are provided below:
 
+![Start Page](/assets/img/feed-setup.jpg)
+
 ### Name
 
 Set a name for your API feed to easily track your imports.
@@ -19,13 +21,15 @@ For multi-site Craft installations, choose a **Target Site** where elements will
 
 Specify the API URL. It can be absolute, relative (to the web root), and may utilize aliases. For dynamic URL updates per parent entity record, insert the URL relative to another entity and select Parent Element Type and Parent Element Id Field.
 
+For example: https://www.api-feed.com/param/another-param/{{ id }}/more-param
+
 ### Parent Element Type
 
 Select the element type when fetching data from an API related to another entity. For more information on Mapping your element types, please refer to the FeedMe documentation.
 
 ### Parent Element Id Field
 
-Choose the field used from the parent element to determine the API URL for subsequent feed imports where a feed is reliant on unique identifiers contained in the parent element.
+Choose the field used from the parent element to determine the API URL for subsequent feed imports where a feed is reliant on unique identifiers contained in the parent element. This field corresponds to the dynamic Twig element in the example URL above.
 
 ### Content Type
 
@@ -36,7 +40,7 @@ Set the Content Type to match the data type being imported. Your options are:
 
 ### Authorization
 
-Enter the authorization value for the API call.
+Enter the authorization public key for the API call.
 
 ### Element Type
 
@@ -82,8 +86,8 @@ Setting the import strategy in a configuration file requires a nested array in t
   ]
 ```
 
-Click **Save & Continue** to proceed to the Primary Element screen, or simply **Save** to continue making changes on this screen.
+Click **Save & Continue** to proceed to the Primary Element screen, or simply **Save** to continue making changes on this screen. From this point, we revert to FeedMe to process the remaining import tasks. Please refer to their excellent documentation for further guidance: <a href="https://docs.craftcms.com/feed-me/v4/" target="_blank">FeedMe Documentation</a>.
 
 <div style="display: flex; justify-content: space-between">
-<a href="/setup/overview">← Feed Setup</a><a href="/setup/primary-element">Primary Element →</a>
+<a href="/setup/overview">← Feed Setup</a><a href="/setup/templates">Using in Your Templates →</a>
 </div>

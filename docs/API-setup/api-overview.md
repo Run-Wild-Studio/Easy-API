@@ -29,6 +29,8 @@ Clicking on the settings cog icon will expand additional settings for each API.
 
 Create a new API by pressing the red _\+ New API_ button in the top-right, or click on the Name column in your table. You'll then be taken to "Create your API".
 
+![Start Page](/assets/img/feed-setup.jpg)
+
 <div style="display: flex; justify-content: space-between">
 <a href="/getting-started/configuration">← Configuration</a><a href="/setup/creating">Creating Your API Feed →</a>
 </div>

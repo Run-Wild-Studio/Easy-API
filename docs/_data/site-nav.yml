@@ -13,23 +13,5 @@ toc:
         url: /setup/overview
       - page: Creating your API Feed
         url: /setup/creating
-      - page: Primary element
-        url: /setup/primary-element
-      - page: Field mapping
-        url: /setup/mapping
-      - page: Importing your content
-        url: /setup/importing
       - page: Using in your templates
         url: /setup/templates
-  - title: Developers
-    subfolderitems:
-      - page: Data Types
-        url: /developers/data
-      - page: Element Types
-        url: /developer/elements
-      - page: Events
-        url: /developers/events
-      - page: Field Types
-        url: /developers/fields
-  - title: Troubleshooting
-    url: /troubleshooting
