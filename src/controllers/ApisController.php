@@ -154,11 +154,7 @@ class ApisController extends Controller
             return null;
         }
 
-        if ($api->feedId > 0) {
-            return $this->_saveAndRedirect($api, 'feed-me/feeds/element/', true, true);
-        }
-
-        return $this->_saveAndRedirect($api, 'easyapi/apis/', true);
+        return $this->_saveAndRedirect($api, 'feed-me/feeds/element/', true, true);
     }
 
     /**
