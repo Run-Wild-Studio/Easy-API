@@ -3,9 +3,8 @@
 namespace runwildstudio\easyapi\base;
 
 use craft\base\ComponentInterface;
-use craft\feedme\base\ElementInterface as FeedMeElementInterface;
 
-interface ElementInterface extends FeedMeElementInterface
+interface ElementInterface extends ComponentInterface
 {
     // Public Methods
     // =========================================================================

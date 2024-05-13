@@ -4,6 +4,7 @@ namespace runwildstudio\easyapi\base;
 
 use Craft;
 use runwildstudio\easyapi\EasyApi;
+use runwildstudio\easyapi\services\AuthTypes;
 use runwildstudio\easyapi\services\DataTypes;
 use runwildstudio\easyapi\services\Elements;
 use runwildstudio\easyapi\services\Apis;
@@ -77,6 +78,15 @@ trait PluginTrait
 
     // Public Methods
     // =========================================================================
+
+    /**
+     * @return AuthTypes
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getAuth(): AuthTypes
+    {
+        return $this->get('auth');
+    }
 
     /**
      * @return DataTypes

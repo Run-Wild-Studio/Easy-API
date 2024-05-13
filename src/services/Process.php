@@ -7,7 +7,6 @@ use Craft;
 use craft\base\Component;
 use craft\elements\User;
 use craft\errors\ShellCommandException;
-//use craft\feedme\base\ElementInterface;
 use runwildstudio\easyapi\base\ElementInterface;
 use runwildstudio\easyapi\events\ApiProcessEvent;
 use runwildstudio\easyapi\helpers\DataHelper;

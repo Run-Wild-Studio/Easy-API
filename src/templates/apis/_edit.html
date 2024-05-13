@@ -46,6 +46,18 @@
         {% set elementsList = elementsList|merge({ (elementClass): element.name }) %}
     {% endfor %}
 
+    {# {{ forms.textField({
+        first: true,
+        label: "Feed ID"|t('easyapi'),
+        instructions: "What this api will be called in the CP."|t('easyapi'),
+        id: 'feedId',
+        name: 'feedId',
+        value: api.feedId,
+        errors: api.getErrors('feedId'),
+        autofocus: true,
+        required: true,
+    }) }} #}
+
     {{ forms.textField({
         first: true,
         label: "Name"|t('easyapi'),
@@ -77,7 +89,7 @@
 
     {{ forms.textField({
         label: "Api URL"|t('easyapi'),
-        instructions: "Can be a file on the local file system or from a website url (http://...)."|t('easyapi'),
+        instructions: "Enter the API URL you are connecting to."|t('easyapi'),
         id: 'apiUrl',
         name: 'apiUrl',
         value: api.apiUrl,
@@ -182,10 +194,17 @@
     }) }} #}
 
     <hr>
+    <h2>{{ 'Feed Me fields'|t('feed-me') }}</h2>
+    <p>{{ 'The following fields need to be selected in order to create the related Feed Me feed for data mapping.'|t('feed-me') }}</p>
+
+    {% set elementsList = [] %}
+    {% for elementClass, element in elements %}
+        {% set elementsList = elementsList|merge({ (elementClass): element.name }) %}
+    {% endfor %}
 
     {{ forms.selectField({
-        label: "Element Type"|t('easyapi'),
-        instructions: 'Choose what element you want to save your api data to.'|t('easyapi'),
+        label: "Element Type"|t('feed-me'),
+        instructions: 'Choose what element you want to save your feed data to.'|t('feed-me'),
         id: 'elementType',
         name: 'elementType',
         options: [{ label: 'Select', value: '' }]|merge(elementsList),
@@ -201,6 +220,60 @@
             {% include element.groupsTemplate ignore missing %}
         </div>
     {% endfor %}
+
+    <h2>{{ 'Import strategy'|t('feed-me') }}</h2>
+    <p>{{ 'Choose what happens when this feed is run again.'|t('feed-me') }}</p>
+
+    {{ forms.checkboxField({
+        id: 'is-create',
+        name: 'duplicateHandle[]',
+        label: 'Create new elements'|t('feed-me'),
+        instructions: 'Adds new elements if they do not already exist.'|t('feed-me'),
+        value: 'add',
+        checked: 'add' in (api.duplicateHandle ?? ['add']),
+    }) }}
+
+    {{ forms.checkboxField({
+        id: 'is-update',
+        name: 'duplicateHandle[]',
+        label: 'Update existing elements'|t('feed-me'),
+        instructions: 'Updates elements that match the Unique Identifier (next step).'|t('feed-me'),
+        value: 'update',
+        checked: 'update' in (api.duplicateHandle ?? []),
+    }) }}
+
+    {{ forms.checkboxField({
+        id: 'is-disable-globally',
+        name: 'duplicateHandle[]',
+        label: craft.app.isMultiSite
+        ? 'Disable missing elements globally'|t('feed-me')
+        : 'Disable missing elements'|t('feed-me'),
+        instructions: craft.app.isMultiSite
+        ? 'Disables any elements that are missing from the feed, across all sites.'|t('feed-me')
+        : 'Disables any elements that are missing from the feed.'|t('feed-me'),
+        value: 'disable',
+        checked: 'disable' in (api.duplicateHandle ?? []),
+    }) }}
+
+    {% if craft.app.isMultiSite %}
+        {{ forms.checkboxField({
+            id: 'is-disable-site',
+            name: 'duplicateHandle[]',
+            label: 'Disable missing elements in the target site'|t('feed-me'),
+            instructions: 'Disables any elements that are missing from the feed, in the feed’s target site only.'|t('feed-me'),
+            value: 'disableForSite',
+            checked: 'disableForSite' in (api.duplicateHandle ?? []),
+        }) }}
+    {% endif %}
+
+    {{ forms.checkboxField({
+        id: 'is-delete',
+        name: 'duplicateHandle[]',
+        label: 'Delete missing elements'|t('feed-me'),
+        instructions: 'Deletes any elements that are missing from the feed. Be careful.'|t('feed-me'),
+        value: 'delete',
+        checked: 'delete' in (api.duplicateHandle ?? []),
+    }) }}
 
     <hr>
 
@@ -227,72 +300,6 @@
         label: 'Job Queue Process Order'|t('easyapi'),
         value: api.queueOrder,
         instructions: 'Job queue order for API imports.'|t('easyapi'),
-    }) }}
-
-    <hr>
-    </div>
-    <div class="useBackground" {% if api.useLive %} style="display:none"{% endif %}>
-
-    <h2>{{ 'Import strategy'|t('easyapi') }}</h2>
-    <p>{{ 'Choose what happens when this api is run again.'|t('easyapi') }}</p>
-
-    {{ forms.checkboxField({
-        id: 'is-create',
-        name: 'duplicateHandle[]',
-        label: 'Create new elements'|t('easyapi'),
-        instructions: 'Adds new elements if they do not already exist.'|t('easyapi'),
-        value: 'add',
-        checked: 'add' in (api.duplicateHandle ?? ['add']),
-    }) }}
-
-    {{ forms.checkboxField({
-        id: 'is-update',
-        name: 'duplicateHandle[]',
-        label: 'Update existing elements'|t('easyapi'),
-        instructions: 'Updates elements that match the Unique Identifier (next step).'|t('easyapi'),
-        value: 'update',
-        checked: 'update' in (api.duplicateHandle ?? []),
-    }) }}
-
-    {{ forms.checkboxField({
-        id: 'is-disable-globally',
-        name: 'duplicateHandle[]',
-        label: craft.app.isMultiSite
-        ? 'Disable missing elements globally'|t('easyapi')
-        : 'Disable missing elements'|t('easyapi'),
-        instructions: craft.app.isMultiSite
-        ? 'Disables any elements that are missing from the api, across all sites.'|t('easyapi')
-        : 'Disables any elements that are missing from the api.'|t('easyapi'),
-        value: 'disable',
-        checked: 'disable' in (api.duplicateHandle ?? []),
-    }) }}
-
-    {% if craft.app.isMultiSite %}
-        {{ forms.checkboxField({
-            id: 'is-disable-site',
-            name: 'duplicateHandle[]',
-            label: 'Disable missing elements in the target site'|t('easyapi'),
-            instructions: 'Disables any elements that are missing from the api, in the api’s target site only.'|t('easyapi'),
-            value: 'disableForSite',
-            checked: 'disableForSite' in (api.duplicateHandle ?? []),
-        }) }}
-    {% endif %}
-
-    {{ forms.checkboxField({
-        id: 'is-delete',
-        name: 'duplicateHandle[]',
-        label: 'Delete missing elements'|t('easyapi'),
-        instructions: 'Deletes any elements that are missing from the api. Be careful.'|t('easyapi'),
-        value: 'delete',
-        checked: 'delete' in (api.duplicateHandle ?? []),
-    }) }}
-
-    {{ forms.checkboxField({
-        id: 'is-update-search-indexes',
-        name: 'updateSearchIndexes',
-        label: 'Update search indexes'|t('easyapi'),
-        instructions: 'Whether search indexes should be updated.'|t('easyapi'),
-        checked: api.updateSearchIndexes,
     }) }}
     </div>
 

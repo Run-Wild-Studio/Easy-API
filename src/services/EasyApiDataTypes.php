@@ -6,7 +6,13 @@ use ArrayAccess;
 use Cake\Utility\Hash;
 use Craft;
 use craft\base\Component;
+use craft\elements\Asset;
+use craft\elements\Category;
+use craft\elements\Entry;
+use craft\elements\GlobalSet;
+use craft\elements\Tag;
 use craft\errors\MissingComponentException;
+use craft\feedme\events\FeedDataEvent;
 use runwildstudio\easyapi\base\DataTypeInterface;
 use runwildstudio\easyapi\datatypes\Json;
 use runwildstudio\easyapi\datatypes\Xml;
@@ -197,6 +203,111 @@ class EasyApiDataTypes extends Component
         ]);
     }
 
+    public function getDataForFeedMe(FeedDataEvent $event) {
+        $api = EasyApi::$plugin->apis->getApiByFeedId($event->feedId);
+
+        if ($api) {
+            $responseData = null;
+            try {
+                if ($api->parentElementType != null && $api->parentElementType != "") {
+                    $originalUrl = $api->apiUrl;
+                    switch ($api->parentElementType) {
+                        case 'craft\\elements\\Asset':
+                            $assetId = $api->parentElementGroup[$api->parentElementType];
+                
+                            $parents = Asset::find()
+                                ->siteId($api->siteId)
+                                ->assetId($assetId)
+                                ->all();
+                            break;
+        
+                        case 'craft\\elements\\Category':
+                            $groupId = $api->parentElementGroup[$api->parentElementType];
+                            
+                            $parents = Category::find()
+                                ->siteId($api->siteId)
+                                ->groupId($groupId)
+                                ->all();
+                            break;
+        
+                        case 'craft\\elements\\Entry':
+                            $sectionId = $api->parentElementGroup[$api->parentElementType]["section"];
+                            $entryTypeId = $api->parentElementGroup[$api->parentElementType]["entryType"];
+                
+                            $parents = Entry::find()
+                                ->siteId($api->siteId)
+                                ->sectionId($sectionId)
+                                ->typeId($entryTypeId)
+                                ->all();
+                            break;
+                            
+                        case 'craft\\elements\\Tag':
+                            $tagId = $api->parentElementGroup[$api->parentElementType];
+                
+                            $parents = Tag::find()
+                                ->siteId($api->siteId)
+                                ->tagId($tagId)
+                                ->all();
+                            break;
+                            
+                            case 'craft\\elements\\GlobalSet':
+                                $globalSetId = $api->parentElementGroup[parentElementType]->globalSet;
+                    
+                                $parents = Glogal::find()
+                                    ->siteId($api->siteId)
+                                    ->globalSetId($globalSetId)
+                                    ->all();
+                                break;
+        
+                        default:
+                            # shouldn't get here
+                            break;
+                    }
+                    foreach ($parents as $parent) {
+                        // Access entry fields
+                        $dynamicValue = $parent->getFieldValue($api->parentElementIdField); // Replace 'yourDynamicField' with the handle of your dynamic field
+    
+                        // Original string with placeholder
+                        $originalString = $originalUrl;
+    
+                        // Replace the placeholder with the dynamic value
+                        $modifiedString = str_replace('{{ Id }}', $dynamicValue, $originalString);
+                        
+                        $apiData = $this->getRawData($modifiedString, $api->id);
+
+                        if ($responseData != null) {
+                            $array1 = json_decode($responseData['data'], true);
+                            $array2 = json_decode($apiData['data'], true);
+                            
+                            // Merge arrays
+                            $mergedArray = array_merge_recursive($array1, $array2);
+                            
+                            // Encode merged array back to JSON
+                            $responseData['data'] = json_encode($mergedArray);
+                        } else {
+                            $responseData = $apiData;
+                        }
+                    }
+                    $api->apiUrl = $originalUrl;
+                } else {
+                    $responseData = $this->getRawData($api->apiUrl, $api->id);
+                }
+
+                $event->response = $responseData;
+            } catch (Throwable $e) {
+                // Even though we catch errors on each step of the loop, make sure to catch errors that can be anywhere
+                // else in this function, just to be super-safe and not cause the queue job to die.
+                EasyApi::error('`{e} - {f}: {l}`.', ['e' => $e->getMessage(), 'f' => basename($e->getFile()), 'l' => $e->getLine()]);
+                Craft::$app->getErrorHandler()->logException($e);
+
+                $event->response = [
+                    'success' => false,
+                    'data' => $e->getMessage(),
+                ];
+            }
+        }
+    }
+
     /**
      * @param $apiModel
      * @param bool $usePrimaryElement
@@ -215,104 +326,6 @@ class EasyApiDataTypes extends Component
         Event::trigger(static::class, self::EVENT_AFTER_PARSE_API, $event);
 
         return $event->response;
-    }
-
-    /**
-     * @param $data
-     * @return array
-     */
-    public function getApiNodes($data): array
-    {
-        if (!is_array($data)) {
-            return [];
-        }
-
-        $tree = [];
-        $this->_parseNodeTree($tree, $data);
-        $nodes = [];
-
-        $elements = (count($data) > 1) ? ' elements' : ' element';
-        $nodes[''] = '/root (x' . count($data) . $elements . ')';
-
-        foreach ($tree as $key => $value) {
-            $elements = ($value > 1) ? ' elements' : ' element';
-            $index = array_values(array_slice(explode('/', $key), -1))[0];
-
-            if (!isset($nodes[$index])) {
-                $nodes[$index] = $key . ' (x' . $value . $elements . ')';
-            }
-        }
-
-        return $nodes;
-    }
-
-    /**
-     * @param $data
-     * @return array
-     */
-    public function getApiMapping($data): array
-    {
-        if (!is_array($data)) {
-            return [];
-        }
-
-        $mappingPaths = [];
-
-        // Go through entire api and grab all nodes - that way, it's normalised across the entire api
-        // as some nodes don't exist on the first primary element, but do throughout the api.
-        foreach (Hash::flatten($data, '/') as $nodePath => $value) {
-            $apiPath = preg_replace('/(\/\d+\/)/', '/', $nodePath);
-            $apiPath = preg_replace('/^(\d+\/)|(\/\d+)/', '', $apiPath);
-
-            // The above is used to normalise repeatable nodes. Paths to nodes will look similar to:
-            // 0.Assets.Asset.0.Img.0 - we want to change this to Assets/Asset/Img, This is mostly
-            // for user-friendliness, we don't need to keep specific details on what is repeatable
-            // or not. That's for the api-parsing stage (and is greatly improved from our first iteration!)
-
-            if (!isset($mappingPaths[$apiPath])) {
-                $mappingPaths[$apiPath] = $value;
-            }
-        }
-
-        return $mappingPaths;
-    }
-
-    /**
-     * @param $element
-     * @param $parsed
-     * @return array|bool
-     */
-    public function findPrimaryElement($element, $parsed): array|bool
-    {
-        if (empty($parsed)) {
-            return false;
-        }
-
-        // If no primary element, return root
-        if (!$element) {
-            return $parsed;
-        }
-
-        // Ensure we return an array - even if only one element found
-        if (isset($parsed[$element]) && is_array($parsed[$element])) {
-            if (array_key_exists('0', $parsed[$element])) { // is multidimensional
-                return $parsed[$element];
-            }
-
-            return [$parsed[$element]];
-        }
-
-        foreach ($parsed as $val) {
-            if (is_array($val)) {
-                $return = $this->findPrimaryElement($element, $val);
-
-                if ($return !== false) {
-                    return $return;
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -402,32 +415,6 @@ class EasyApiDataTypes extends Component
 
     // Private
     // =========================================================================
-
-    /**
-     * @param $tree
-     * @param $array
-     * @param string $index
-     */
-    private function _parseNodeTree(&$tree, $array, string $index = ''): void
-    {
-        foreach ($array as $key => $val) {
-            if (!is_numeric($key)) {
-                if (is_array($val)) {
-                    $count = count($val);
-
-                    if (Hash::dimensions($val) == 1) {
-                        $count = 1;
-                    }
-
-                    $tree[$index . '/' . $key] = $count;
-
-                    $this->_parseNodeTree($tree, $val, $index . '/' . $key);
-                }
-            } elseif (is_array($val)) {
-                $this->_parseNodeTree($tree, $val, $index);
-            }
-        }
-    }
 
     /**
      * @param $url

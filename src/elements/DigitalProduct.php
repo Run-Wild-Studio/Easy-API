@@ -6,7 +6,6 @@ use Cake\Utility\Hash;
 use Carbon\Carbon;
 use Craft;
 use craft\base\ElementInterface;
-// use craft\feedme\elements\DigitalProduct as FeedMeDigitalProduct;
 use craft\digitalproducts\elements\Product as ProductElement;
 use craft\digitalproducts\Plugin as DigitalProducts;
 use runwildstudio\easyapi\base\Element;
@@ -105,37 +104,5 @@ class DigitalProduct extends Element
         }
 
         return $this->element;
-    }
-
-
-    // Protected Methods
-    // =========================================================================
-
-    /**
-     * @param $apiData
-     * @param $fieldInfo
-     * @return array|Carbon|DateTime|false|string|null
-     * @throws \Exception
-     */
-    protected function parsePostDate($apiData, $fieldInfo): DateTime|bool|array|Carbon|string|null
-    {
-        $value = $this->fetchSimpleValue($apiData, $fieldInfo);
-        $formatting = Hash::get($fieldInfo, 'options.match');
-
-        return $this->parseDateAttribute($value, $formatting);
-    }
-
-    /**
-     * @param $apiData
-     * @param $fieldInfo
-     * @return array|Carbon|DateTime|false|string|null
-     * @throws \Exception
-     */
-    protected function parseExpiryDate($apiData, $fieldInfo): DateTime|bool|array|Carbon|string|null
-    {
-        $value = $this->fetchSimpleValue($apiData, $fieldInfo);
-        $formatting = Hash::get($fieldInfo, 'options.match');
-
-        return $this->parseDateAttribute($value, $formatting);
     }
 }

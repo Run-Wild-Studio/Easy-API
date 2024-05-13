@@ -6,7 +6,6 @@ use Craft;
 use craft\base\Component;
 use craft\base\ComponentInterface;
 use craft\errors\MissingComponentException;
-//use craft\feedme\base\ElementInterface;
 use runwildstudio\easyapi\base\ElementInterface;
 use runwildstudio\easyapi\elements\Asset;
 use runwildstudio\easyapi\elements\CalenderEvent;

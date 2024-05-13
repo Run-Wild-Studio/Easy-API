@@ -11,7 +11,6 @@ use craft\elements\Category;
 use craft\elements\Entry;
 use craft\elements\GlobalSet;
 use craft\elements\Tag;
-use craft\feedme\models\FeedModel;
 use runwildstudio\easyapi\base\Element;
 use runwildstudio\easyapi\base\ElementInterface;
 use runwildstudio\easyapi\helpers\DuplicateHelper;
@@ -21,15 +20,24 @@ use DateTime;
 /**
  * Class ApiModel
  *
- * @property-read mixed $duplicateHandleFriendly
  * @property-read mixed $dataType
  * @property-read bool $nextPagination
  * @property-read ElementInterface|Element|null $element
  */
-class ApiModel extends FeedModel
+class ApiModel extends Model
 {
     // Properties
     // =========================================================================
+
+    /**
+     * @var int|null
+     */
+    public ?int $id = null;
+
+    /**
+     * @var string
+     */
+    public string $name = '';
 
     /**
      * @var string|null
@@ -40,6 +48,36 @@ class ApiModel extends FeedModel
      * @var string|null
      */
     public ?string $contentType = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $authorizationType = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $authorizationUrl = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $authorizationAppId = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $authorizationAppSecret = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $authorizationRedirect = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $authorizationCode = null;
 
     /**
      * @var string|null
@@ -70,11 +108,6 @@ class ApiModel extends FeedModel
      * @var string|null
      */
     public ?string $requestBody = null;
-
-    /**
-     * @var string|null
-     */
-    public ?string $parentElement = null;
 
     /**
      * @var string|null
@@ -113,6 +146,59 @@ class ApiModel extends FeedModel
      * @since 4.3.0
      */
     public ?bool $useLive = false;
+    
+    /**
+     * @var int|null
+     */
+    public ?int $feedId = null;
+
+    /**
+     * @var int|null
+     */
+    public ?int $siteId = null;
+
+    /**
+     * @var int|null
+     */
+    public ?int $sortOrder = null;
+
+    /**
+     * @var DateTime|null
+     */
+    public ?DateTime $dateCreated = null;
+
+    /**
+     * @var DateTime|null
+     */
+    public ?DateTime $dateUpdated = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $uid = null;
+
+    // Feed fields required to create a new feed
+    // =========================================================================
+
+    /**
+     * @var string|null
+     */
+    public ?string $elementType = null;
+
+    /**
+     * @var array|null
+     */
+    public ?array $elementGroup = null;
+
+    /**
+     * @var array|null
+     */
+    public ?array $duplicateHandle = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $passkey = null;
 
     // Model-only properties
 
@@ -128,11 +214,11 @@ class ApiModel extends FeedModel
     }
 
     /**
-     * @return string
+     * @return mixed|null
      */
-    public function getDuplicateHandleFriendly(): string
+    public function getAuthType(): mixed
     {
-        return DuplicateHelper::getFriendly($this->duplicateHandle);
+        return EasyApi::$plugin->auth->getRegisteredApiAuthType($this->authorizationType);
     }
 
     /**
@@ -141,21 +227,6 @@ class ApiModel extends FeedModel
     public function getDataType(): mixed
     {
         return EasyApi::$plugin->data->getRegisteredApiDataType($this->contentType);
-    }
-
-    /**
-     * @return ElementInterface|Element|null
-     */
-    public function getElement(): ElementInterface|Element|null
-    {
-        $element = EasyApi::$plugin->elements->getRegisteredElement($this->elementType);
-
-        if ($element) {
-            /** @var Element $element */
-            $element->api = $this;
-        }
-
-        return $element;
     }
 
     /**
@@ -189,124 +260,13 @@ class ApiModel extends FeedModel
     }
 
     /**
-     * @param false $usePrimaryElement
-     * @return mixed
-     */
-    public function getApiNodes(bool $usePrimaryElement = false): mixed
-    {
-        if ($this->parentElementType != null && $this->parentElementType != "") {
-            $this->updateURLFromParent();
-        }
-
-        $apiDataResponse = EasyApi::$plugin->data->getApiData($this, $usePrimaryElement);
-
-        $apiData = Hash::get($apiDataResponse, 'data');
-
-        $apiDataResponse['data'] = EasyApi::$plugin->data->getApiNodes($apiData);
-
-        return $apiDataResponse;
-    }
-
-    /**
-     * @param bool $usePrimaryElement
-     * @return mixed
-     */
-    public function getApiMapping(bool $usePrimaryElement = true): mixed
-    {
-        if ($this->parentElementType != null && $this->parentElementType != "") {
-            $this->updateURLFromParent();
-        }
-
-        $apiDataResponse = EasyApi::$plugin->data->getApiData($this, $usePrimaryElement);
-
-        $apiData = Hash::get($apiDataResponse, 'data');
-
-        $apiDataResponse['data'] = EasyApi::$plugin->data->getApiMapping($apiData);
-
-        return $apiDataResponse;
-    }
-
-    private function updateURLFromParent()
-    {
-
-        switch ($this->parentElementType) {
-            case 'craft\\elements\\Asset':
-                $assetId = $this->parentElementGroup[$this->parentElementType];
-    
-                $parent = Asset::find()
-                    ->assetId($assetId)
-                    ->one();
-                break;
-
-            case 'craft\\elements\\Category':
-                $groupId = $this->parentElementGroup[$this->parentElementType];
-                
-                $parent = Category::find()
-                    ->groupId($groupId)
-                    ->one();
-                break;
-
-            case 'craft\\elements\\Entry':
-                $sectionId = $this->parentElementGroup[$this->parentElementType]["section"];
-                $entryTypeId = $this->parentElementGroup[$this->parentElementType]["entryType"];
-    
-                $parent = Entry::find()
-                    ->sectionId($sectionId)
-                    ->typeId($entryTypeId)
-                    ->one();
-                break;
-                
-            case 'craft\\elements\\Tag':
-                $tagId = $this->parentElementGroup[$this->parentElementType];
-    
-                $parent = Tag::find()
-                    ->tagId($tagId)
-                    ->one();
-                break;
-                
-                case 'craft\\elements\\GlobalSet':
-                    $globalSetId = $this->parentElementGroup[parentElementType]->globalSet;
-        
-                    $parent = Glogal::find()
-                        ->globalSetId($globalSetId)
-                        ->one();
-                    break;
-
-            default:
-                # Should never get to this
-                break;
-        }
-
-        $originalUrl = $this->apiUrl;
-        $originalString = $originalUrl;
-        $dynamicValue = $parent->getFieldValue($this->parentElementIdField);
-        $modifiedString = str_replace('{{ Id }}', $dynamicValue, $originalString);
-        $this->apiUrl = $modifiedString;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getNextPagination(): bool
-    {
-        if (!$this->paginationUrl || !filter_var($this->paginationUrl, FILTER_VALIDATE_URL)) {
-            return false;
-        }
-
-        // Set the URL dynamically on the api, then kick off processing again
-        $this->apiUrl = $this->paginationUrl;
-
-        return true;
-    }
-
-    /**
      *
      * @return array
      */
     public function rules(): array
     {
         return [
-            [['name', 'apiUrl', 'contentType', 'elementType', 'duplicateHandle', 'authorization'], 'required'],
+            [['name', 'apiUrl', 'contentType', 'authorization'], 'required'],
         ];
     }
 }

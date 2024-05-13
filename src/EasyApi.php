@@ -5,11 +5,16 @@ namespace runwildstudio\easyapi;
 use Craft;
 use craft\base\Model;
 use craft\events\RegisterUrlRulesEvent;
+use craft\feedme\events\FeedDataEvent;
+use craft\feedme\events\FeedEvent;
+use craft\feedme\services\DataTypes;
+use craft\feedme\services\Feeds;
 use craft\helpers\UrlHelper;
 use craft\web\twig\variables\CraftVariable;
 use craft\web\UrlManager;
 use runwildstudio\easyapi\base\PluginTrait;
 use runwildstudio\easyapi\models\Settings;
+use runwildstudio\easyapi\services\EasyApiAuthTypes;
 use runwildstudio\easyapi\services\EasyApiDataTypes;
 use runwildstudio\easyapi\services\Elements;
 use runwildstudio\easyapi\services\Apis;
@@ -50,6 +55,7 @@ class EasyApi extends \craft\base\Plugin
     {
         return [
             'components' => [
+                'auth' => ['class' => EasyApiAuthTypes::class],
                 'data' => ['class' => EasyApiDataTypes::class],
                 'elements' => ['class' => Elements::class],
                 'apis' => ['class' => Apis::class],
@@ -68,7 +74,6 @@ class EasyApi extends \craft\base\Plugin
 
     /**
      * @var Queue|array|string
-     * @since 4.5.0
      */
     public $queue = 'queue';
 
@@ -86,6 +91,7 @@ class EasyApi extends \craft\base\Plugin
         $this->_registerCpRoutes();
         $this->_registerTwigExtensions();
         $this->_registerVariables();
+        $this->_registerFeedMeEvents();
     }
 
     /**
@@ -151,8 +157,6 @@ class EasyApi extends \craft\base\Plugin
                 'easyapi/apis' => 'easyapi/apis/apis-index',
                 'easyapi/apis/new' => 'easyapi/apis/edit-api',
                 'easyapi/apis/<apiId:\d+>' => 'easyapi/apis/edit-api',
-                'easyapi/apis/element/<apiId:\d+>' => 'easyapi/apis/element-api',
-                'easyapi/apis/map/<apiId:\d+>' => 'easyapi/apis/map-api',
                 'easyapi/apis/run/<apiId:\d+>' => 'easyapi/apis/run-api',
                 'easyapi/apis/status/<apiId:\d+>' => 'easyapi/apis/status-api',
                 'easyapi/logs' => 'easyapi/logs/logs',
@@ -168,6 +172,14 @@ class EasyApi extends \craft\base\Plugin
     {
         Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
             $event->sender->set('easyApi', EasyApiVariable::class);
+        });
+    }
+
+    private function _registerFeedMeEvents(): void
+    {
+        Event::on(DataTypes::class, DataTypes::EVENT_BEFORE_FETCH_FEED, function(FeedDataEvent $event) {
+            // This will set the feed's data
+            $this->data->getDataForFeedMe($event);
         });
     }
 }

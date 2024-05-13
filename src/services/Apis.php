@@ -7,11 +7,14 @@ use Craft;
 use craft\base\Component;
 use craft\db\ActiveQuery;
 use craft\db\Query;
+use craft\feedme\services\Feeds as FeedService;
+use craft\feedme\models\FeedModel;
+use craft\helpers\Json;
+use craft\helpers\StringHelper;
 use runwildstudio\easyapi\errors\ApiException;
 use runwildstudio\easyapi\events\ApiEvent;
 use runwildstudio\easyapi\models\ApiModel;
 use runwildstudio\easyapi\records\ApiRecord;
-use craft\helpers\Json;
 use Exception;
 use Throwable;
 
@@ -82,6 +85,19 @@ class Apis extends Component
     }
 
     /**
+     * @param $apiId
+     * @return ApiModel|null
+     */
+    public function getApiByFeedId($feedId): ?ApiModel
+    {
+        $result = $this->_getQuery()
+            ->where(['feedId' => $feedId])
+            ->one();
+
+        return $this->_createModelFromRecord($result);
+    }
+
+    /**
      * @param ApiModel $model
      * @param bool $runValidation
      * @return bool
@@ -114,20 +130,27 @@ class Apis extends Component
             }
         }
 
+        if ($isNewModel) {
+            $feedRecord = $this->_createFeedRecord($model);
+            $model->feedId = $feedRecord->id;
+        }
+
         $record->name = $model->name;
         $record->apiUrl = $model->apiUrl;
         $record->contentType = $model->contentType;
+        $record->authorizationType = $model->authorizationType;
+        $record->authorizationUrl = $model->authorizationUrl;
+        $record->authorizationAppId = $model->authorizationAppId;
+        $record->authorizationAppSecret = $model->authorizationAppSecret;
+        $record->authorizationRedirect = $model->authorizationRedirect;
+        $record->authorizationCode = $model->authorizationCode;
         $record->authorization = $model->authorization;
         $record->httpAction = $model->httpAction;
         $record->updateElementIdField = $model->updateElementIdField;
         $record->direction = $model->direction;
-        $record->primaryElement = $model->primaryElement;
-        $record->elementType = $model->elementType;
-        $record->elementGroup = $model->elementGroup;
         $record->requestHeader = $model->requestHeader;
         $record->requestBody = $model->requestBody;
         $record->siteId = $model->siteId;
-        $record->parentElement = $model->parentElement;
         $record->parentElementType = $model->parentElementType;
         $record->parentElementGroup = $model->parentElementGroup;
         $record->parentElementIdField = $model->parentElementIdField;
@@ -135,24 +158,10 @@ class Apis extends Component
         $record->queueRequest = $model->queueRequest;
         $record->queueOrder = $model->queueOrder;
         $record->useLive = $model->useLive;
-        $record->duplicateHandle = $model->duplicateHandle;
-        $record->updateSearchIndexes = $model->updateSearchIndexes;
-        $record->paginationNode = $model->paginationNode;
-
-        if ($model->elementGroup) {
-            $record->setAttribute('elementGroup', Json::encode($model->elementGroup));
-        }
+        $record->feedId = $model->feedId;
 
         if ($model->parentElementGroup) {
             $record->setAttribute('parentElementGroup', Json::encode($model->parentElementGroup));
-        }
-
-        if ($model->fieldMapping) {
-            $record->setAttribute('fieldMapping', Json::encode($model->fieldMapping));
-        }
-
-        if ($model->fieldUnique) {
-            $record->setAttribute('fieldUnique', Json::encode($model->fieldUnique));
         }
 
         if ($isNewModel) {
@@ -160,15 +169,20 @@ class Apis extends Component
                 ->from(['{{%easyapi_apis}}'])
                 ->max('[[sortOrder]]');
 
-            $record->sortOrder = $maxSortOrder ? $maxSortOrder + 1 : 1;
+            $record->sortOrder = 1; //$maxSortOrder ? $maxSortOrder + 1 : 1;
         }
 
+        //Feed Me required fields
+        $record->elementType = $model->elementType;
+        $record->duplicateHandle = $model->duplicateHandle;
+        if ($model->elementGroup) {
+            $record->setAttribute('elementGroup', Json::encode($model->elementGroup));
+        }
+        
         $record->save(false);
 
         if (!$model->id) {
             $model->id = $record->id;
-            $model->fieldMapping = $record->fieldMapping;
-            $model->fieldUnique = $record->fieldUnique;
         }
 
         // Fire an 'afterSaveApi' event
@@ -189,6 +203,9 @@ class Apis extends Component
      */
     public function deleteApiById($apiId): int
     {
+        $apiRecord = $this->_getApiRecordById($apiId);
+        $feedId = $apiRecord->feedId;
+        $this->_deleteFeed($feedId);
         return Craft::$app->getDb()->createCommand()
             ->delete('{{%easyapi_apis}}', ['id' => $apiId])
             ->execute();
@@ -262,20 +279,18 @@ class Apis extends Component
                 'name',
                 'apiUrl',
                 'contentType',
+                'authorizationType',
+                'authorizationUrl',
+                'authorizationAppId',
+                'authorizationAppSecret',
+                'authorizationRedirect',
+                'authorizationCode',
                 'authorization',
                 'httpAction',
-                'updateElementIdField',
-                'direction',
-                'primaryElement',
-                'elementType',
-                'elementGroup',
                 'requestHeader',
                 'requestBody',
                 'siteId',
                 'sortOrder',
-                'fieldMapping',
-                'fieldUnique',
-                'parentElement',
                 'parentElementType',
                 'parentElementGroup',
                 'parentElementIdField',
@@ -286,11 +301,11 @@ class Apis extends Component
                 'dateCreated',
                 'dateUpdated',
                 'uid',
+                'feedId',
+                //Feed Me Fields
+                'elementType',
+                'elementGroup',
                 'duplicateHandle',
-                'updateSearchIndexes',
-                'paginationNode',
-                'paginationUrl',
-                'passkey',
             ])
             ->orderBy(['sortOrder' => SORT_ASC]);
     }
@@ -306,11 +321,6 @@ class Apis extends Component
         }
 
         $attributes = $record->toArray();
-
-        $attributes['elementGroup'] = Json::decode($attributes['elementGroup']);
-        $attributes['duplicateHandle'] = Json::decode($attributes['duplicateHandle']);
-        $attributes['fieldMapping'] = Json::decode($attributes['fieldMapping']);
-        $attributes['fieldUnique'] = Json::decode($attributes['fieldUnique']);
 
         foreach ($attributes as $attribute => $value) {
             $override = $this->getModelOverrides($attribute, $record['id']);
@@ -341,5 +351,51 @@ class Apis extends Component
         }
 
         return $apiRecord;
+    }
+
+    private function _createFeedRecord($model): FeedModel
+    {
+        $feedService = new FeedService();
+
+        // Create a new FeedMe feed record
+        $feedModel = new FeedModel();
+        $feedModel->name = $model->name . '-Easy API';
+        $feedModel->feedUrl = $model->apiUrl;
+        $feedModel->feedType = $model->contentType;
+        $feedModel->elementType = $model->elementType;
+        $feedModel->elementGroup = $model->elementGroup;
+        $feedModel->duplicateHandle = $model->duplicateHandle;
+        $feedModel->passkey = StringHelper::randomString(10);
+        $feedModel->setEmptyValues = false;
+        $feedModel->backup = false;
+
+        // Validate and save the feed record
+        if (!$feedModel->validate()) {
+            // Handle validation errors
+        }
+
+        if (!$feedService->saveFeed($feedModel)) {
+            // Handle save errors
+        }
+
+        // Feed record created successfully
+        return $feedModel;
+    }
+
+    private function _deleteFeed($feedId)
+    {
+        $feedService = new FeedService();
+
+        // Retrieve the feed record by its ID
+        $feedModel = $feedService->getFeedById($feedId);
+
+        if ($feedModel) {
+            // Delete the feed record
+            if (!$feedService->deleteFeedById($feedId)) {
+                // Handle delete errors
+            }
+        } else {
+            // Handle case where feed record with given ID is not found
+        }
     }
 }

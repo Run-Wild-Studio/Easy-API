@@ -6,7 +6,6 @@ use Cake\Utility\Hash;
 use Craft;
 use craft\base\ElementInterface;
 use craft\elements\GlobalSet as GlobalSetElement;
-// use craft\feedme\elements\GlobalSet as FeedMeGlobalSet;
 use runwildstudio\easyapi\base\Element;
 use runwildstudio\easyapi\models\ElementGroup;
 

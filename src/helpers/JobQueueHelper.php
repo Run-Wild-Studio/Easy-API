@@ -3,10 +3,12 @@
 namespace runwildstudio\easyapi\helpers;
 
 use Craft;
+use craft\feedme\models\FeedModel;
+use craft\feedme\services\Feeds as FeedService;
+use craft\feedme\queue\jobs\FeedImport;
 use craft\queue\BaseJob;
 use runwildstudio\easyapi\EasyApi;
 use runwildstudio\easyapi\console\controllers\ApisController;
-use runwildstudio\easyapi\queue\jobs\ApiImport;
 
 class JobQueueHelper extends BaseJob
 {
@@ -19,12 +21,11 @@ class JobQueueHelper extends BaseJob
         $processedElementIds = [];
         foreach ($apis->getApis('queueOrder') as $api) {
             if ($api->queueRequest) {
-                // $apisController->actionQueue($api->id);
-                // $tally++;
-
-                //$apiModel = EasyApi::$plugin->apis->getApiById($api->id);
-                EasyApi::getInstance()->module->queue->push(new ApiImport([
-                    'api' => $api,
+                $feedService = new FeedService();
+                $feed = $feedService->getFeedById($api->feedId);
+                
+                EasyApi::getInstance()->module->queue->push(new FeedImport([
+                    'feed' => $feed,
                     'limit' => null,
                     'offset' => null,
                     'processedElementIds' => $processedElementIds
@@ -33,7 +34,7 @@ class JobQueueHelper extends BaseJob
         }
 
         $job = new \runwildstudio\easyapi\helpers\JobQueueHelper([
-            'description' => 'API Integration background process',
+            'description' => 'Easy API background process',
         ]);
 
         $delayInSeconds = $settings->jobQueueInterval * 60;

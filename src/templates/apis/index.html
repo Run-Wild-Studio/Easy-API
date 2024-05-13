@@ -23,11 +23,8 @@
             <thead>
                 <th scope="col">{{ "Name"|t('easyapi') }}</th>
                 <th scope="col">{{ "Type"|t('easyapi') }}</th>
-                <th scope="col">{{ "Element Type"|t('easyapi') }}</th>
-                <th scope="col">{{ "Element Group"|t('easyapi') }}</th>
                 <th scope="col">{{ "Parent Element Type"|t('easyapi') }}</th>
                 <th scope="col">{{ "Parent Element Group"|t('easyapi') }}</th>
-                <th scope="col">{{ "Strategy"|t('easyapi') }}</th>
                 <th scope="col">{{ "Process"|t('easyapi') }}</th>
                 <th class="thin" colspan="3"></th>
             </thead>
@@ -49,22 +46,6 @@
                         <td>{{ api.getDataType().name ?? 'Unknown datatype' }}</td>
 
                         <td>
-                            {% if api.getElement() %}
-                                {{ api.getElement().name }}
-                            {% else %}
-                                <span class="error">{{ api.elementType }}</span>
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {% if api.getElement() %}
-                                {% include api.getElement().columnTemplate ignore missing with { elementType: api.elementType } %}
-                            {% else %}
-                                <span class="error">{{ 'Element group not found'|t('easyapi') }}</span>
-                            {% endif %}
-                        </td>
-
-                        <td>
                             {% if api.getParentElement() %}
                                 {{ api.getParentElement().name }}
                             {% else %}
@@ -79,8 +60,6 @@
                                 <span class="error">{{ 'Element group not found'|t('easyapi') }}</span>
                             {% endif %}
                         </td>
-
-                        <td>{{ api.duplicateHandleFriendly }}</td>
 
                         <td><a href="{{ url('easyapi/apis/run/' ~ api.id) }}">{{ 'Run Api'|t('easyapi') }}</a></td>
 

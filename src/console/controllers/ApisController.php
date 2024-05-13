@@ -2,8 +2,10 @@
 
 namespace runwildstudio\easyapi\console\controllers;
 
+use craft\feedme\models\FeedModel;
+use craft\feedme\services\Feeds as FeedService;
+use craft\feedme\queue\jobs\FeedImport;
 use runwildstudio\easyapi\EasyApi;
-use runwildstudio\easyapi\queue\jobs\ApiImport;
 use craft\helpers\Console;
 use yii\console\Controller;
 use yii\console\ExitCode;
@@ -104,15 +106,18 @@ class ApisController extends Controller
      */
     protected function queueApi($api, $limit = null, $offset = null, bool $continueOnError = false): void
     {
-        $this->stdout('Queuing up api ');
+        $this->stdout('Queuing up feed ');
         $this->stdout($api->name, Console::FG_CYAN);
         $this->stdout(' ... ');
 
-        $this->module->queue->push(new ApiImport([
-            'api' => $api,
-            'limit' => $limit,
-            'offset' => $offset,
-            'continueOnError' => $continueOnError,
+        $feedService = new FeedService();
+        $feed = $feedService->getFeedById($api->feedId);
+        
+        EasyApi::getInstance()->module->queue->push(new FeedImport([
+            'feed' => $feed,
+            'limit' => null,
+            'offset' => null,
+            'continueOnError' => $continueOnError
         ]));
 
         $this->stdout('done' . PHP_EOL, Console::FG_GREEN);

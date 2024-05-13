@@ -57,7 +57,7 @@ class BaseController extends Controller
         $settings = EasyApi::$plugin->getSettings();
 
         $job = new \runwildstudio\easyapi\helpers\JobQueueHelper([
-            'description' => 'API Integration background process',
+            'description' => 'Easy API background process',
         ]);
 
         $delayInSeconds = $settings->jobQueueInterval * 60;
