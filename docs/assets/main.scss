@@ -69,6 +69,14 @@ hr:not([size]) {
   }
 }
 
+img, svg {
+  max-width: 100%;
+  width: 800px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  border-radius: 10px;
+}
+
 pre {
   
 }
