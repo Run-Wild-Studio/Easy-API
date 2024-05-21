@@ -67,7 +67,7 @@ class EasyApi extends \craft\base\Plugin
         ];
     }
 
-    public string $minVersionRequired = '4.1.0';
+    public string $minVersionRequired = '4.3.6';
     public string $schemaVersion = '5.1.0.0';
     public bool $hasCpSettings = true;
     public bool $hasCpSection = true;
