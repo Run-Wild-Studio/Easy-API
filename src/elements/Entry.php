@@ -78,7 +78,7 @@ class Entry extends Element
      */
     public function getGroups(): array
     {
-        $editable = Craft::$app->getSections()->getEditableSections();
+        $editable = Craft::$app->getEntries()->getEditableSections();
         $groups = [];
 
         foreach ($editable as $section) {
