@@ -4,11 +4,10 @@ namespace runwildstudio\easyapi\authtypes;
 
 use Craft;
 use runwildstudio\easyapi\base\AuthType;
-use runwildstudio\easyapi\base\AuthTypeInterface;
 use runwildstudio\easyapi\EasyApi;
 use Exception;
 
-class basic extends AuthType implements AuthTypeInterface
+class basic extends AuthType
 {
     // Properties
     // =========================================================================
@@ -17,7 +16,6 @@ class basic extends AuthType implements AuthTypeInterface
      * @var string
      */
     public static string $name = 'Basic';
-
 
     // Public Methods
     // =========================================================================
@@ -28,10 +26,21 @@ class basic extends AuthType implements AuthTypeInterface
     public function getAuthValue($api): array
     {
         // Make sure auth has been populated!
-        if ($api->authorization === undefined || $api->authorization === '') {
-            return ['success' => false, 'error' => 'Authorization value not specified'];
+        if ($api->authorization != '') {
+            return ['success' => true, 'value' => 'Authorization: ' . $api->authorization];
         }
 
-        return ['success' => true, 'value' => $api->authorization];
+        return ['success' => false, 'error' => 'Authorization value not specified'];
+    }
+
+    // Templates
+    // =========================================================================
+
+    /**
+     * @inheritDoc
+     */
+    public function getFieldsTemplate(): string
+    {
+        return 'easyapi/_includes/authtypes/basic/fields';
     }
 }

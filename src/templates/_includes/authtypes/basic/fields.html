@@ -1,0 +1,13 @@
+{% import '_includes/forms' as forms %}
+
+<div id = "basicAuth" hidden>
+    {{ forms.textField({
+        label: "Authorization"|t('easyapi'),
+        instructions: "The value of the 'authorization' header field for the HTTP request."|t('easyapi'),
+        id: 'authorization',
+        name: 'authorization',
+        value: (api.authorization) ? api.authorization : '',
+        errors: api.getErrors('authorization'),
+        required: true,
+    }) }}
+</div>

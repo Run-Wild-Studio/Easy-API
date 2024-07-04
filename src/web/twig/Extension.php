@@ -3,6 +3,7 @@
 namespace runwildstudio\easyapi\web\twig;
 
 use Cake\Utility\Hash;
+use runwildstudio\easyapi\EasyApi;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -30,5 +31,14 @@ class Extension extends AbstractExtension
         }
 
         return null;
+    }
+    
+    //
+    // Helper functions for authorization fields
+    //
+
+    public function getRegisteredApiAuthType($handle): mixed
+    {
+        return EasyApi::$plugin->EasyApiAuthTypes->_authTypes[$handle] ?? null;
     }
 }

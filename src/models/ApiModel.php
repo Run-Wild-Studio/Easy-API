@@ -72,6 +72,21 @@ class ApiModel extends Model
     /**
      * @var string|null
      */
+    public ?string $authorizationGrantType = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $authorizationUsername = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $authorizationPassword = null;
+
+    /**
+     * @var string|null
+     */
     public ?string $authorizationRedirect = null;
 
     /**
@@ -266,7 +281,7 @@ class ApiModel extends Model
     public function rules(): array
     {
         return [
-            [['name', 'apiUrl', 'contentType', 'authorization'], 'required'],
+            [['name', 'apiUrl', 'contentType', 'authorizationType'], 'required'],
         ];
     }
 }

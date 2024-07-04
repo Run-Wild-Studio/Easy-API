@@ -4,11 +4,10 @@ namespace runwildstudio\easyapi\authtypes;
 
 use Craft;
 use runwildstudio\easyapi\base\AuthType;
-use runwildstudio\easyapi\base\AuthTypeInterface;
 use runwildstudio\easyapi\EasyApi;
 use Exception;
 
-class none extends AuthType implements AuthTypeInterface
+class none extends AuthType
 {
     // Properties
     // =========================================================================
@@ -17,7 +16,6 @@ class none extends AuthType implements AuthTypeInterface
      * @var string
      */
     public static string $name = 'None';
-
 
     // Public Methods
     // =========================================================================
@@ -33,5 +31,16 @@ class none extends AuthType implements AuthTypeInterface
         }
 
         return ['success' => true, 'value' => $api->authorization];
+    }
+
+    // Templates
+    // =========================================================================
+
+    /**
+     * @inheritDoc
+     */
+    public function getFieldsTemplate(): string
+    {
+        return 'easyapi/_includes/authtypes/none/fields';
     }
 }

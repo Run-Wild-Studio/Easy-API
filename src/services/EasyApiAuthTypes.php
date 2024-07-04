@@ -98,6 +98,10 @@ class EasyApiAuthTypes extends Component
      */
     public function getRegisteredApiAuthTypes(): array
     {
+        if (count($this->_authTypes)) {
+            return $this->_authTypes;
+        }
+
         $event = new RegisterEasyApiAuthTypesEvent([
             'authTypes' => [
                 none::class,

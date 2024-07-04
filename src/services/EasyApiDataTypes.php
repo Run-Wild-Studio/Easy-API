@@ -169,8 +169,17 @@ class EasyApiDataTypes extends Component
             $api->apiUrl = $url;
         }
 
+        $auth = $api->getAuthType()->getAuthValue($api);
+        if (!$auth['success']) {
+            $response = ['success' => false, 'error' => $auth['error']];
+            Craft::$app->getErrorHandler()->logException($auth['error']);
+        }
+
         try {
             $curl = curl_init();
+            $curl_Header = [];
+            $curl_Header[] = 'Content-Type: application/' . $api->contentType;
+            $curl_Header[] = $auth['value'];
 
             curl_setopt_array($curl, array(
                 CURLOPT_URL => $api->apiUrl,
@@ -181,10 +190,7 @@ class EasyApiDataTypes extends Component
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => $api->httpAction,
-                CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/' . $api->contentType,
-                    'Authorization: ' . $api->authorization
-                ),
+                CURLOPT_HTTPHEADER => $curl_Header,
             ));
 
             $data = curl_exec($curl);

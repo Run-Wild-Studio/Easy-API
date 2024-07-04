@@ -4,11 +4,10 @@ namespace runwildstudio\easyapi\authtypes;
 
 use Craft;
 use runwildstudio\easyapi\base\AuthType;
-use runwildstudio\easyapi\base\AuthTypeInterface;
 use runwildstudio\easyapi\EasyApi;
 use Exception;
 
-class oauth extends AuthType implements AuthTypeInterface
+class oauth extends AuthType
 {
     // Properties
     // =========================================================================
@@ -26,9 +25,20 @@ class oauth extends AuthType implements AuthTypeInterface
             $postData = [
                 'client_id' => $api->authorizationAppId,
                 'client_secret' => $api->authorizationAppSecret,
-                'grant_type' => 'authorization_code',
-                'redirect_uri' => $api->authorizationRedirect
+                'grant_type' => $api->authorizationGrantType,
+		        'platform' => 'website'
+                // 'grant_type' => 'authorization_code',
             ];
+
+            if ($api->authorizationUsername != '' ){
+                $postData['username'] = $api->authorizationUsername;
+            }
+            if ($api->authorizationPassword != '' ){
+                $postData['password'] = $api->authorizationPassword;
+            }
+            if ($api->authorizationRedirect != '' ){
+                $postData['redirect_uri'] = $api->authorizationRedirect;
+            }
 
             if (!empty($api->authorizationCode)) {
                 $postData['code'] = $api->authorizationCode;
@@ -45,8 +55,9 @@ class oauth extends AuthType implements AuthTypeInterface
 
             $data = curl_exec($curl);
             curl_close($curl);
+            $data_decode = json_decode($data);
 
-            $response = ['success' => true, 'value' => $data];
+            $response = ['success' => true, 'value' => $data_decode->access_token];
         } catch (Exception $e) {
             $response = ['success' => false, 'error' => $e->getMessage()];
             Craft::$app->getErrorHandler()->logException($e);
@@ -64,23 +75,22 @@ class oauth extends AuthType implements AuthTypeInterface
      */
     public function getAuthValue($api): array
     {
-        // Make sure auth has been populated!
-        if ($api->authorizationUrl === undefined || $api->authorizationUrl === '') {
-            return ['success' => false, 'error' => 'Authorization URL not specified'];
+        $token = $this->getAuthToken($api);
+        if ($token['success']) {
+            return ['success' => true, 'value' => 'oauth-token: ' . $token['value']];
+        } else {
+            return ['success' => false, 'error' => $token['error']];
         }
-        // Make sure auth has been populated!
-        if ($api->authorizationAppId === undefined || $api->authorizationAppId === '') {
-            return ['success' => false, 'error' => 'Authorization App Id not specified'];
-        }
-        // Make sure auth has been populated!
-        if ($api->authorizationAppSecret === undefined || $api->authorizationAppSecret === '') {
-            return ['success' => false, 'error' => 'Authorization App Secret not specified'];
-        }
-        // Make sure auth has been populated!
-        if ($api->authorizationRedirect === undefined || $api->authorizationRedirect === '') {
-            return ['success' => false, 'error' => 'Authorization Redirect URL not specified'];
-        }
+    }
 
-        return getAuthToken($api);
+    // Templates
+    // =========================================================================
+
+    /**
+     * @inheritDoc
+     */
+    public function getFieldsTemplate(): string
+    {
+        return 'easyapi/_includes/authtypes/oauth/fields';
     }
 }

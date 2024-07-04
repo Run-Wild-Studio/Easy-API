@@ -67,6 +67,7 @@ class ApisController extends Controller
         }
 
         $variables['authTypes'] = EasyApi::$plugin->auth->authTypesList();
+        $variables['authTypeClasses'] = EasyApi::$plugin->auth->getRegisteredApiAuthTypes();
         $variables['dataTypes'] = EasyApi::$plugin->data->dataTypesList();
         $variables['elements'] = EasyApi::$plugin->elements->getRegisteredElements();
 
@@ -366,7 +367,16 @@ class ApisController extends Controller
         $api->name = $request->getBodyParam('name', $api->name);
         $api->apiUrl = $request->getBodyParam('apiUrl', $api->apiUrl);
         $api->contentType = $request->getBodyParam('contentType', $api->contentType);
+        $api->authorizationType = $request->getBodyParam('authorizationType', $api->authorizationType);
         $api->authorization = $request->getBodyParam('authorization', $api->authorization);
+        $api->authorizationUrl = $request->getBodyParam('authorizationUrl', $api->authorizationUrl);
+        $api->authorizationAppId = $request->getBodyParam('authorizationAppId', $api->authorizationAppId);
+        $api->authorizationAppSecret = $request->getBodyParam('authorizationAppSecret', $api->authorizationAppSecret);
+        $api->authorizationGrantType = $request->getBodyParam('authorizationGrantType', $api->authorizationGrantType);
+        $api->authorizationUsername = $request->getBodyParam('authorizationUsername', $api->authorizationUsername);
+        $api->authorizationPassword = $request->getBodyParam('authorizationPassword', $api->authorizationPassword);
+        $api->authorizationRedirect = $request->getBodyParam('authorizationRedirect', $api->authorizationRedirect);
+        $api->authorizationCode = $request->getBodyParam('authorizationCode', $api->authorizationCode);
         $api->httpAction = $request->getBodyParam('httpAction', $api->httpAction);
         $api->direction = $request->getBodyParam('direction', $api->direction);
         $api->requestHeader = $request->getBodyParam('requestHeader', $api->requestHeader);

@@ -142,6 +142,9 @@ class Apis extends Component
         $record->authorizationUrl = $model->authorizationUrl;
         $record->authorizationAppId = $model->authorizationAppId;
         $record->authorizationAppSecret = $model->authorizationAppSecret;
+        $record->authorizationGrantType = $model->authorizationGrantType;
+        $record->authorizationUsername = $model->authorizationUsername;
+        $record->authorizationPassword = $model->authorizationPassword;
         $record->authorizationRedirect = $model->authorizationRedirect;
         $record->authorizationCode = $model->authorizationCode;
         $record->authorization = $model->authorization;
@@ -283,6 +286,9 @@ class Apis extends Component
                 'authorizationUrl',
                 'authorizationAppId',
                 'authorizationAppSecret',
+                'authorizationGrantType',
+                'authorizationUsername',
+                'authorizationPassword',
                 'authorizationRedirect',
                 'authorizationCode',
                 'authorization',
