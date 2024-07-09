@@ -7,7 +7,6 @@ use craft\base\Model;
 use craft\events\RegisterUrlRulesEvent;
 use craft\feedme\events\FeedDataEvent;
 use craft\feedme\events\FeedEvent;
-use craft\feedme\events\FeedProcessEvent;
 use craft\feedme\services\DataTypes;
 use craft\feedme\services\Feeds;
 use craft\feedme\services\Process as FeedMeProcess;
@@ -184,11 +183,6 @@ class EasyApi extends \craft\base\Plugin
         Event::on(DataTypes::class, DataTypes::EVENT_BEFORE_FETCH_FEED, function(FeedDataEvent $event) {
             // This will set the feed's data
             $this->feedme->getDataForFeedMe($event);
-        });
-
-        Event::on(FeedMeProcess::class, FeedMeProcess::EVENT_BEFORE_PROCESS_FEED, function(FeedProcessEvent $event) {
-            // This will set the feed's data
-            $this->feedme->checkForPagination($event);
         });
     }
 }

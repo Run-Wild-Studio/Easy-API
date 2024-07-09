@@ -8,6 +8,8 @@
 
 -Upgraded code for Craft 5
 
-## 5.1.0 - 2024-06-27
+## 5.1.2 - 2024-07-09
 
 -Added OAuth logic
+-Added API Pagination logic
+-Moved Feed Me event functions to their own class

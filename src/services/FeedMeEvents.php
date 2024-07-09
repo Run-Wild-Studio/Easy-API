@@ -7,7 +7,6 @@ use Cake\Utility\Hash;
 use Craft;
 use craft\base\Component;
 use craft\feedme\events\FeedDataEvent;
-use craft\feedme\events\FeedProcessEvent;
 use runwildstudio\easyapi\EasyApi;
 use runwildstudio\easyapi\helpers\DataHelper;
 use runwildstudio\easyapi\services\EasyApiDataTypes;
@@ -135,28 +134,7 @@ class FeedMeEvents extends Component
         if ($api) {
             if ($api->offsetField != "") {
                 DataHelper::updateOffsetValue($api, $data);
-                // if ($offsetValue != null && $offsetValue != $api->offsetTermination) {
-                //     $paginationAppendix = $api->offsetUpateURL;
-                //     $modifiedString = str_replace('{{ Offset }}', $offsetValue, $paginationAppendix);
-                //     $event->feed->paginationUrl = $api.apiURL . $modifiedString;
-                // }
             }
         }
-    }
-
-    public function checkForPagination($event) {
-        // $api = EasyApi::$plugin->apis->getApiByFeedId($event->feed->id);
-
-        // if ($api) {
-        //     if ($api->offsetField != "") {
-        //         $feedData = $event->feedData;
-        //         $offsetValue = DataHelper::fetchOffsetValue($feedData, $api->offsetField);
-        //         if ($offsetValue != null) {
-        //             $paginationAppendix = $api->offsetUpateURL;
-        //             $modifiedString = str_replace('{{ Offset }}', $offsetValue, $paginationAppendix);
-        //             $event->feed->paginationUrl = $api.apiURL . $modifiedString;
-        //         }
-        //     }
-        // }
     }
 }
