@@ -155,6 +155,36 @@
         </div>
     {% endfor %}
 
+    <hr>
+    <h2>{{ 'Pagination'|t('easyapi') }}</h2>
+
+    {{ forms.textField({
+        label: "Offset Field"|t('easyapi'),
+        instructions: "Path in the API data which is used for API pagination."|t('easyapi'),
+        id: 'offsetField',
+        name: 'offsetField',
+        value: api.offsetField,
+        errors: api.getErrors('offsetField'),
+    }) }}
+
+    {{ forms.textField({
+        label: "URL Update Code"|t('easyapi'),
+        instructions: "Value to append to the API URL for pagination include {{ Offset }} to insert the value of the Offset Field."|t('easyapi'),
+        id: 'offsetUpateURL',
+        name: 'offsetUpateURL',
+        value: api.offsetUpateURL,
+        errors: api.getErrors('offsetUpateURL'),
+    }) }}
+
+    {{ forms.textField({
+        label: "Offset Termination"|t('easyapi'),
+        instructions: "When this value is found in the data then stop pagination logic."|t('easyapi'),
+        id: 'offsetTermination',
+        name: 'offsetTermination',
+        value: api.offsetTermination,
+        errors: api.getErrors('offsetTermination'),
+    }) }}
+
     {# <hr> #}
 
     {# TODO: The below commented out fields will be used in future release so not removing them entirely #}

@@ -4,6 +4,7 @@ namespace runwildstudio\easyapi\authtypes;
 
 use Craft;
 use runwildstudio\easyapi\base\AuthType;
+use runwildstudio\easyapi\services\Apis;
 use runwildstudio\easyapi\EasyApi;
 use Exception;
 
@@ -25,23 +26,50 @@ class oauth extends AuthType
             $postData = [
                 'client_id' => $api->authorizationAppId,
                 'client_secret' => $api->authorizationAppSecret,
-                'grant_type' => $api->authorizationGrantType,
-		        'platform' => 'website'
-                // 'grant_type' => 'authorization_code',
+                'grant_type' => $api->authorizationGrantType
             ];
+            // Add additional fields based on grant_type
+            switch ($api->authorizationGrantType) {
+                case 'authorization_code':
+                    if (!empty($api->authorizationCode)) {
+                        $postData['code'] = $api->authorizationCode;
+                    }
+                    if (!empty($api->authorizationRedirect)) {
+                        $postData['redirect_uri'] = $api->authorizationRedirect;
+                    }
+                    break;
 
-            if ($api->authorizationUsername != '' ){
-                $postData['username'] = $api->authorizationUsername;
-            }
-            if ($api->authorizationPassword != '' ){
-                $postData['password'] = $api->authorizationPassword;
-            }
-            if ($api->authorizationRedirect != '' ){
-                $postData['redirect_uri'] = $api->authorizationRedirect;
+                case 'password':
+                    if (!empty($api->authorizationUsername)) {
+                        $postData['username'] = $api->authorizationUsername;
+                    }
+                    if (!empty($api->authorizationPassword)) {
+                        $postData['password'] = $api->authorizationPassword;
+                    }
+                    break;
+
+                case 'refresh_token':
+                    if (!empty($api->authorizationRefreshToken)) {
+                        $postData['refresh_token'] = $api->authorizationRefreshToken;
+                    }
+                    break;
+
+                case 'client_credentials':
+                    // No additional fields required
+                    break;
+
+                default:
+                    // Handle unsupported grant_type if needed
+                    break;
             }
 
-            if (!empty($api->authorizationCode)) {
-                $postData['code'] = $api->authorizationCode;
+            // Parse custom parameters
+            if (!empty($api->authorizationCustomParameters)) {
+                $authorizationCustomParameters = explode(',', $api->authorizationCustomParameters);
+                foreach ($authorizationCustomParameters as $param) {
+                    list($key, $value) = explode('=', trim($param));
+                    $postData[trim($key)] = trim($value);
+                }
             }
 
             curl_setopt_array($curl, array(
@@ -56,6 +84,9 @@ class oauth extends AuthType
             $data = curl_exec($curl);
             curl_close($curl);
             $data_decode = json_decode($data);
+            $api->authorizationRefreshToken = $data_decode->refresh_token;
+            $apiService = new Apis();
+            $apiService->saveApi($api);
 
             $response = ['success' => true, 'value' => $data_decode->access_token];
         } catch (Exception $e) {

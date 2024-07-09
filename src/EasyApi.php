@@ -7,17 +7,20 @@ use craft\base\Model;
 use craft\events\RegisterUrlRulesEvent;
 use craft\feedme\events\FeedDataEvent;
 use craft\feedme\events\FeedEvent;
+use craft\feedme\events\FeedProcessEvent;
 use craft\feedme\services\DataTypes;
 use craft\feedme\services\Feeds;
+use craft\feedme\services\Process as FeedMeProcess;
 use craft\helpers\UrlHelper;
 use craft\web\twig\variables\CraftVariable;
 use craft\web\UrlManager;
 use runwildstudio\easyapi\base\PluginTrait;
 use runwildstudio\easyapi\models\Settings;
+use runwildstudio\easyapi\services\Apis;
 use runwildstudio\easyapi\services\EasyApiAuthTypes;
 use runwildstudio\easyapi\services\EasyApiDataTypes;
 use runwildstudio\easyapi\services\Elements;
-use runwildstudio\easyapi\services\Apis;
+use runwildstudio\easyapi\services\FeedMeEvents;
 use runwildstudio\easyapi\services\Fields;
 use runwildstudio\easyapi\services\Logs;
 use runwildstudio\easyapi\services\Process;
@@ -63,6 +66,7 @@ class EasyApi extends \craft\base\Plugin
                 'logs' => ['class' => Logs::class],
                 'process' => ['class' => Process::class],
                 'service' => ['class' => Service::class],
+                'feedme' => ['class' => FeedMeEvents::class],
             ],
         ];
     }
@@ -179,7 +183,12 @@ class EasyApi extends \craft\base\Plugin
     {
         Event::on(DataTypes::class, DataTypes::EVENT_BEFORE_FETCH_FEED, function(FeedDataEvent $event) {
             // This will set the feed's data
-            $this->data->getDataForFeedMe($event);
+            $this->feedme->getDataForFeedMe($event);
+        });
+
+        Event::on(FeedMeProcess::class, FeedMeProcess::EVENT_BEFORE_PROCESS_FEED, function(FeedProcessEvent $event) {
+            // This will set the feed's data
+            $this->feedme->checkForPagination($event);
         });
     }
 }

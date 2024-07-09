@@ -30,54 +30,96 @@
         errors: api.getErrors('authorizationAppSecret'),
         required: true,
     }) }}
-
-    {{ forms.textField({
+    
+    {{ forms.selectField({
         label: "Grant Type"|t('easyapi'),
         instructions: "The value of grant type used for authentication."|t('easyapi'),
         id: 'authorizationGrantType',
         name: 'authorizationGrantType',
-        value: (api.authorizationGrantType) ? api.authorizationGrantType : '',
+        options: {
+            "authorization_code": "authorization_code"|t("easyapi"),
+            "password": "password"|t("easyapi"),
+            "client_credentials": "client_credentials"|t("easyapi"),
+        },
+        value: api.authorizationGrantType,
         errors: api.getErrors('authorizationGrantType'),
         required: true,
     }) }}
 
-    {{ forms.textField({
-        label: "User"|t('easyapi'),
-        instructions: "The user used for authentication."|t('easyapi'),
-        id: 'authorizationUsername',
-        name: 'authorizationUsername',
-        value: (api.authorizationUsername) ? api.authorizationUsername : '',
-        errors: api.getErrors('authorizationUsername'),
-        required: false,
-    }) }}
+    <div id="password" hidden>
+        {{ forms.textField({
+            label: "User"|t('easyapi'),
+            instructions: "The user used for authentication."|t('easyapi'),
+            id: 'authorizationUsername',
+            name: 'authorizationUsername',
+            value: (api.authorizationUsername) ? api.authorizationUsername : '',
+            errors: api.getErrors('authorizationUsername'),
+            required: false,
+        }) }}
 
-    {{ forms.textField({
-        label: "Password"|t('easyapi'),
-        instructions: "The password used for authentication."|t('easyapi'),
-        id: 'authorizationPassword',
-        name: 'authorizationPassword',
-        value: (api.authorizationPassword) ? api.authorizationPassword : '',
-        errors: api.getErrors('authorizationPassword'),
-        required: false,
-    }) }}
+        {{ forms.textField({
+            label: "Password"|t('easyapi'),
+            instructions: "The password used for authentication."|t('easyapi'),
+            id: 'authorizationPassword',
+            name: 'authorizationPassword',
+            value: (api.authorizationPassword) ? api.authorizationPassword : '',
+            errors: api.getErrors('authorizationPassword'),
+            required: false,
+        }) }}
+    </div>
 
-    {{ forms.textField({
-        label: "Redirect URL"|t('easyapi'),
-        instructions: "The authorization redirect URL."|t('easyapi'),
-        id: 'authorizationRedirect',
-        name: 'authorizationRedirect',
-        value: (api.authorizationRedirect) ? api.authorizationRedirect : '',
-        errors: api.getErrors('authorizationRedirect'),
-        required: false,
-    }) }}
+    <div id="authorization_code" hidden>
+        {{ forms.textField({
+            label: "Redirect URL"|t('easyapi'),
+            instructions: "The authorization redirect URL."|t('easyapi'),
+            id: 'authorizationRedirect',
+            name: 'authorizationRedirect',
+            value: (api.authorizationRedirect) ? api.authorizationRedirect : '',
+            errors: api.getErrors('authorizationRedirect'),
+            required: false,
+        }) }}
+
+        {{ forms.textField({
+            label: "Custom Code"|t('easyapi'),
+            instructions: "Custom code to be used during authorization."|t('easyapi'),
+            id: 'authorizationCode',
+            name: 'authorizationCode',
+            value: (api.authorizationCode) ? api.authorizationCode : '',
+            errors: api.getErrors('authorizationCode'),
+            required: false,
+        }) }}
+    </div>
 
     {{ forms.textField({
         label: "Custom Code"|t('easyapi'),
-        instructions: "Custom code to be used during authorization."|t('easyapi'),
-        id: 'authorizationCode',
-        name: 'authorizationCode',
-        value: (api.authorizationCode) ? api.authorizationCode : '',
-        errors: api.getErrors('authorizationCode'),
+        instructions: "Custom parameters to be used during authorization. These parameters must take the form key=value in a comma separated list."|t('easyapi'),
+        id: 'authorizationCustomParameters',
+        name: 'authorizationCustomParameters',
+        value: (api.authorizationCustomParameters) ? api.authorizationCustomParameters : '',
+        errors: api.getErrors('authorizationCustomParameters'),
         required: false,
     }) }}
 </div>
+
+{% js %}
+    $(document).ready(function() {
+        // Save initial value of authorizationGrantType
+        var lastGrantType = $('#authorizationGrantType').val().toLowerCase();
+
+        // Function to toggle visibility of sections
+        function toggleGrantSection(newGrantType) {
+            $('#' + lastGrantType).hide();
+            $('#' + newGrantType).show();
+            lastGrantType = newGrantType;
+        }
+
+        // Show the section for the initial value of authorizationType
+        $('#' + lastGrantType).show();
+
+        // Handle change event
+        $('#authorizationGrantType').change(function() {
+            var newGrantType = $(this).val().toLowerCase();
+            toggleGrantSection(newGrantType);
+        });
+    });
+{% endjs %}

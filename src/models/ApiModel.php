@@ -97,6 +97,16 @@ class ApiModel extends Model
     /**
      * @var string|null
      */
+    public ?string $authorizationRefreshToken = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $authorizationCustomParameters = null;
+
+    /**
+     * @var string|null
+     */
     public ?string $authorization = null;
 
     /**
@@ -144,6 +154,21 @@ class ApiModel extends Model
      * @var string|null
      */
     public ?string $parentFilter = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $offsetField = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $offsetUpateURL = null;
+
+    /**
+     * @var string|null
+     */
+    public ?string $offsetTermination = null;
 
     /**
      * @var bool

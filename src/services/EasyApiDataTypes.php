@@ -12,7 +12,6 @@ use craft\elements\Entry;
 use craft\elements\GlobalSet;
 use craft\elements\Tag;
 use craft\errors\MissingComponentException;
-use craft\feedme\events\FeedDataEvent;
 use runwildstudio\easyapi\base\DataTypeInterface;
 use runwildstudio\easyapi\datatypes\Json;
 use runwildstudio\easyapi\datatypes\Xml;
@@ -149,7 +148,7 @@ class EasyApiDataTypes extends Component
      * @param null $apiId
      * @return array
      */
-    public function getRawData($url, $apiId = null): array
+    public static function getRawData($url, $apiId = null): array
     {
         $event = new ApiDataEvent([
             'url' => $url,
@@ -165,8 +164,8 @@ class EasyApiDataTypes extends Component
         $url = $event->url;
         $url = Craft::getAlias($url);
         $api = EasyApi::$plugin->apis->getApiById($apiId);
-        if ($url != "") {
-            $api->apiUrl = $url;
+        if ($url == "") {
+            $url = $api->apiUrl;
         }
 
         $auth = $api->getAuthType()->getAuthValue($api);
@@ -182,7 +181,7 @@ class EasyApiDataTypes extends Component
             $curl_Header[] = $auth['value'];
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => $api->apiUrl,
+                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -202,116 +201,11 @@ class EasyApiDataTypes extends Component
             Craft::$app->getErrorHandler()->logException($e);
         }
 
-        return $this->_triggerEventAfterFetchApi([
+        return self::_triggerEventAfterFetchApi([
             'url' => $url,
             'apiId' => $apiId,
             'response' => $response,
         ]);
-    }
-
-    public function getDataForFeedMe(FeedDataEvent $event) {
-        $api = EasyApi::$plugin->apis->getApiByFeedId($event->feedId);
-
-        if ($api) {
-            $responseData = null;
-            try {
-                if ($api->parentElementType != null && $api->parentElementType != "") {
-                    $originalUrl = $api->apiUrl;
-                    switch ($api->parentElementType) {
-                        case 'craft\\elements\\Asset':
-                            $assetId = $api->parentElementGroup[$api->parentElementType];
-                
-                            $parents = Asset::find()
-                                ->siteId($api->siteId)
-                                ->assetId($assetId)
-                                ->all();
-                            break;
-        
-                        case 'craft\\elements\\Category':
-                            $groupId = $api->parentElementGroup[$api->parentElementType];
-                            
-                            $parents = Category::find()
-                                ->siteId($api->siteId)
-                                ->groupId($groupId)
-                                ->all();
-                            break;
-        
-                        case 'craft\\elements\\Entry':
-                            $sectionId = $api->parentElementGroup[$api->parentElementType]["section"];
-                            $entryTypeId = $api->parentElementGroup[$api->parentElementType]["entryType"];
-                
-                            $parents = Entry::find()
-                                ->siteId($api->siteId)
-                                ->sectionId($sectionId)
-                                ->typeId($entryTypeId)
-                                ->all();
-                            break;
-                            
-                        case 'craft\\elements\\Tag':
-                            $tagId = $api->parentElementGroup[$api->parentElementType];
-                
-                            $parents = Tag::find()
-                                ->siteId($api->siteId)
-                                ->tagId($tagId)
-                                ->all();
-                            break;
-                            
-                            case 'craft\\elements\\GlobalSet':
-                                $globalSetId = $api->parentElementGroup[parentElementType]->globalSet;
-                    
-                                $parents = Glogal::find()
-                                    ->siteId($api->siteId)
-                                    ->globalSetId($globalSetId)
-                                    ->all();
-                                break;
-        
-                        default:
-                            # shouldn't get here
-                            break;
-                    }
-                    foreach ($parents as $parent) {
-                        // Access entry fields
-                        $dynamicValue = $parent->getFieldValue($api->parentElementIdField); // Replace 'yourDynamicField' with the handle of your dynamic field
-    
-                        // Original string with placeholder
-                        $originalString = $originalUrl;
-    
-                        // Replace the placeholder with the dynamic value
-                        $modifiedString = str_replace('{{ Id }}', $dynamicValue, $originalString);
-                        
-                        $apiData = $this->getRawData($modifiedString, $api->id);
-
-                        if ($responseData != null) {
-                            $array1 = json_decode($responseData['data'], true);
-                            $array2 = json_decode($apiData['data'], true);
-                            
-                            // Merge arrays
-                            $mergedArray = array_merge_recursive($array1, $array2);
-                            
-                            // Encode merged array back to JSON
-                            $responseData['data'] = json_encode($mergedArray);
-                        } else {
-                            $responseData = $apiData;
-                        }
-                    }
-                    $api->apiUrl = $originalUrl;
-                } else {
-                    $responseData = $this->getRawData($api->apiUrl, $api->id);
-                }
-
-                $event->response = $responseData;
-            } catch (Throwable $e) {
-                // Even though we catch errors on each step of the loop, make sure to catch errors that can be anywhere
-                // else in this function, just to be super-safe and not cause the queue job to die.
-                EasyApi::error('`{e} - {f}: {l}`.', ['e' => $e->getMessage(), 'f' => basename($e->getFile()), 'l' => $e->getLine()]);
-                Craft::$app->getErrorHandler()->logException($e);
-
-                $event->response = [
-                    'success' => false,
-                    'data' => $e->getMessage(),
-                ];
-            }
-        }
     }
 
     /**
@@ -448,7 +342,7 @@ class EasyApiDataTypes extends Component
      * @param $data
      * @return mixed
      */
-    private function _triggerEventAfterFetchApi($data)
+    private static function _triggerEventAfterFetchApi($data)
     {
         $event = new ApiDataEvent($data);
 

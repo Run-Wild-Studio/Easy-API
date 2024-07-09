@@ -295,13 +295,13 @@ class ApisController extends Controller
                 $api->apiUrl = $url;
             }
 
-            $proceed = $authorization == $api['authorization'];
 
             // Create the import task only if provided the correct authorization
-            if ($proceed) {
-                $feedService = new FeedService();
-                $feed = $feedService->getFeedById($api->feedId);
+            $feedService = new FeedService();
+            $feed = $feedService->getFeedById($api->feedId);
+            $proceed = $authorization == $feed['passkey'];
                 
+            if ($proceed) {
                 EasyApi::getInstance()->module->queue->push(new FeedImport([
                     'feed' => $feed,
                     'limit' => null,
@@ -377,6 +377,8 @@ class ApisController extends Controller
         $api->authorizationPassword = $request->getBodyParam('authorizationPassword', $api->authorizationPassword);
         $api->authorizationRedirect = $request->getBodyParam('authorizationRedirect', $api->authorizationRedirect);
         $api->authorizationCode = $request->getBodyParam('authorizationCode', $api->authorizationCode);
+        $api->authorizationRefreshToken = $request->getBodyParam('authorizationRefreshToken', $api->authorizationRefreshToken);
+        $api->authorizationCustomParameters = $request->getBodyParam('authorizationCustomParameters', $api->authorizationCustomParameters);
         $api->httpAction = $request->getBodyParam('httpAction', $api->httpAction);
         $api->direction = $request->getBodyParam('direction', $api->direction);
         $api->requestHeader = $request->getBodyParam('requestHeader', $api->requestHeader);
@@ -386,6 +388,9 @@ class ApisController extends Controller
         $api->parentElementGroup = $request->getBodyParam('parentElementGroup', $api->parentElementGroup);
         $api->parentElementIdField = $request->getBodyParam('parentElementIdField', $api->parentElementIdField);
         $api->parentFilter = $request->getBodyParam('parentFilter', $api->parentFilter);
+        $api->offsetField = $request->getBodyParam('offsetField', $api->offsetField);
+        $api->offsetUpateURL = $request->getBodyParam('offsetUpateURL', $api->offsetUpateURL);
+        $api->offsetTermination = $request->getBodyParam('offsetTermination', $api->offsetTermination);
         $api->queueRequest = $request->getBodyParam('queueRequest', $api->queueRequest);
         $api->useLive = $request->getBodyParam('useLive', $api->useLive);
         $api->feedId = $request->getBodyParam('feedId', $api->feedId);

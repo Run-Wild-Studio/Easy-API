@@ -132,11 +132,11 @@ class EasyApiVariable extends ServiceLocator
             return "API " . $api->name . " is not configured for live site processing.";
         }
 
-        if ($apiUrl != null)
+        if ($apiUrl == null)
         {
-            $api->apiUrl = $apiUrl;
+            $apiUrl = $api->apiUrl;
         }
-        $response = EasyApi::$plugin->data->getRawData($api->apiUrl, $apiId);
+        $response = EasyApi::$plugin->data->getRawData($apiUrl, $apiId);
         return $response['data'];
     }
 

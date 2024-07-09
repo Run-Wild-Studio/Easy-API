@@ -103,7 +103,7 @@ class Apis extends Component
      * @return bool
      * @throws Exception
      */
-    public function saveApi(ApiModel $model, bool $runValidation = true): bool
+public function saveApi(ApiModel $model, bool $runValidation = true): bool
     {
         $isNewModel = !$model->id;
 
@@ -130,9 +130,11 @@ class Apis extends Component
             }
         }
 
-        if ($isNewModel) {
+        if (empty($model->feedId)) {
             $feedRecord = $this->_createFeedRecord($model);
             $model->feedId = $feedRecord->id;
+        } else {
+            $this->_updateFeedRecord($model);
         }
 
         $record->name = $model->name;
@@ -147,6 +149,8 @@ class Apis extends Component
         $record->authorizationPassword = $model->authorizationPassword;
         $record->authorizationRedirect = $model->authorizationRedirect;
         $record->authorizationCode = $model->authorizationCode;
+        $record->authorizationRefreshToken = $model->authorizationRefreshToken;
+        $record->authorizationCustomParameters = $model->authorizationCustomParameters;
         $record->authorization = $model->authorization;
         $record->httpAction = $model->httpAction;
         $record->updateElementIdField = $model->updateElementIdField;
@@ -158,6 +162,9 @@ class Apis extends Component
         $record->parentElementGroup = $model->parentElementGroup;
         $record->parentElementIdField = $model->parentElementIdField;
         $record->parentFilter = $model->parentFilter;
+        $record->offsetField = $model->offsetField;
+        $record->offsetUpateURL = $model->offsetUpateURL;
+        $record->offsetTermination = $model->offsetTermination;
         $record->queueRequest = $model->queueRequest;
         $record->queueOrder = $model->queueOrder;
         $record->useLive = $model->useLive;
@@ -291,6 +298,8 @@ class Apis extends Component
                 'authorizationPassword',
                 'authorizationRedirect',
                 'authorizationCode',
+                'authorizationRefreshToken',
+                'authorizationCustomParameters',
                 'authorization',
                 'httpAction',
                 'requestHeader',
@@ -301,6 +310,9 @@ class Apis extends Component
                 'parentElementGroup',
                 'parentElementIdField',
                 'parentFilter',
+                'offsetField',
+                'offsetUpateURL',
+                'offsetTermination',
                 'queueRequest',
                 'queueOrder',
                 'useLive',
@@ -386,6 +398,29 @@ class Apis extends Component
 
         // Feed record created successfully
         return $feedModel;
+    }
+
+    private function _updateFeedRecord($model)
+    {
+        $feedService = new FeedService();
+        $feedModel = $feedService->getFeedById($model->feedId);
+
+        // Create a new FeedMe feed record
+        $feedModel->name = $model->name . '-Easy API';
+        $feedModel->feedUrl = $model->apiUrl;
+        $feedModel->feedType = $model->contentType;
+        $feedModel->elementType = $model->elementType;
+        $feedModel->elementGroup = $model->elementGroup;
+        $feedModel->duplicateHandle = $model->duplicateHandle;
+
+        // Validate and save the feed record
+        if (!$feedModel->validate()) {
+            // Handle validation errors
+        }
+
+        if (!$feedService->saveFeed($feedModel)) {
+            // Handle save errors
+        }
     }
 
     private function _deleteFeed($feedId)
