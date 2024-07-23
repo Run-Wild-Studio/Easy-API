@@ -13,3 +13,7 @@
 -Added OAuth logic
 -Added API Pagination logic
 -Moved Feed Me event functions to their own class
+
+## 5.1.3 - 2024-07-23
+
+-Added custom authorization fields to basic authorization.

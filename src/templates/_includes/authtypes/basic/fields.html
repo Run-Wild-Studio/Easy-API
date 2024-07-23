@@ -10,4 +10,14 @@
         errors: api.getErrors('authorization'),
         required: true,
     }) }}
+    
+    {{ forms.textField({
+        label: "Custom Code"|t('easyapi'),
+        instructions: "Custom parameters to be used during authorization. These parameters must take the form key=value in a comma separated list."|t('easyapi'),
+        id: 'authorizationCustomParameters',
+        name: 'authorizationCustomParameters',
+        value: (api.authorizationCustomParameters) ? api.authorizationCustomParameters : '',
+        errors: api.getErrors('authorizationCustomParameters'),
+        required: false,
+    }) }}
 </div>
