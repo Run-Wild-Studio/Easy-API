@@ -40,7 +40,7 @@ class basic extends AuthType
             $auth[] = 'Authorization: ' . $api->authorization;
         }
 
-        if ($auth | length) {
+        if (count($auth) > 0) {
             return ['success' => true, 'value' => $auth];
         }
         return ['success' => false, 'error' => 'Authorization value not specified'];
