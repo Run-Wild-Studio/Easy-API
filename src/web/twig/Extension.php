@@ -41,4 +41,11 @@ class Extension extends AbstractExtension
     {
         return EasyApi::$plugin->EasyApiAuthTypes->_authTypes[$handle] ?? null;
     }
+    
+    public function getFilters()
+    {
+        return [
+            new TwigFilter('version_compare', 'version_compare'),
+        ];
+    }
 }
