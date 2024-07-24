@@ -6,6 +6,7 @@ use Cake\Utility\Hash;
 use runwildstudio\easyapi\EasyApi;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Twig\TwigFilter;
 
 class Extension extends AbstractExtension
 {
@@ -41,7 +42,7 @@ class Extension extends AbstractExtension
     {
         return EasyApi::$plugin->EasyApiAuthTypes->_authTypes[$handle] ?? null;
     }
-    
+
     public function getFilters()
     {
         return [

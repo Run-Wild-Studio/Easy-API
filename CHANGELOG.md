@@ -18,7 +18,7 @@
 
 -Added custom authorization fields to basic authorization.
 
-## 6.1.1 - 2024-07-24
+## 6.1.2 - 2024-07-24
 
 -Creation of a unified version that supports both Craft 5 and Craft 4.
 -Add version_compare to twig.
