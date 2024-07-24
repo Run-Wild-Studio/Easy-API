@@ -2,7 +2,7 @@
   "name": "runwildstudio/easyapi",
   "description": "Import content from APIs into entries, categories, Craft Commerce products, and more.",
   "type": "craft-plugin",
-  "version": "5.1.5",
+  "version": "6.1.0",
   "keywords": [
     "craft",
     "cms",
@@ -37,8 +37,8 @@
   },
   "prefer-stable": true,
   "require": {
-    "php": "^8.2.0",
-    "craftcms/cms": "^5.0.0",
+    "php": "^7.4 || ^8.0",
+    "craftcms/cms": "^4.0 || ^5.0",
     "craftcms/feed-me": "^5.3.0 || ^6.0.0",
     "cakephp/utility": "^3.3.12 || ^5.0.0",
     "jakeasmith/http_build_url": "^1.0",

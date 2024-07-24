@@ -17,3 +17,7 @@
 ## 5.1.5 - 2024-07-23
 
 -Added custom authorization fields to basic authorization.
+
+## 6.1.0 - 2024-07-24
+
+-Creation of a unified version that supports both Craft 5 and Craft 4.
