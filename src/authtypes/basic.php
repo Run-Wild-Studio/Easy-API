@@ -31,7 +31,7 @@ class basic extends AuthType
             $authorizationCustomParameters = explode(',', $api->authorizationCustomParameters);
             foreach ($authorizationCustomParameters as $param) {
                 list($key, $value) = explode('=', trim($param));
-                $auth[trim($key)] = trim($value);
+                $auth[] = trim($key) . ': ' . trim($value);
             }
         }
 

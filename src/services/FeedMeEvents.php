@@ -12,6 +12,7 @@ use runwildstudio\easyapi\helpers\DataHelper;
 use runwildstudio\easyapi\services\EasyApiDataTypes;
 use craft\helpers\DateTimeHelper;
 use DateTime;
+use Exception;
 use GuzzleHttp\Client;
 
 class FeedMeEvents extends Component
@@ -132,7 +133,7 @@ class FeedMeEvents extends Component
 
     public function updatePaginationNode($api, &$data) {
         if ($api) {
-            if ($api->offsetField != "") {
+            if ($api->offsetField != null && $api->offsetField != "") {
                 DataHelper::updateOffsetValue($api, $data);
             }
         }

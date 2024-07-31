@@ -378,7 +378,17 @@ class ApisController extends Controller
         $api->authorizationRedirect = $request->getBodyParam('authorizationRedirect', $api->authorizationRedirect);
         $api->authorizationCode = $request->getBodyParam('authorizationCode', $api->authorizationCode);
         $api->authorizationRefreshToken = $request->getBodyParam('authorizationRefreshToken', $api->authorizationRefreshToken);
-        $api->authorizationCustomParameters = $request->getBodyParam('authorizationCustomParameters', $api->authorizationCustomParameters);
+
+        if ($api->authorizationType == 'none') {
+            $api->authorizationCustomParameters = '';
+        }
+        if ($api->authorizationType == 'basic') {
+            $api->authorizationCustomParameters = $request->getBodyParam('authorizationCustomParametersBasic', $api->authorizationCustomParameters);
+        }
+        if ($api->authorizationType == 'oauth') {
+            $api->authorizationCustomParameters = $request->getBodyParam('authorizationCustomParameters', $api->authorizationCustomParameters);
+        }
+        
         $api->httpAction = $request->getBodyParam('httpAction', $api->httpAction);
         $api->direction = $request->getBodyParam('direction', $api->direction);
         $api->requestHeader = $request->getBodyParam('requestHeader', $api->requestHeader);

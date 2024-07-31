@@ -91,11 +91,11 @@
     </div>
 
     {{ forms.textField({
-        label: "Custom Code"|t('easyapi'),
+        label: "Custom Parameters"|t('easyapi'),
         instructions: "Custom parameters to be used during authorization. These parameters must take the form key=value in a comma separated list."|t('easyapi'),
         id: 'authorizationCustomParameters',
         name: 'authorizationCustomParameters',
-        value: (api.authorizationCustomParameters) ? api.authorizationCustomParameters : '',
+        value: (api.authorizationCustomParameters and api.authorizationType == 'oauth') ? api.authorizationCustomParameters : '',
         errors: api.getErrors('authorizationCustomParameters'),
         required: false,
     }) }}

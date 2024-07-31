@@ -22,3 +22,7 @@
 
 -Creation of a unified version that supports both Craft 5 and Craft 4.
 -Add version_compare to twig.
+
+## 6.1.3 - 2024-07-31
+
+-Resolve error when using only custom parameters in basic auth

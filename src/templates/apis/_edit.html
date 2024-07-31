@@ -46,18 +46,6 @@
         {% set elementsList = elementsList|merge({ (elementClass): element.name }) %}
     {% endfor %}
 
-    {# {{ forms.textField({
-        first: true,
-        label: "Feed ID"|t('easyapi'),
-        instructions: "What this api will be called in the CP."|t('easyapi'),
-        id: 'feedId',
-        name: 'feedId',
-        value: api.feedId,
-        errors: api.getErrors('feedId'),
-        autofocus: true,
-        required: true,
-    }) }} #}
-
     {{ forms.textField({
         first: true,
         label: "Name"|t('easyapi'),
