@@ -11,6 +11,7 @@ use craft\feedme\services\Feeds as FeedService;
 use craft\feedme\models\FeedModel;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
+use runwildstudio\easyapi\EasyApi;
 use runwildstudio\easyapi\errors\ApiException;
 use runwildstudio\easyapi\events\ApiEvent;
 use runwildstudio\easyapi\models\ApiModel;
@@ -230,6 +231,12 @@ public function saveApi(ApiModel $model, bool $runValidation = true): bool
     {
         $api->id = null;
 
+        //Duplicate the Feed as well.
+        $feedService = new FeedService();
+        $feedModel = $feedService->getFeedById($api->feedId);
+        $feedService->duplicateFeed($feedModel);
+        $api->feedId = $feedModel->id;
+
         return $this->saveApi($api);
     }
 
@@ -377,7 +384,7 @@ public function saveApi(ApiModel $model, bool $runValidation = true): bool
 
         // Create a new FeedMe feed record
         $feedModel = new FeedModel();
-        $feedModel->name = $model->name . '-Easy API';
+        $feedModel->name = $model->name . '-' . EasyApi::$plugin->getPluginName();
         $feedModel->feedUrl = $model->apiUrl;
         $feedModel->feedType = $model->contentType;
         $feedModel->elementType = $model->elementType;
@@ -405,8 +412,8 @@ public function saveApi(ApiModel $model, bool $runValidation = true): bool
         $feedService = new FeedService();
         $feedModel = $feedService->getFeedById($model->feedId);
 
-        // Create a new FeedMe feed record
-        $feedModel->name = $model->name . '-Easy API';
+        // Update the FeedMe feed record
+        $feedModel->name = $model->name . '-' . EasyApi::$plugin->getPluginName();
         $feedModel->feedUrl = $model->apiUrl;
         $feedModel->feedType = $model->contentType;
         $feedModel->elementType = $model->elementType;
